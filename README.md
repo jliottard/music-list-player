@@ -9,5 +9,5 @@ A python script that downloads and plays musics from a music list text file.
 ## Dependencies
 - requests: python -m pip install requests
 - pytube: pip install pytube
-- playsound: pip install playsound
+- vlc: pip install python-vlc, and vlc on your computer
 
