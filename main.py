@@ -9,6 +9,8 @@ class Command(Enum):
     LIST = "list"
     PLAY = "play"
     NEXT = "next"
+    STOP = "stop"
+    PAUSE = "pause"
 
 if __name__ == "__main__":
     playlist = Playlist()
@@ -63,4 +65,21 @@ if __name__ == "__main__":
                 print(f"Skiping to next audio:{player.playlist.current_audio().name}")
             except Exception as error:
                 print("Impossible to skip to a next audio")
+        elif command == Command.STOP.value:
+            try:
+                player.stop()
+                print("Stopping the audio")
+            except Exception as error:
+                print("Impossible to stop")
+        elif command == Command.PAUSE.value:
+            try:
+                player.pause()
+                if player.is_playing():
+                    print("Pausing the audio")
+                else:
+                    print("Resuming the audio")
+            except Exception as error:
+                print("Impossible to pause/resume")
+        else:
+            print("Command unknown")
 

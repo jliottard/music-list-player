@@ -21,6 +21,7 @@ class AudioPlayer:
         self.playlist = playlist
         self.player = self.new_player_for_current_audio()
     
+
     def replace(self, playlist: Playlist):
         self.playlist = playlist
         self.player = self.new_player_for_current_audio()
@@ -60,3 +61,7 @@ class AudioPlayer:
             raise Exception("End of the playlist")
         self.playlist.current_audio_index += 1
         self.play()
+
+    def is_playing(self) -> bool:
+        return self.player.is_playing()
+
