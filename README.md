@@ -1,7 +1,8 @@
 # Music list player
 A python script that downloads and plays musics from a music list text file.
 ## Features
-- [ ] Handle errors on not finding a youtube video for the give names
+- [ ] Shuffle musics' order of the playlist
+- [ ] Handle errors on not finding a youtube video for the given names
 - [ ] Play next song in the playlist at the end of the current music
 - [ ] Print lyrics as the music is playing
 - [x] Define a command line interface
@@ -9,7 +10,7 @@ A python script that downloads and plays musics from a music list text file.
 - [x] Play audio files
 - [x] Download music's audio from name and author
 ## Dependencies
-- requests: python -m pip install requests
-- pytube: pip install pytube
-- vlc: pip install python-vlc, and vlc on your computer
+- requests: `python -m pip install requests`
+- pytube: `pip install pytube`
+- vlc: `pip install python-vlc`, and vlc on your computer
 
