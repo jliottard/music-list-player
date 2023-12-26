@@ -1,23 +1,8 @@
 import vlc
-
-class Audio:
-    def __init__(self, name: str, filepath: str):
-        self.name = name
-        self.filepath = filepath
-
-class Playlist:
-    def __init__(self):
-        self.audios: list[Audio] = []
-        self.current_audio_index = 0
-    
-    def current_audio(self) -> Audio:
-        # error: it returns None if the audio index does not match an audio
-        if self.current_audio_index >= len(self.audios):
-            return None
-        return self.audios[self.current_audio_index]
+from audio import playlist
 
 class AudioPlayer:
-    def __init__(self, playlist: Playlist):
+    def __init__(self, playlist: playlist.Playlist):
         self.player = vlc.Instance()    
         self.media_list = self.player.media_list_new()
         self.playlist = playlist

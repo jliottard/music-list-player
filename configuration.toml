@@ -1,0 +1,3 @@
+[default-profile]
+"download-directory-relative-path" = "./audios_cache"
+"playlist-file-relative-path" = "playlist.txt"
