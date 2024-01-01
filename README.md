@@ -2,6 +2,7 @@
 A python script that downloads and plays musics from a music list text file.
 ## Features
 ### To do
+- [ ] Handle age restricted youtube video (/audio/download.py", line 25: exceptions.AgeRestrictedError)
 - [ ] Support Windows 10
 - [ ] Add a command in Usage to create a Python virtual environment
 - [ ] Switch playlist profiles on the fly (playlist file as input)
