@@ -39,17 +39,26 @@ if __name__ == "__main__":
             player = AudioPlayer(playlist)
         elif user_input_command == Command.LIST.value:
             print("Music list:")
+            maybe_played_audio = player.get_playing_audio()
             for index, audio in enumerate(playlist.audios):
-                if index == playlist.current_audio_index:
-                    print(f"- {audio.name} (currently playing)")
+                if maybe_played_audio is not None and audio == maybe_played_audio:
+                    print(f"- ({index}) {audio.name} \t\t (currently playing)")
                 else:
-                    print(f"- {audio.name}")
+                    print(f"- ({index}) {audio.name}")
         elif user_input_command == Command.PLAY.value:
             player.play()
-            print(f"Playing \"{player.playlist.current_audio().name}\" audio.")
+            maybe_played_audio = player.get_playing_audio()
+            if maybe_played_audio is None:
+                print("Nothing to play.")
+            else:
+                print(f"Playing {maybe_played_audio.name}.")
         elif user_input_command == Command.NEXT.value:
             player.next()
-            print(f"Skiping to next audio:{player.playlist.current_audio().name}")
+            maybe_played_audio = player.get_playing_audio()
+            if maybe_played_audio is None:
+                print("Skip impossible.")
+            else:
+                print(f"Skipping to {maybe_played_audio.name}")
         elif user_input_command == Command.STOP.value:
             player.stop()
             print("Stopping the audio.")
@@ -59,6 +68,12 @@ if __name__ == "__main__":
                 print("Pausing the audio.")
             else:
                 print("Resuming the audio.")
+        elif user_input_command == Command.SHUFFLE.value:
+            current_audio = player.get_playing_audio()
+            player.stop()
+            print("Shuffling playlist.")
+            player.shuffle()
+            index = player.get_index_of_audio(current_audio)
+            player.play_audio_at_index(index)
         else:
-            print(f"{user_input_command} command is unknown.")
-
+            print(f"\"{user_input_command}\" command is unknown.")

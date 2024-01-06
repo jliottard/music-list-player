@@ -9,6 +9,7 @@ class Command(Enum):
     NEXT = "next"
     STOP = "stop"
     PAUSE = "pause"
+    SHUFFLE = "shuffle"
     
     def help(self):
         command_help = {
@@ -19,6 +20,7 @@ class Command(Enum):
             Command.PLAY: "play the playlist",
             Command.NEXT: "skip the current music to play the next one in the playlist",
             Command.STOP: "halt the audio",
-            Command.PAUSE: "toggle the audio"
+            Command.PAUSE: "toggle the audio",
+            Command.SHUFFLE: "shuffle the order of the musics and restart the played song"
         }
         return command_help[self]
