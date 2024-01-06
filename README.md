@@ -12,10 +12,10 @@ A python script that downloads and plays musics from a music list text file.
 - [ ] Jump to another song in the playlist by name
 - [ ] Show the name of the current and the upcoming songs and as a status
 - [ ] Add a volume changer
-- [ ] Shuffle the musics order of the playlist
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Print lyrics as the music is playing
 ### Done
+- [x] Shuffle the musics order of the playlist
 - [x] Check local storage if the audios have already been downloaded
 - [x] Play next song in the playlist at the end of the current music
 - [x] Define a command line interface
