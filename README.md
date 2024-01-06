@@ -9,7 +9,7 @@ source .venv/bin/activate
 python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
-LC dependency requires the `vlc` software to be installed on your computer.
+The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) software to be installed on your computer.
 ### Configuration
 Use the `configuration.toml` file to specify where is your playlist file and where to store audios.
 ### Run the application
@@ -31,15 +31,16 @@ deactivate
 - [x] Stop and skip the music
 - [x] Play audio
 - [x] Download musics from Internet
-### Incoming
+### Incoming for version 1.0 (end of January 2024)
+- [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Handle age restricted youtube video (/audio/download.py", line 25: exceptions.AgeRestrictedError)
-- [ ] Support Windows 10
-- [ ] Switch playlist profiles on the fly (playlist file as input)
 - [ ] Add some tests
-- [ ] Import the songs in background to play early the first song while it finishes downloading the rest
-- [ ] Loop toggle option to restart the playlist from the start at the end
 - [ ] Jump to another song in the playlist by name
 - [ ] Show the name of the current and the upcoming songs and as a status
+- [ ] Loop toggle option to restart the playlist from the start at the end
+### Incoming for version 2.0 (end of February 2024)
+- [ ] Support Windows 10
+- [ ] Import the songs in background to play early the first song while it finishes downloading the rest
+- [ ] Switch playlist profiles on the fly (playlist file as input)
 - [ ] Add a volume changer
-- [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Print lyrics as the music is playing
