@@ -3,6 +3,7 @@ import os
 from app import configuration
 from audio.audio import Audio
 from audio import download
+from audio.cannot_download_error import CannotDownloadError
 from audio.file_extension import FileExtension
 
 def load(playlist_file_absolute_path: str) -> list[Audio]:
@@ -26,10 +27,14 @@ def load(playlist_file_absolute_path: str) -> list[Audio]:
         else:
             print(f"The audio \"{audio_name}\" is not found in cache. Downloading audio from internet.")
             youtube_video_url: str = download.get_youtube_video_url(audio_name)
-            audio_download_absolute_path = download.download_audio(
-                youtube_url=youtube_video_url,
-                output_directory_relative_path=configuration.get_audios_directory_path()
-            )
+            try:
+                audio_download_absolute_path = download.download_audio(
+                    youtube_url=youtube_video_url,
+                    output_directory_relative_path=configuration.get_audios_directory_path()
+                )
+            except CannotDownloadError as video_cannot_be_downloaded:
+                print(f"Warning: the video {audio_name} could not be downloaded due to {video_cannot_be_downloaded.args}")
+                continue
             # Rename the file having Youtube video title as name to the audio name
             #  from the playlist file
             drive, path_and_file = os.path.splitdrive(audio_download_absolute_path)

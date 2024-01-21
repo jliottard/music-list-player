@@ -23,6 +23,7 @@ deactivate
 ```
 ## Features
 ### Implemented
+- [x] Handle age restricted youtube video
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
 - [x] Audio is cached
@@ -32,8 +33,9 @@ deactivate
 - [x] Play audio
 - [x] Download musics from Internet
 ### Incoming for version 1.0 (end of January 2024)
+- [ ] Change "pause" keyword to resume and its printing
+- [ ] Check end of list when using "next" command
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
-- [ ] Handle age restricted youtube video (/audio/download.py", line 25: exceptions.AgeRestrictedError)
 - [ ] Add some tests
 - [ ] Jump to another song in the playlist by name
 - [ ] Show the name of the current and the upcoming songs and as a status

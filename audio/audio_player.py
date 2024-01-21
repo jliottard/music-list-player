@@ -45,7 +45,7 @@ class AudioPlayer:
             if searched_audio == playlist_audio:
                 return index
         return -1
-        
+
     def get_playing_audio_index(self) -> int:
         for media_index, media in enumerate(self.media_list):
             if media.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
