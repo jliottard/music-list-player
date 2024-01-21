@@ -21,7 +21,10 @@ class AudioPlayer:
         self.audio_list_player.play()
 
     def pause(self):
-         self.audio_list_player.pause()
+        self.audio_list_player.set_pause(1)
+
+    def resume(self):
+        self.audio_list_player.set_pause(0)
 
     def stop(self):
         self.audio_list_player.stop()

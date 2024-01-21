@@ -63,11 +63,13 @@ if __name__ == "__main__":
             player.stop()
             print("Stopping the audio.")
         elif user_input_command == Command.PAUSE.value:
-            player.pause()
             if player.is_playing():
                 print("Pausing the audio.")
-            else:
+                player.pause()
+        elif user_input_command == Command.RESUME.value:
+            if not player.is_playing():
                 print("Resuming the audio.")
+                player.resume()
         elif user_input_command == Command.SHUFFLE.value:
             current_audio = player.get_playing_audio()
             player.stop()
@@ -77,3 +79,4 @@ if __name__ == "__main__":
             player.play_audio_at_index(index)
         else:
             print(f"\"{user_input_command}\" command is unknown.")
+

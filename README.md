@@ -23,6 +23,7 @@ deactivate
 ```
 ## Features
 ### Implemented
+- [x] Change "pause" keyword to resume and its printing
 - [x] Handle age restricted youtube video
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
@@ -33,7 +34,6 @@ deactivate
 - [x] Play audio
 - [x] Download musics from Internet
 ### Incoming for version 1.0 (end of January 2024)
-- [ ] Change "pause" keyword to resume and its printing
 - [ ] Check end of list when using "next" command
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Add some tests
