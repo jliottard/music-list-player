@@ -77,6 +77,12 @@ if __name__ == "__main__":
             player.shuffle()
             index = player.get_index_of_audio(current_audio)
             player.play_audio_at_index(index)
+        elif user_input_command == Command.LOOP.value:
+            print("Setting play mode as loop.")
+            player.set_loop()
+        elif user_input_command == Command.UNLOOP.value:
+            print("Setting play mode as default")
+            player.set_default()
         else:
             print(f"\"{user_input_command}\" command is unknown.")
 

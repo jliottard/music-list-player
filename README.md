@@ -39,7 +39,7 @@ deactivate
 - [ ] Add some tests
 - [ ] Jump to another song in the playlist by name
 - [ ] Show the name of the current and the upcoming songs and as a status
-- [ ] Loop toggle option to restart the playlist from the start at the end
+- [x] Loop toggle option to restart the playlist from the start at the end
 ### Incoming for version 2.0 (end of February 2024)
 - [ ] Support Windows 10
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest

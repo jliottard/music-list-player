@@ -11,6 +11,8 @@ class Command(Enum):
     PAUSE = "pause"
     RESUME = "resume"
     SHUFFLE = "shuffle"
+    LOOP = "loop"
+    UNLOOP = "unloop"
     
     def help(self):
         command_help = {
@@ -23,7 +25,9 @@ class Command(Enum):
             Command.STOP: "halt the audio",
             Command.PAUSE: "toggle the audio",
             Command.RESUME : "resume the paused audio",
-            Command.SHUFFLE: "shuffle the order of the musics and restart the played song"
+            Command.SHUFFLE: "shuffle the order of the musics and restart the played song",
+            Command.LOOP: "set the play mode as loop",
+            Command.UNLOOP: "unset the play mode as normal"
         }
         return command_help[self]
 

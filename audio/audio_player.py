@@ -61,3 +61,9 @@ class AudioPlayer:
             return None
         return self.playlist.audios[maybe_audio_index]
 
+    def set_default(self):
+        self.audio_list_player.set_playback_mode(vlc.PlaybackMode.default)
+
+    def set_loop(self):
+        self.audio_list_player.set_playback_mode(vlc.PlaybackMode.loop)
+
