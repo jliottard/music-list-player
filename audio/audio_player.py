@@ -69,3 +69,8 @@ class AudioPlayer:
     def set_loop(self):
         self.audio_list_player.set_playback_mode(vlc.PlaybackMode.loop)
 
+    def play_audio_at_index(self, index: int) -> bool:
+        # Returns:
+        # - True on success
+        # - False on Failure, if the index is not found
+        return self.audio_list_player.play_item_at_index(index) == 0

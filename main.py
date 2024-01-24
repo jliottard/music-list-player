@@ -47,10 +47,10 @@ if __name__ == "__main__":
                 print("Goodbye!")
                 break
             case Command.HELP:
-                print(f"The commands available are :")
+                print(f"The available commands are :")
                 for command in list(Command):
                     help = command.help()
-                    print(f"- {command.value}\t{help}")
+                    print(f"- {command.value:10s}\t{help}")
             case Command.IMPORT:
                 playlist_path = configuration.get_playlist_file_path()
                 playlist.audios = audio_loader.load(playlist_file_absolute_path=playlist_path)
@@ -65,6 +65,16 @@ if __name__ == "__main__":
                     else:
                         print(f"- ({index}) {audio.name}")
             case Command.PLAY:
+                if len(maybe_args) == 2:
+                    try:
+                        second_argument = maybe_args[1]
+                        audio_index = int(second_argument)
+                    except ValueError as value_error:
+                        print(f"Unexpected argument provided: \"{second_argument}\".")
+                        continue
+                    if not player.play_audio_at_index(audio_index):
+                        print(f"Cannot find the \"{audio_index}\" index in the playlist.")
+                        continue
                 player.play()
                 maybe_played_audio = player.get_playing_audio()
                 if maybe_played_audio is None:

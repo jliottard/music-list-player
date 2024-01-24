@@ -20,7 +20,7 @@ class Command(Enum):
             Command.QUIT: "exit the application",
             Command.IMPORT: "download the musics using Internet connection and set the playlist",
             Command.LIST: "show the playlist's musics",
-            Command.PLAY: "play the playlist",
+            Command.PLAY: "play first audio by default or if prefixed by the playlist's audio index, play the corresponding audio: \"play <i>\"",
             Command.NEXT: "skip the current music to play the next one in the playlist",
             Command.STOP: "halt the audio",
             Command.PAUSE: "toggle the audio",
