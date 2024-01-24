@@ -30,4 +30,3 @@ class Command(Enum):
             Command.UNLOOP: "unset the play mode as normal"
         }
         return command_help[self]
-

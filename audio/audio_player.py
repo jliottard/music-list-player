@@ -9,7 +9,7 @@ class AudioPlayer:
         self.player, self.media_list, self.audio_list_player = self.__set_media_player(self.playlist.audios)   
     
     def __set_media_player(self, audio_playlist: List[audio.Audio]) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
-        player: vlc.Instance = vlc.Instance()    
+        player: vlc.Instance = vlc.Instance()
         media_list: vlc.MediaList = player.media_list_new()
         for audio in audio_playlist:
             media_list.add_media(player.media_new(audio.filepath))
@@ -50,12 +50,14 @@ class AudioPlayer:
         return -1
 
     def get_playing_audio_index(self) -> int:
+        # Return None if there is no playing audio
         for media_index, media in enumerate(self.media_list):
             if media.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
                 return media_index
         return None
     
     def get_playing_audio(self) -> audio.Audio:
+        # Return None if there is no playing audio
         maybe_audio_index = self.get_playing_audio_index()
         if maybe_audio_index is None:
             return None
