@@ -23,8 +23,6 @@ deactivate
 ```
 ## Features
 ### Implemented
-- [x] Change "pause" keyword to resume and its printing
-- [x] Handle age restricted youtube video
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
 - [x] Audio is cached
@@ -37,12 +35,15 @@ deactivate
 - [ ] Check end of list when using "next" command
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Add some tests
-- [ ] Jump to another song in the playlist by name
 - [ ] Show the name of the current and the upcoming songs and as a status
+- [x] Jump to another song in the playlist by name
 - [x] Loop toggle option to restart the playlist from the start at the end
+- [x] Change "pause" keyword to resume and its printing
+- [x] Handle age restricted youtube video
 ### Incoming for version 2.0 (end of February 2024)
 - [ ] Support Windows 10
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
 - [ ] Switch playlist profiles on the fly (playlist file as input)
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
+- [ ] Erase cached when quitting the application as a setting

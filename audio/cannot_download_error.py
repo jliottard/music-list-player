@@ -1,3 +1,2 @@
 class CannotDownloadError(Exception):
     pass
-

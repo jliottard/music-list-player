@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import sys
+from typing import List
 
 from app.command import Command
 from app import configuration
 from audio.playlist import Playlist
 from audio.audio_player import AudioPlayer
 from audio import audio_loader
+from cannot_find_a_match_error import CannotFindAMatchError
 
 def setup() -> bool:
     # Check app initialization
@@ -29,6 +31,19 @@ def parse_command(command_input: str) -> list:
         return None
     return args
 
+def match(searched_name: str, names: List[str]) -> int:
+    # Search a matching searched_name amoung names
+    # Exception: raise a CannotFindAMatchError if there is no match
+    for index, name in enumerate(names):
+        if searched_name.lower() in name.lower():
+            return index
+    decomposed_name = searched_name.split(" ")
+    for sub_name_component in range(decomposed_name):
+        for index, name in enumerate(names):
+            if sub_name_component.lower() in name.lower():
+                return index
+    raise CannotFindAMatchError
+
 if __name__ == "__main__":
     if not setup():
         print("Error while app initialization.")
@@ -37,8 +52,8 @@ if __name__ == "__main__":
     player = AudioPlayer(playlist)
     print("Welcome to music list player! Please enter a command (type: \"help\" for help).")
     while True:
-        user_input_command = input()
-        maybe_args = parse_command(user_input_command)
+        user_input_command: str = input()
+        maybe_args: List[str] = parse_command(user_input_command)
         if maybe_args is None:
             print(f"\"{user_input_command}\" command is unknown.")
             continue
@@ -70,10 +85,26 @@ if __name__ == "__main__":
                         second_argument = maybe_args[1]
                         audio_index = int(second_argument)
                     except ValueError as value_error:
-                        print(f"Unexpected argument provided: \"{second_argument}\".")
+                        print(f"Unexpected argument provided: \"{second_argument}\", it was expected to be the index of the audio in the playlist (integer).")
                         continue
                     if not player.play_audio_at_index(audio_index):
                         print(f"Cannot find the \"{audio_index}\" index in the playlist.")
+                        continue
+                if len(maybe_args) > 2:
+                    try:
+                        arguments = maybe_args[1]
+                        audio_name_to_play = str(arguments)
+                    except ValueError as value_error:
+                        print(f"Unexpected arguments provided: \"{arguments}\", it was expected to be a audio name (string).")
+                        continue
+                    try:
+                        audio_to_play_index = match(audio_name_to_play, playlist.names())
+                    except CannotFindAMatch as cannot_find_a_match_error:
+                        print(f"Cannot find a matching audio with \"{audio_name_to_play}\".")
+                        continue
+                    else:
+                        if not player.play_audio_at_index(audio_to_play_index):
+                            print(f"Audio match found but cannot find its \"{audio_index}\" index in the playlist.")
                         continue
                 player.play()
                 maybe_played_audio = player.get_playing_audio()

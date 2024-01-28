@@ -1,0 +1,2 @@
+class CannotFindAMatchError(Exception):
+    pass
