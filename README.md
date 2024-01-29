@@ -47,3 +47,4 @@ deactivate
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
+- [ ] Use Search function of the pytube library
