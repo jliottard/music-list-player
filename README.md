@@ -47,6 +47,8 @@ deactivate
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
+- [ ] Use Search function of the pytube library
+- [ ] Spell check the command keywords and the audio name argument for the Play command
 - [ ] Import automatically the playlist from configuration on application start
 - [ ] Add colors to the prints
 - [ ] Change the prints to a log system
