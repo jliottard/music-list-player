@@ -48,3 +48,4 @@ deactivate
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
 - [ ] Use Search function of the pytube library
+- [ ] Spell check the command keyword and the audio name argument for the Play command
