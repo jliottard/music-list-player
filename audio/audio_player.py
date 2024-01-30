@@ -2,21 +2,24 @@ import random
 from typing import List, Tuple
 import vlc
 from audio import playlist, audio
+from audio.play_mode import PlayMode, translate_play_mode
 
 class AudioPlayer:
     def __init__(self, playlist: playlist.Playlist):
         self.playlist = playlist
-        self.player, self.media_list, self.audio_list_player = self.__set_media_player(self.playlist.audios)   
-    
-    def __set_media_player(self, audio_playlist: List[audio.Audio]) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
+        self.play_mode: PlayMode = PlayMode.ONE_PASS
+        self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
+
+    def _set_media_player(audio_playlist: List[audio.Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
         player: vlc.Instance = vlc.Instance()
         media_list: vlc.MediaList = player.media_list_new()
         for audio in audio_playlist:
             media_list.add_media(player.media_new(audio.filepath))
         audio_list_player: vlc.MediaListPlayer = player.media_list_player_new()
         audio_list_player.set_media_list(media_list)
+        audio_list_player.set_playback_mode(translate_play_mode(play_back_mode))
         return player, media_list, audio_list_player
-    
+
     def play(self):
         self.audio_list_player.play()
 
@@ -36,9 +39,9 @@ class AudioPlayer:
         return self.audio_list_player.is_playing()
 
     def shuffle(self):
-        # Description: rearrange the order of the playlist. The state of the played audio can be late to be up to date
+        # Description: rearrange the order of the playlist. The state of the played audio can be late to be updated
         random.shuffle(self.playlist.audios)
-        self.player, self.media_list, self.audio_list_player = self.__set_media_player(self.playlist.audios)
+        self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
 
     def play_audio_at_index(self, index: int):
         self.audio_list_player.play_item_at_index(index)
@@ -63,11 +66,12 @@ class AudioPlayer:
             return None
         return self.playlist.audios[maybe_audio_index]
 
-    def set_default(self):
-        self.audio_list_player.set_playback_mode(vlc.PlaybackMode.default)
+    def set_play_mode(self, mode: PlayMode):
+        self.play_mode = mode
+        self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
 
-    def set_loop(self):
-        self.audio_list_player.set_playback_mode(vlc.PlaybackMode.loop)
+    def get_play_mode(self) -> PlayMode:
+        return self.play_mode
 
     def play_audio_at_index(self, index: int) -> bool:
         # Returns:

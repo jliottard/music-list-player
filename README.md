@@ -32,10 +32,10 @@ deactivate
 - [x] Play audio
 - [x] Download musics from Internet
 ### Incoming for version 1.0 (end of January 2024)
-- [ ] Check end of list when using "next" command
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Add some tests
 - [ ] Show the name of the current and the upcoming songs and as a status
+- [x] Check end of list when using "next" command
 - [x] Jump to another song in the playlist by name
 - [x] Loop toggle option to restart the playlist from the start at the end
 - [x] Change "pause" keyword to resume and its printing
@@ -47,3 +47,9 @@ deactivate
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
+- [ ] Import automatically the playlist from configuration on application start
+- [ ] Add colors to the prints
+- [ ] Change the prints to a log system
+### Incoming for version 3.0 (end of March 2024)
+- [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
+- [ ] Add a resume mechanism to restart playlist on the song where the application did quit

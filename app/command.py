@@ -1,4 +1,5 @@
 from enum import Enum
+from audio.play_mode import PlayMode
 
 class Command(Enum):
     HELP = "help"
@@ -11,8 +12,7 @@ class Command(Enum):
     PAUSE = "pause"
     RESUME = "resume"
     SHUFFLE = "shuffle"
-    LOOP = "loop"
-    UNLOOP = "unloop"
+    MODE = "mode"
     
     def help(self):
         command_help = {
@@ -23,10 +23,11 @@ class Command(Enum):
             Command.PLAY: "play first audio by default or if prefixed by the playlist's audio index, play the corresponding audio: \"play <i>\"",
             Command.NEXT: "skip the current music to play the next one in the playlist",
             Command.STOP: "halt the audio",
-            Command.PAUSE: "toggle the audio",
+            Command.PAUSE: "pause the audio",
             Command.RESUME : "resume the paused audio",
             Command.SHUFFLE: "shuffle the order of the musics and restart the played song",
-            Command.LOOP: "set the play mode as loop",
-            Command.UNLOOP: "unset the play mode as normal"
+            Command.MODE: "show the current paly mode, or with argument(s), set the play mode accordingly: {}".format(
+                [str(mode) for mode in PlayMode]
+            ),
         }
         return command_help[self]

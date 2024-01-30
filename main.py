@@ -6,6 +6,7 @@ from app.command import Command
 from app import configuration
 from audio.playlist import Playlist
 from audio.audio_player import AudioPlayer
+from audio.play_mode import PlayMode, from_string
 from audio import audio_loader
 from cannot_find_a_match_error import CannotFindAMatchError
 
@@ -31,16 +32,24 @@ def parse_command(command_input: str) -> list:
         return None
     return args
 
-def match(searched_name: str, names: List[str]) -> int:
-    # Search a matching searched_name amoung names
+def match_string_among_strings(searched_string: str, strings: List[str]) -> int:
+    # Search a matching searched_name among strings
     # Exception: raise a CannotFindAMatchError if there is no match
-    for index, name in enumerate(names):
-        if searched_name.lower() in name.lower():
+    for index, string in enumerate(strings):
+        if searched_string.lower() in string.lower():
             return index
-    decomposed_name = searched_name.split(" ")
-    for sub_name_component in range(decomposed_name):
-        for index, name in enumerate(names):
-            if sub_name_component.lower() in name.lower():
+    decomposed_string = searched_string.split(" ")
+    for sub_string_component in range(decomposed_string):
+        for index, string in enumerate(strings):
+            if sub_string_component.lower() in string.lower():
+                return index
+    raise CannotFindAMatchError
+
+def match_some_strings_among_strings(searched_arguments: List[str], expected_arguments: List[str]) -> int:
+    # @exception: raise a CannotFindAMatchError if there is no match
+    for searched_argument in searched_arguments:
+        for index, expected_argument in enumerate(expected_arguments):
+            if searched_argument.lower() in expected_argument:
                 return index
     raise CannotFindAMatchError
 
@@ -48,8 +57,7 @@ if __name__ == "__main__":
     if not setup():
         print("Error while app initialization.")
         sys.exit()
-    playlist = Playlist()
-    player = AudioPlayer(playlist)
+    player = AudioPlayer(Playlist())
     print("Welcome to music list player! Please enter a command (type: \"help\" for help).")
     while True:
         user_input_command: str = input()
@@ -67,9 +75,10 @@ if __name__ == "__main__":
                     help = command.help()
                     print(f"- {command.value:10s}\t{help}")
             case Command.IMPORT:
+                player.stop()
                 playlist_path = configuration.get_playlist_file_path()
+                playlist = Playlist()
                 playlist.audios = audio_loader.load(playlist_file_absolute_path=playlist_path)
-                del(player)
                 player = AudioPlayer(playlist)
             case Command.LIST:
                 print("Music list:")
@@ -90,15 +99,14 @@ if __name__ == "__main__":
                     if not player.play_audio_at_index(audio_index):
                         print(f"Cannot find the \"{audio_index}\" index in the playlist.")
                         continue
-                if len(maybe_args) > 2:
+                elif len(maybe_args) > 2:
                     try:
-                        arguments = maybe_args[1]
-                        audio_name_to_play = str(arguments)
+                        audio_name_to_play = " ".join(maybe_args[1:])
                     except ValueError as value_error:
                         print(f"Unexpected arguments provided: \"{arguments}\", it was expected to be a audio name (string).")
                         continue
                     try:
-                        audio_to_play_index = match(audio_name_to_play, playlist.names())
+                        audio_to_play_index = match_string_among_strings(audio_name_to_play, player.playlist.names())
                     except CannotFindAMatch as cannot_find_a_match_error:
                         print(f"Cannot find a matching audio with \"{audio_name_to_play}\".")
                         continue
@@ -106,19 +114,33 @@ if __name__ == "__main__":
                         if not player.play_audio_at_index(audio_to_play_index):
                             print(f"Audio match found but cannot find its \"{audio_index}\" index in the playlist.")
                         continue
-                player.play()
+                else:
+                    player.play()
                 maybe_played_audio = player.get_playing_audio()
                 if maybe_played_audio is None:
-                    print("Nothing to play.")
+                    print("Playing..")
                 else:
-                    print(f"Playing {maybe_played_audio.name}.")
+                    print(f"Playing \"{maybe_played_audio.name}\".")
             case Command.NEXT:
-                player.next()
-                maybe_played_audio = player.get_playing_audio()
-                if maybe_played_audio is None:
-                    print("Skip impossible.")
+                maybe_playing_audio_index = player.get_playing_audio_index()
+                if maybe_playing_audio_index is None:
+                    next_audio_name = ".."
                 else:
-                    print(f"Skipping to {maybe_played_audio.name}")
+                    next_audio_index = (maybe_playing_audio_index + 1) % len(player.playlist.audios)
+                    next_audio_name = player.playlist.names()[next_audio_index]
+                is_playing_audio_last = player.get_playing_audio_index() == len(player.playlist.audios) - 1
+                if is_playing_audio_last:
+                    match player.get_play_mode():
+                        case PlayMode.PLAYLIST_LOOP:
+                            player.play_audio_at_index(0)
+                        case PlayMode.ONE_PASS:
+                            print("Cannot skip, end of playlist reached as one pass mode.")
+                            continue
+                        case _:
+                            pass
+                else:
+                    player.next()
+                print(f"Skipping to \"{next_audio_name}\".")
             case Command.STOP:
                 player.stop()
                 print("Stopping the audio.")
@@ -137,11 +159,18 @@ if __name__ == "__main__":
                 player.shuffle()
                 index = player.get_index_of_audio(current_audio)
                 player.play_audio_at_index(index)
-            case Command.LOOP:
-                print("Setting play mode as loop.")
-                player.set_loop()
-            case Command.UNLOOP:
-                print("Setting play mode as default")
-                player.set_default()
+            case Command.MODE:
+                if len(maybe_args) >= 2:
+                    try:
+                        MODES = [str(mode) for mode in PlayMode]
+                        mode_index = match_string_among_strings(" ".join(maybe_args[1:]), MODES)
+                        player.set_play_mode(from_string(MODES[mode_index]))
+                    except CannotFindAMatchError as cannot_find_a_match_error:
+                        print(f"Cannot find a matching mode with \"{audio_name_to_play}\".")
+                        continue
+                    else:
+                        print(f"Setting play mode as {player.get_play_mode()}.")
+                else:
+                    print(f"Current play mode is {player.get_play_mode()}.")
             case _:
                 pass
