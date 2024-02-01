@@ -13,6 +13,9 @@ class Command(Enum):
     RESUME = "resume"
     SHUFFLE = "shuffle"
     MODE = "mode"
+
+    def __str__(self) -> str:
+        return self.value
     
     def help(self):
         command_help = {
@@ -26,7 +29,7 @@ class Command(Enum):
             Command.PAUSE: "pause the audio",
             Command.RESUME : "resume the paused audio",
             Command.SHUFFLE: "shuffle the order of the musics and restart the played song",
-            Command.MODE: "show the current paly mode, or with argument(s), set the play mode accordingly: {}".format(
+            Command.MODE: "show the current play mode, or with argument(s), set the play mode accordingly: {}".format(
                 [str(mode) for mode in PlayMode]
             ),
         }

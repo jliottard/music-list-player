@@ -21,36 +21,48 @@ def parse_command(command_input: str) -> list:
     # Return:
     # - a list of the command arguments with the first argument as a Command element
     # - None if the command is not recognized
-    def is_not_empty(e) -> bool:
+    def is_not_empty_string(e: str) -> bool:
         return e != ""
-    args = list(filter(is_not_empty, command_input.split(" ")))
+    args = list(filter(is_not_empty_string, command_input.split(" ")))
+    if len(args) == 0:
+        return None
     first_argument = args[0]
-    for command in Command:
-        if first_argument == command.value:
-            args[0] = command
-    if type(args[0]) == type(""):
+    for command_enum in Command:
+        if first_argument == command_enum.value:
+            args[0] = command_enum
+    if isinstance(args[0], str):
         return None
     return args
 
 def match_string_among_strings(searched_string: str, strings: List[str]) -> int:
-    # Search a matching searched_name among strings
-    # Exception: raise a CannotFindAMatchError if there is no match
-    for index, string in enumerate(strings):
+    # Search a matching searched_name among strings, it ignores case
+    # It does not necessary return the first match if there are multiples matches
+    # Exception: raise a CannotFindAMatchError if there is no match, or the searched_string is empty
+    if searched_string == "":
+        if not "" in strings:
+            raise CannotFindAMatchError
+        else:
+            return list(strings).index("")
+    for string_index, string in enumerate(strings):
         if searched_string.lower() in string.lower():
-            return index
+            return string_index
     decomposed_string = searched_string.split(" ")
-    for sub_string_component in range(decomposed_string):
-        for index, string in enumerate(strings):
+    for sub_string_component in decomposed_string:
+        for sub_string_index, string in enumerate(strings):
             if sub_string_component.lower() in string.lower():
-                return index
+                return sub_string_index
     raise CannotFindAMatchError
 
 def match_some_strings_among_strings(searched_arguments: List[str], expected_arguments: List[str]) -> int:
-    # @exception: raise a CannotFindAMatchError if there is no match
+    # Search at least one matching string from searched_arguments among strings, ignore case
+    # It does not necessary return the first match if there are multiples matches
+    # @exception: raise a CannotFindAMatchError if there is no match, or the only matching searched argument is an empty string to non-empty string
     for searched_argument in searched_arguments:
-        for index, expected_argument in enumerate(expected_arguments):
-            if searched_argument.lower() in expected_argument:
-                return index
+        for arg_index, expected_argument in enumerate(expected_arguments):
+            if searched_argument == "" and expected_argument != "":
+                continue
+            if searched_argument.lower() in expected_argument.lower():
+                return arg_index
     raise CannotFindAMatchError
 
 if __name__ == "__main__":
@@ -103,17 +115,18 @@ if __name__ == "__main__":
                     try:
                         audio_name_to_play = " ".join(maybe_args[1:])
                     except ValueError as value_error:
-                        print(f"Unexpected arguments provided: \"{arguments}\", it was expected to be a audio name (string).")
-                        continue
-                    try:
-                        audio_to_play_index = match_string_among_strings(audio_name_to_play, player.playlist.names())
-                    except CannotFindAMatch as cannot_find_a_match_error:
-                        print(f"Cannot find a matching audio with \"{audio_name_to_play}\".")
+                        print(f"Unexpected name provided: \"{maybe_args[1:]}\", it was expected to be a audio name (string).")
                         continue
                     else:
-                        if not player.play_audio_at_index(audio_to_play_index):
-                            print(f"Audio match found but cannot find its \"{audio_index}\" index in the playlist.")
-                        continue
+                        try:
+                            audio_to_play_index = match_string_among_strings(audio_name_to_play, player.playlist.names())
+                        except CannotFindAMatchError as cannot_find_a_match_error:
+                            print(f"Cannot find a matching audio with \"{audio_name_to_play}\".")
+                            continue
+                        else:
+                            if not player.play_audio_at_index(audio_to_play_index):
+                                print(f"Audio match found but cannot find its \"{audio_to_play_index}\" index in the playlist.")
+                            continue
                 else:
                     player.play()
                 maybe_played_audio = player.get_playing_audio()

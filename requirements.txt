@@ -1,4 +1,4 @@
-python-vlc==3.0.0:q
+python-vlc==3.0.0
 pytube
 requests
 requests-oauthlib

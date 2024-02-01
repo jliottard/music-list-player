@@ -17,10 +17,10 @@ def get_youtube_video_url(music_name: str) -> str:
     video_id_end_keyword = '\\u'
     end_index = html_contents.find(video_id_end_keyword, start_index)
     watch_video_url_part = html_contents[start_index:end_index]
-    music_video_url = 'https://www.youtube.com/' + watch_video_url_part
+    music_video_url = 'https://www.youtube.com' + watch_video_url_part
     return music_video_url
 
-def download_audio(youtube_url: str, output_directory_relative_path: str) -> str:
+def download_audio_from_youtube(youtube_url: str, output_directory_relative_path: str) -> str:
     # Description: Download the video's audio to a MP3 file
     # Input: a valid youtube video URL
     # Output: an absolute path to the music audio
@@ -34,8 +34,8 @@ def download_audio(youtube_url: str, output_directory_relative_path: str) -> str
         raise CannotDownloadError(video_is_live_stream_error.args)
     except exceptions.VideoRegionBlocked as video_is_region_blocked:
         raise CannotDownloadError(video_is_region_blocked.args)
-    except other_exceptions:
-        raise CannotDownloadError(other_exceptions.args)
+    except Exception as other_exception:
+        raise CannotDownloadError(other_exception.args)
     # Rename downloaded file to file.mp3
     name_base, _video_extension = os.path.splitext(audio_filepath)
     audio_mp3_filepath = name_base + '.mp3'

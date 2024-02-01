@@ -43,9 +43,6 @@ class AudioPlayer:
         random.shuffle(self.playlist.audios)
         self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
 
-    def play_audio_at_index(self, index: int):
-        self.audio_list_player.play_item_at_index(index)
-
     def get_index_of_audio(self, searched_audio: audio.Audio) -> int:
         for index, playlist_audio in enumerate(self.playlist.audios):
             if searched_audio == playlist_audio:

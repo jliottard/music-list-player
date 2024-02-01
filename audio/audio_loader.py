@@ -7,12 +7,12 @@ from audio.cannot_download_error import CannotDownloadError
 from audio.file_extension import FileExtension
 
 def load(playlist_file_absolute_path: str) -> list[Audio]:
-    # Input: a filepath of the text file describing the music playlist
-    # Output: a list of the audios
-    # Parse playlist file
+    # Description: Parse playlist file
+    # @param playlist_file_absolute_path a filepath of the text file describing the music playlist
+    # @return a list of the audios
     playlist_lines: list[str] = []
     print("Parsing playlist file.")
-    with open(playlist_file_absolute_path, "rt") as playlist_file:
+    with open(playlist_file_absolute_path, "rt", encoding="utf-8") as playlist_file:
         playlist_lines = playlist_file.readlines()
     print("Checking local cache of audios.")
     audios: list[Audio] = []
@@ -28,7 +28,7 @@ def load(playlist_file_absolute_path: str) -> list[Audio]:
             print(f"The audio \"{audio_name}\" is not found in cache. Downloading audio from internet.")
             youtube_video_url: str = download.get_youtube_video_url(audio_name)
             try:
-                audio_download_absolute_path = download.download_audio(
+                audio_download_absolute_path = download.download_audio_from_youtube(
                     youtube_url=youtube_video_url,
                     output_directory_relative_path=configuration.get_audios_directory_path()
                 )
