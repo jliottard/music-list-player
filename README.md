@@ -56,8 +56,8 @@ pytest
 ### Incoming for version 1.0 (end of January 2024)
 
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
-- [ ] Add some tests
 - [ ] Show the name of the current and the upcoming songs and as a status
+- [x] Add some tests
 - [x] Check end of list when using "next" command
 - [x] Jump to another song in the playlist by name
 - [x] Loop toggle option to restart the playlist from the start at the end
