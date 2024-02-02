@@ -34,3 +34,21 @@ class Command(Enum):
             ),
         }
         return command_help[self]
+
+def parse_command(command_input: str) -> list:
+    # Parse the inputed by user command
+    # Return:
+    # - a list of the command arguments with the first argument as a Command element
+    # - None if the command is not recognized
+    def is_not_empty_string(e: str) -> bool:
+        return e != ""
+    args = list(filter(is_not_empty_string, command_input.split(" ")))
+    if len(args) == 0:
+        return None
+    first_argument = args[0]
+    for command_enum in Command:
+        if first_argument == command_enum.value:
+            args[0] = command_enum
+    if isinstance(args[0], str):
+        return None
+    return args

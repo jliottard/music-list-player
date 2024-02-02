@@ -13,8 +13,8 @@ class AudioPlayer:
     def _set_media_player(audio_playlist: List[audio.Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
         player: vlc.Instance = vlc.Instance()
         media_list: vlc.MediaList = player.media_list_new()
-        for audio in audio_playlist:
-            media_list.add_media(player.media_new(audio.filepath))
+        for playlist_audio in audio_playlist:
+            media_list.add_media(player.media_new(playlist_audio.filepath))
         audio_list_player: vlc.MediaListPlayer = player.media_list_player_new()
         audio_list_player.set_media_list(media_list)
         audio_list_player.set_playback_mode(translate_play_mode(play_back_mode))

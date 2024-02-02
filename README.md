@@ -66,7 +66,7 @@ pytest
 
 ### Incoming for version 2.0 (end of February 2024)
 
-- [ ] Setup a continus integration in Github to check the tests
+- [ ] Setup a continous integration in Github to check the tests
 - [ ] Support Windows 10
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
 - [ ] Switch playlist profiles on the fly (playlist file as input)

@@ -5,6 +5,14 @@ from audio.audio import Audio
 from audio import download
 from audio.cannot_download_error import CannotDownloadError
 from audio.file_extension import FileExtension
+import configuration
+
+def parse_playlist_text_file(playlist_file_absolute_path: str) -> list[str]:
+    # return the music name in a list
+    playlist_lines: list[str] = []
+    print("Parsing playlist file.")
+    with open(playlist_file_absolute_path, "rt", encoding=configuration.TEXT_ENCODING) as playlist_file:
+        return playlist_file.readlines()
 
 def load(playlist_file_absolute_path: str) -> list[Audio]:
     # Description: Parse playlist file
@@ -12,7 +20,7 @@ def load(playlist_file_absolute_path: str) -> list[Audio]:
     # @return a list of the audios
     playlist_lines: list[str] = []
     print("Parsing playlist file.")
-    with open(playlist_file_absolute_path, "rt", encoding="utf-8") as playlist_file:
+    with open(playlist_file_absolute_path, "rt", encoding=configuration.TEXT_ENCODING) as playlist_file:
         playlist_lines = playlist_file.readlines()
     print("Checking local cache of audios.")
     audios: list[Audio] = []

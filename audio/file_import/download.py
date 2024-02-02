@@ -2,7 +2,8 @@ import os, sys
 import requests
 from pytube import YouTube
 from pytube import exceptions
-from audio.cannot_download_error import CannotDownloadError
+
+from audio.file_import.cannot_download_error import CannotDownloadError
 
 def get_youtube_video_url(music_name: str) -> str:
     # Input: - music_name: string of the format "NAME AUTHOR" of the music video to search
