@@ -2,10 +2,9 @@ import os
 
 from app import configuration
 from audio.audio import Audio
-from audio import download
-from audio.cannot_download_error import CannotDownloadError
+from audio.file_import import download
+from audio.file_import.cannot_download_error import CannotDownloadError
 from audio.file_extension import FileExtension
-import configuration
 
 def parse_playlist_text_file(playlist_file_absolute_path: str) -> list[str]:
     # return the music name in a list
