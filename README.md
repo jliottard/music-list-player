@@ -55,7 +55,6 @@ pytest
 
 ### Incoming for version 1.0 (end of January 2024)
 
-- [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [x] Show the name of the current and the upcoming songs and as a status
 - [x] Add some tests
 - [x] Check end of list when using "next" command
@@ -73,6 +72,7 @@ pytest
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
+- [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
 - [ ] Spell check the command keywords and the audio name argument for the Play command
 - [ ] Import automatically the playlist from configuration on application start
