@@ -42,7 +42,7 @@ pytest
 
 ## Features
 
-### Implemented
+### Implemented for version 1.0
 
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
@@ -52,9 +52,6 @@ pytest
 - [x] Stop and skip the music
 - [x] Play audio
 - [x] Download musics from Internet
-
-### Incoming for version 1.0 (end of January 2024)
-
 - [x] Show the name of the current and the upcoming songs and as a status
 - [x] Add some tests
 - [x] Check end of list when using "next" command
