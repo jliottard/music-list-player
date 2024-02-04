@@ -23,6 +23,10 @@ def _is_audio_loaded(audio_name: str, file_extension: FileExtension) -> bool:
     return _is_audio_in_cache(audio_file_path)
 
 def load(audio_name: str, file_extension: FileExtension) -> Audio:
+    """
+    Load the audio from the cache or from the Internet
+    @return: an Audio or None if the audio could not be found or downloaded
+    """
     if _is_audio_loaded(audio_name, file_extension):
         print(f"The audio \"{audio_name}\" is found in cache.")
         return Audio(
@@ -38,7 +42,7 @@ def load(audio_name: str, file_extension: FileExtension) -> Audio:
             output_directory_relative_path=configuration.get_audios_directory_path()
         )
     except CannotDownloadError as video_cannot_be_downloaded:
-        print(f"Warning: the video {audio_name} could not be downloaded due to {video_cannot_be_downloaded.args}")
+        print(f"Warning: the video {audio_name} could not be downloaded due to {video_cannot_be_downloaded}")
         return None
     # Rename the file having Youtube video title as name to the audio name
     #  from the playlist file
