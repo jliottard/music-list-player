@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import sys
 from typing import List
 
@@ -11,6 +12,7 @@ from app.actions.next import skip_music
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.command import Command, parse_command
+from app import interface
 from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
 
@@ -28,6 +30,8 @@ if __name__ == "__main__":
     print(f"Welcome to music list player! Please enter a command (type: \"{str(Command.HELP)}\" for help).")
     while True:
         user_input_command: str = input()
+        interface.update_terminal(player)
+        maybe_played_audio = player.get_playing_audio()
         maybe_args: List[str] = parse_command(user_input_command)
         if maybe_args is None:
             print(f"\"{user_input_command}\" command is unknown.")

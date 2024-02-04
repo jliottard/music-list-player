@@ -39,7 +39,7 @@ class AudioPlayer:
         return self.audio_list_player.is_playing()
 
     def shuffle(self):
-        # Description: rearrange the order of the playlist. The state of the played audio can be late to be updated
+        ''' Description: rearrange the order of the playlist. The state of the played audio can be late to be updated '''
         random.shuffle(self.playlist.audios)
         self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
 
@@ -50,18 +50,44 @@ class AudioPlayer:
         return -1
 
     def get_playing_audio_index(self) -> int:
-        # Return None if there is no playing audio
+        ''' Return None if there is no playing audio '''
         for media_index, media in enumerate(self.media_list):
             if media.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
                 return media_index
         return None
-    
+
+    def get_next_audio_index(self) -> int:
+        """
+        Get the next index from the playing audio in the player's playlist. Assume the playlist loops.
+        @return: None if there is no playing audio or the current audio is the last while the play mode is one pass
+        """
+        maybe_playing_audio_index = self.get_playing_audio_index()
+        if maybe_playing_audio_index is None:
+            return None
+        next_audio_index = (maybe_playing_audio_index + 1) % len(self.playlist.audios)
+        match self.get_play_mode():
+            case PlayMode.PLAYLIST_LOOP:
+                return next_audio_index
+            case PlayMode.ONE_PASS:
+                if maybe_playing_audio_index == len(self.playlist.audios) - 1:
+                    return None
+                return next_audio_index
+            case _:
+                return None
+
     def get_playing_audio(self) -> audio.Audio:
-        # Return None if there is no playing audio
+        """ Return None if there is no playing audio """
         maybe_audio_index = self.get_playing_audio_index()
         if maybe_audio_index is None:
             return None
         return self.playlist.audios[maybe_audio_index]
+
+    def get_next_audio(self) -> audio.Audio:
+        """ Return None if there is no playing audio or the play mode is one pass and the current audio is the last """
+        maybe_next_audio_index = self.get_next_audio_index()
+        if maybe_next_audio_index is None:
+            return None
+        return self.playlist.audios[maybe_next_audio_index]
 
     def set_play_mode(self, mode: PlayMode):
         self.play_mode = mode
@@ -71,7 +97,9 @@ class AudioPlayer:
         return self.play_mode
 
     def play_audio_at_index(self, index: int) -> bool:
-        # Returns:
-        # - True on success
-        # - False on Failure, if the index is not found
+        """
+        Returns:
+         - True on success
+         - False on Failure, if the index is not found
+        """
         return self.audio_list_player.play_item_at_index(index) == 0
