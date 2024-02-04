@@ -20,6 +20,8 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 
 Use the `configuration.toml` file to specify where is your playlist file and where to store audios.
 
+The playlist file must be a list of the songs to play, with one song name per line.
+
 ### Run the application
 
 In the virtual environment, run in the project root directory:
