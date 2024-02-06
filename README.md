@@ -6,7 +6,10 @@ A python script that downloads and plays musics from a music list text file.
 
 ### Dependencies
 
+The project uses `Python 3.12` and it is not developped nor tested for earlier Python version.
+
 Python libraries are listed in the `requirements.txt` files. To import the dependencies in a virtual environment, run:
+- On Linux:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
@@ -14,7 +17,16 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) software to be installed on your computer.
+- On Windows:
+```shell
+py -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) software to be installed on your computer. Please use the latest version of VLC:
+- On Windows, VLC version 3.0.20 works.
 
 ### Configuration
 
@@ -25,12 +37,17 @@ The playlist file must be a list of the songs to play, with one song name per li
 ### Run the application
 
 In the virtual environment, run in the project root directory:
+- On Linux:
 ```bash
 .venv/bin/python main.py
-
+```
+- On Windows:
+```shell
+python main.py
 ```
 
 Deactivate the virtual environment:
+- On Linux and Windows:
 ```bash
 deactivate
 ```
@@ -64,7 +81,7 @@ pytest
 
 ### Incoming for version 2.0 (end of February 2024)
 
-- [ ] Setup a continous integration in Github to check the tests
+- [ ] Setup a continuous integration in Github to check the tests on Linux and Windows dockers
 - [ ] Support Windows 10
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
 - [ ] Switch playlist profiles on the fly (playlist file as input)
