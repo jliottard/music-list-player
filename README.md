@@ -84,7 +84,7 @@ pytest
 - [ ] Setup a continuous integration in Github to check the tests on Linux and Windows dockers
 - [ ] Support Windows 10
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
-- [ ] Switch playlist profiles on the fly (playlist file as input)
+- [ ] Switch playlist profiles on the fly: import <profile_name>
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
