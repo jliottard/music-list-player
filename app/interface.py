@@ -2,11 +2,10 @@ import os
 
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
-from audio.playlist import Playlist
 
 def clean_terminal() -> None:
-    ''' Clean the Unix terminal '''
-    os.system('tput reset')
+    ''' Clean the terminal '''
+    os.system('clear')
 
 def status_information_str(player: AudioPlayer) -> str:
     ''' Return the player basics information such as playing song and upcoming song '''
