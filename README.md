@@ -42,7 +42,7 @@ pytest
 
 ## Features
 
-### Implemented for version 1.0
+### Implemented in version 1.0
 
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
@@ -60,7 +60,7 @@ pytest
 - [x] Change "pause" keyword to resume and its printing
 - [x] Handle age restricted youtube video
 
-### Incoming for version 2.0 (end of February 2024)
+### Incoming in version 2.0 (end of February 2024)
 
 - [ ] Setup a continous integration in Github to check the tests
 - [ ] Support Windows 10
@@ -76,7 +76,7 @@ pytest
 - [ ] Add colors to the prints
 - [ ] Change the prints to a log system
 
-### Incoming for version 3.0 (end of March 2024)
+### Incoming in version 3.0 (end of March 2024)
 
 - [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
