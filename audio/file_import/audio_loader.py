@@ -50,7 +50,11 @@ def load(audio_name: str, file_extension: FileExtension) -> Audio:
     path, _file = os.path.split(path_and_file)
     playlist_name_like_audio_absolute_path = os.path.join(path, audio_name + file_extension.value)
     os.rename(audio_download_absolute_path, playlist_name_like_audio_absolute_path)
-    return Audio(name=audio_name, filepath=playlist_name_like_audio_absolute_path, file_extension=file_extension)
+    return Audio(
+        name=audio_name,
+        filepath=configuration.operating_system_proof_path(playlist_name_like_audio_absolute_path),
+        file_extension=file_extension
+    )
 
 def import_playlist_audios(playlist_file_absolute_path: str) -> list[Audio]:
     """
