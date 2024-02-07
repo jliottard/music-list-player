@@ -30,7 +30,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install flake8 pytest
-        winget install VideoLAN.VLC
+    - name: Install VLC
+      shell: powershell
+      run: |
+        $client = new-object System.Net.WebClient
+        $client.DownloadFile("https://get.videolan.org/vlc/3.0.20/win32/vlc-3.0.20-win32.exe", "C:\System\vlc-3.0.20-win32.exe")
+        C:\System\vlc-3.0.20-win32.exe /L=1033 /S /NCRC
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
