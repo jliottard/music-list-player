@@ -1,11 +1,18 @@
 import os
+import platform
 
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
 def clean_terminal() -> None:
     ''' Clean the terminal '''
-    os.system('clear')
+    match platform.system():
+        case "Windows":
+            os.system('cls')
+        case "Linux":
+            os.system('clear')
+        case _:
+            os.system('clear')
 
 def status_information_str(player: AudioPlayer) -> str:
     ''' Return the player basics information such as playing song and upcoming song '''
