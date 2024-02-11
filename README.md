@@ -6,7 +6,7 @@ A python script that downloads and plays musics from a music list text file.
 
 ### Dependencies
 
-The project uses `Python 3.12` and it is not developped nor tested for earlier Python version.
+The project uses `Python 3.10` and it is not developped nor tested for earlier Python version.
 
 Python libraries are listed in the `requirements.txt` files. To import the dependencies in a virtual environment, run:
 - On Linux:
