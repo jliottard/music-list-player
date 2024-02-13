@@ -2,7 +2,7 @@
 import sys
 from typing import List
 
-from app import configuration
+from app import configuration, interface
 from app.actions.help import print_help
 from app.actions.import_playlist import import_defaut_playlist, import_playlist
 from app.actions.list import print_list
@@ -11,7 +11,7 @@ from app.actions.next import skip_music
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.command import Command, parse_command
-from app import interface
+from app.termination import clean_app_termination
 from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
 
@@ -26,6 +26,7 @@ if __name__ == "__main__":
         print("Error while app initialization.")
         sys.exit()
     player = AudioPlayer(Playlist())
+    profile = configuration.DEFAULT_PROFILE
     print(f"Welcome to music list player! Please enter a command (type: \"{str(Command.HELP)}\" for help).")
     while True:
         user_input_command: str = input()
@@ -37,17 +38,18 @@ if __name__ == "__main__":
             continue
         match maybe_args[0]:
             case Command.QUIT:
+                clean_app_termination(player, profile)
                 print("Goodbye!")
                 break
             case Command.HELP:
                 print_help()
             case Command.IMPORT:
                 if len(maybe_args) == 1:
-                    playlist, player = import_defaut_playlist(player)
+                    player, profile = import_defaut_playlist(player)
                 else:
-                    playlist, player = import_playlist(maybe_args, player)
+                    player, profile = import_playlist(maybe_args, player)
             case Command.LIST:
-                print_list(playlist, player)
+                print_list(player)
             case Command.PLAY:
                 play(maybe_args, player)
             case Command.NEXT:

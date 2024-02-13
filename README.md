@@ -83,17 +83,18 @@ pytest
 
 - [x] Support Windows
 - [x] Switch playlist profiles on the fly: import <profile_name>
-- [ ] Setup a continuous integration in Github to check the tests on Linux and Windows dockers
+- [x] Erase cached when quitting the application as a setting
+- [x] Setup a continuous integration in GitHub to check the tests on Linux docker
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
-- [ ] Erase cached when quitting the application as a setting
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
 - [ ] Spell check the command keywords and the audio name argument for the Play command
 - [ ] Import automatically the playlist from configuration on application start
 - [ ] Add colors to the prints
 - [ ] Change the prints to a log system
+- [ ] Setup a continuous integration in GitHub to check the tests on Windows docker
 
 ### Incoming in version 3.0 (end of March 2024)
 
