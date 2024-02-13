@@ -4,7 +4,7 @@ from typing import List
 
 from app import configuration
 from app.actions.help import print_help
-from app.actions.import_playlist import import_defaut_playlist
+from app.actions.import_playlist import import_defaut_playlist, import_playlist
 from app.actions.list import print_list
 from app.actions.mode import define_mode
 from app.actions.next import skip_music
@@ -42,7 +42,10 @@ if __name__ == "__main__":
             case Command.HELP:
                 print_help()
             case Command.IMPORT:
-                playlist, player = import_defaut_playlist(player)
+                if len(maybe_args) == 1:
+                    playlist, player = import_defaut_playlist(player)
+                else:
+                    playlist, player = import_playlist(maybe_args, player)
             case Command.LIST:
                 print_list(playlist, player)
             case Command.PLAY:

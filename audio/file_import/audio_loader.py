@@ -18,20 +18,20 @@ def _parse_playlist_text_file(playlist_file_absolute_path: str) -> list[str]:
 def _is_audio_in_cache(absolute_audio_path: str) -> bool:
     return os.path.exists(absolute_audio_path)
 
-def _is_audio_loaded(audio_name: str, file_extension: FileExtension) -> bool:
-    audio_file_path: str = configuration.get_audio_file_path(audio_name + file_extension.value)
+def _is_audio_loaded(audio_name: str, file_extension: FileExtension, profile: str) -> bool:
+    audio_file_path: str = configuration.get_audio_file_path(audio_name + file_extension.value, profile)
     return _is_audio_in_cache(audio_file_path)
 
-def load(audio_name: str, file_extension: FileExtension) -> Audio:
+def load(audio_name: str, file_extension: FileExtension, profile: str) -> Audio:
     """
     Load the audio from the cache or from the Internet
     @return: an Audio or None if the audio could not be found or downloaded
     """
-    if _is_audio_loaded(audio_name, file_extension):
+    if _is_audio_loaded(audio_name, file_extension, profile):
         print(f"The audio \"{audio_name}\" is found in cache.")
         return Audio(
             name=audio_name,
-            filepath=configuration.get_audio_file_path(audio_name + file_extension.value),
+            filepath=configuration.get_audio_file_path(audio_name + file_extension.value, profile),
             file_extension=file_extension
         )
     print(f"The audio \"{audio_name}\" is not found in cache. Downloading audio from internet.")
@@ -39,7 +39,7 @@ def load(audio_name: str, file_extension: FileExtension) -> Audio:
     try:
         audio_download_absolute_path = download.download_audio_from_youtube(
             youtube_url=youtube_video_url,
-            output_directory_relative_path=configuration.get_audios_directory_path()
+            output_directory_relative_path=configuration.get_audios_directory_path(profile)
         )
     except CannotDownloadError as video_cannot_be_downloaded:
         print(f"Warning: the video {audio_name} could not be downloaded due to {video_cannot_be_downloaded}")
@@ -56,7 +56,7 @@ def load(audio_name: str, file_extension: FileExtension) -> Audio:
         file_extension=file_extension
     )
 
-def import_playlist_audios(playlist_file_absolute_path: str) -> list[Audio]:
+def import_playlist_audios(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
     """
     Description: Parse playlist file
     @param playlist_file_absolute_path a filepath of the text file describing the music playlist
@@ -65,7 +65,7 @@ def import_playlist_audios(playlist_file_absolute_path: str) -> list[Audio]:
     playlist_lines: list[str] = _parse_playlist_text_file(playlist_file_absolute_path)
     audios: list[Audio] = []
     for audio_name in playlist_lines:
-        maybe_audio: Audio = load(audio_name, FileExtension.MP3)
+        maybe_audio: Audio = load(audio_name, FileExtension.MP3, playlist_profile)
         if maybe_audio is None:
             continue
         audios.append(maybe_audio)

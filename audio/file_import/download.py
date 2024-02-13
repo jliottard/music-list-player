@@ -12,7 +12,7 @@ def get_youtube_video_url(music_name: str) -> str:
     music_name = music_name.strip()
     music_name_url = music_name.replace(' ', '+')
     youtube_research_url = 'https://www.youtube.com/results?search_query='
-    html_response = requests.get(youtube_research_url + music_name_url)
+    html_response = requests.get(youtube_research_url + music_name_url, timeout=20)
     html_contents = html_response.text
     video_id_start_keyword = '/watch?v='
     start_index = html_contents.find(video_id_start_keyword)
