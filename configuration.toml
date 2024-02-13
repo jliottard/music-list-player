@@ -1,3 +1,6 @@
 [default-profile]
 "download-directory-relative-path" = "audios_cache"
-"playlist-file-relative-path" = "playlist.txt"
+"playlist-file-relative-path" = "playlists/playlist.txt"
+[lofi-profile]
+"download-directory-relative-path" = "audios_cache"
+"playlist-file-relative-path" = "playlists/lofi_playlist.txt"
