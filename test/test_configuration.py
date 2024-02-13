@@ -8,3 +8,6 @@ def test_get_audios_directory_path_is_string():
 
 def test_get_playlist_file_path_is_string():
     assert isinstance(configuration.get_playlist_file_path(configuration.DEFAULT_PROFILE), str)
+
+def test_is_audio_cache_persistant_is_boolean():
+    assert isinstance(configuration.get_playlist_file_path(configuration.DEFAULT_PROFILE), bool)

@@ -1,19 +1,21 @@
 import random
 from typing import List, Tuple
 import vlc
-from audio import playlist, audio
+from audio.audio import Audio
+from audio.playlist import Playlist
 from audio.play_mode import PlayMode, translate_play_mode
 
 class AudioPlayer:
-    def __init__(self, playlist: playlist.Playlist):
-        self.playlist = playlist
+    def __init__(self, imported_playlist: Playlist):
+        self.playlist = imported_playlist
         self.play_mode: PlayMode = PlayMode.ONE_PASS
         self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
 
-    def _set_media_player(audio_playlist: List[audio.Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
+    @staticmethod
+    def _set_media_player(audios: List[Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
         player: vlc.Instance = vlc.Instance()
         media_list: vlc.MediaList = player.media_list_new()
-        for playlist_audio in audio_playlist:
+        for playlist_audio in audios:
             media_list.add_media(player.media_new(playlist_audio.filepath))
         audio_list_player: vlc.MediaListPlayer = player.media_list_player_new()
         audio_list_player.set_media_list(media_list)
@@ -43,7 +45,7 @@ class AudioPlayer:
         random.shuffle(self.playlist.audios)
         self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
 
-    def get_index_of_audio(self, searched_audio: audio.Audio) -> int:
+    def get_index_of_audio(self, searched_audio: Audio) -> int:
         for index, playlist_audio in enumerate(self.playlist.audios):
             if searched_audio == playlist_audio:
                 return index
@@ -75,14 +77,14 @@ class AudioPlayer:
             case _:
                 return None
 
-    def get_playing_audio(self) -> audio.Audio:
+    def get_playing_audio(self) -> Audio:
         """ Return None if there is no playing audio """
         maybe_audio_index = self.get_playing_audio_index()
         if maybe_audio_index is None:
             return None
         return self.playlist.audios[maybe_audio_index]
 
-    def get_next_audio(self) -> audio.Audio:
+    def get_next_audio(self) -> Audio:
         """ Return None if there is no playing audio or the play mode is one pass and the current audio is the last """
         maybe_next_audio_index = self.get_next_audio_index()
         if maybe_next_audio_index is None:
