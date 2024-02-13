@@ -82,9 +82,9 @@ pytest
 ### Incoming in version 2.0 (end of February 2024)
 
 - [x] Support Windows
+- [x] Switch playlist profiles on the fly: import <profile_name>
 - [ ] Setup a continuous integration in Github to check the tests on Linux and Windows dockers
 - [ ] Import the songs in background to play early the first song while it finishes downloading the rest
-- [ ] Switch playlist profiles on the fly: import <profile_name>
 - [ ] Add a volume changer
 - [ ] Print lyrics as the music is playing
 - [ ] Erase cached when quitting the application as a setting
