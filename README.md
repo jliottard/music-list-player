@@ -26,6 +26,7 @@ pip install -r requirements.txt
 ```
 
 The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) software to be installed on your computer. Please use the latest version of VLC:
+- On Linux, VLC version 3.0.16 works.
 - On Windows, VLC version 3.0.20 works.
 
 ### Configuration
