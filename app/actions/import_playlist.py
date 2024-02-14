@@ -24,7 +24,11 @@ def import_playlist(args: List[str], player: AudioPlayer) -> Tuple[AudioPlayer, 
         playlist_file_absolute_path=playlist_path,
         playlist_profile=profile
     )
-    if player is not None:
-        player.stop()
-    player = AudioPlayer(playlist)
+    if player.is_playing():
+        played_volume = player.get_volume()
+        if player is not None:
+            player.stop()
+        player = AudioPlayer(playlist, played_volume)
+    else:
+        player = AudioPlayer(playlist, AudioPlayer.AUDIO_VOLUME_BASE)
     return player, profile

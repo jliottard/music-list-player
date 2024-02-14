@@ -10,14 +10,14 @@ def test_audio_player_audios_order():
         )
     tested_playlist = playlist.Playlist()
     tested_playlist.audios = audios
-    tested_audio_player = audio_player.AudioPlayer(tested_playlist)
+    tested_audio_player = audio_player.AudioPlayer(tested_playlist, audio_player.AudioPlayer.AUDIO_VOLUME_BASE)
     for i, tested_audio in enumerate(audios):
         assert tested_audio_player.get_index_of_audio(tested_audio) == i
 
 def test_get_playing_audio_index_in_non_playing_player():
-    tested_audio_player = audio_player.AudioPlayer(playlist.Playlist())
+    tested_audio_player = audio_player.AudioPlayer(playlist.Playlist(), audio_player.AudioPlayer.AUDIO_VOLUME_BASE)
     assert tested_audio_player.get_playing_audio_index() is None
 
 def test_play_audio_at_index_in_empty_player_playlist():
-    tested_audio_player = audio_player.AudioPlayer(playlist.Playlist())
+    tested_audio_player = audio_player.AudioPlayer(playlist.Playlist(), audio_player.AudioPlayer.AUDIO_VOLUME_BASE)
     assert tested_audio_player.play_audio_at_index(0) is False

@@ -3,7 +3,7 @@ from app.cannot_find_a_match_error import CannotFindAMatchError
 from audio.audio_player import AudioPlayer
 from audio.play_mode import PlayMode, from_string
 
-def define_mode(args: list, player: AudioPlayer) -> None:
+def request_mode(args: list, player: AudioPlayer) -> None:
     """Set the playmode of the playlist according to the arguments"""
     if len(args) >= 2:
         try:

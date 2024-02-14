@@ -5,11 +5,16 @@ from audio.audio import Audio
 from audio.playlist import Playlist
 from audio.play_mode import PlayMode, translate_play_mode
 
+
 class AudioPlayer:
-    def __init__(self, imported_playlist: Playlist):
+    AUDIO_VOLUME_BASE = 100
+
+    def __init__(self, imported_playlist: Playlist, volume: int):
         self.playlist = imported_playlist
         self.play_mode: PlayMode = PlayMode.ONE_PASS
         self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
+        self.volume = volume
+        self.set_volume(volume)
 
     @staticmethod
     def _set_media_player(audios: List[Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
@@ -105,3 +110,17 @@ class AudioPlayer:
          - False on Failure, if the index is not found
         """
         return self.audio_list_player.play_item_at_index(index) == 0
+
+    def get_volume(self) -> int:
+        ''' Return the volume percentage '''
+        media_player = self.audio_list_player.get_media_player()
+        volume = media_player.audio_get_volume()
+        media_player.release()
+        return volume
+
+    def set_volume(self, volume_percentage: int):
+        ''' Set the player's volume 
+        @param volume_percentage: int: the volume to be set from 0 to twice the <AudioPlayer.AUDIO_VOLUME_BASE>'''
+        media_player = self.audio_list_player.get_media_player()
+        media_player.audio_set_volume(min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2))
+        media_player.release()

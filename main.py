@@ -6,10 +6,11 @@ from app import configuration, interface
 from app.actions.help import print_help
 from app.actions.import_playlist import import_defaut_playlist, import_playlist
 from app.actions.list import print_list
-from app.actions.mode import define_mode
+from app.actions.mode import request_mode
 from app.actions.next import skip_music
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
+from app.actions.volume import request_volume
 from app.command import Command, parse_command
 from app.termination import clean_app_termination
 from audio.audio_player import AudioPlayer
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     if not setup():
         print("Error while app initialization.")
         sys.exit()
-    player = AudioPlayer(Playlist())
+    player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     profile = configuration.DEFAULT_PROFILE
     print(f"Welcome to music list player! Please enter a command (type: \"{str(Command.HELP)}\" for help).")
     while True:
@@ -68,6 +69,8 @@ if __name__ == "__main__":
             case Command.SHUFFLE:
                 shuffle_playlist(player)
             case Command.MODE:
-                define_mode(maybe_args, player)
+                request_mode(maybe_args, player)
+            case Command.VOLUME:
+                request_volume(maybe_args, player)
             case _:
                 pass
