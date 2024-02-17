@@ -10,6 +10,8 @@ class Audio:
         return f"Audio named \"{self.name}\" at {self.filepath}"
 
     def __eq__(self, other) -> bool:
+        if other is None:
+            return False
         if self is other:
             return True
         if isinstance(other, type(self)):

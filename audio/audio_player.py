@@ -1,5 +1,4 @@
 import random
-from typing import List, Tuple
 import vlc
 from audio.audio import Audio
 from audio.playlist import Playlist
@@ -9,23 +8,36 @@ from audio.play_mode import PlayMode, translate_play_mode
 class AudioPlayer:
     AUDIO_VOLUME_BASE = 100
 
-    def __init__(self, imported_playlist: Playlist, volume: int):
-        self.playlist = imported_playlist
+    def __init__(self, playlist: Playlist, volume: int):
+        ''' Instanciate the AudioPlayer object
+        @param playlist: Playlist: can be empty but not None
+        @param volume: int: the player's sound volume from 0 to 100 (percentage).
+        '''
+        # Data
+        self.playlist = playlist
         self.play_mode: PlayMode = PlayMode.ONE_PASS
-        self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
         self.volume = volume
+        # Actors
+        self.player: vlc.Instance = vlc.Instance()
+        self.media_list: vlc.MediaList = self.player.media_list_new()
+        self.audio_list_player: vlc.MediaListPlayer = self.player.media_list_player_new()
+        # Actors' modifiers
+        self._overwrite_playlist(playlist)
+        self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
         self.set_volume(volume)
 
-    @staticmethod
-    def _set_media_player(audios: List[Audio], play_back_mode: PlayMode) -> Tuple[vlc.Instance, vlc.MediaList, vlc.Instance.media_list_new]:
-        player: vlc.Instance = vlc.Instance()
-        media_list: vlc.MediaList = player.media_list_new()
-        for playlist_audio in audios:
-            media_list.add_media(player.media_new(playlist_audio.filepath))
-        audio_list_player: vlc.MediaListPlayer = player.media_list_player_new()
-        audio_list_player.set_media_list(media_list)
-        audio_list_player.set_playback_mode(translate_play_mode(play_back_mode))
-        return player, media_list, audio_list_player
+    def append_audio_to_playlist(self, audio: Audio):
+        ''' Add the audio to the playlist and load it to the media list
+        @param: audio: Audio: instanciated audio with an existing file path
+        '''
+        self.playlist.audios.append(audio)
+        self.media_list.add_media(self.player.media_new(audio.filepath))
+
+    def _overwrite_playlist(self, playlist: Playlist):
+        self.playlist = Playlist()
+        for audio in playlist.audios:
+            self.append_audio_to_playlist(audio)
+        self.audio_list_player.set_media_list(self.media_list)
 
     def play(self):
         self.audio_list_player.play()
@@ -46,9 +58,9 @@ class AudioPlayer:
         return self.audio_list_player.is_playing()
 
     def shuffle(self):
-        ''' Description: rearrange the order of the playlist. The state of the played audio can be late to be updated '''
+        ''' Rearrange the order of the playlist. The state of the played audio can be late to be updated '''
         random.shuffle(self.playlist.audios)
-        self.player, self.media_list, self.audio_list_player = AudioPlayer._set_media_player(self.playlist.audios, self.play_mode)
+        self._overwrite_playlist(self.playlist)
 
     def get_index_of_audio(self, searched_audio: Audio) -> int:
         for index, playlist_audio in enumerate(self.playlist.audios):
@@ -109,6 +121,8 @@ class AudioPlayer:
          - True on success
          - False on Failure, if the index is not found
         """
+        if index >= len(self.playlist.audios):
+            return False
         return self.audio_list_player.play_item_at_index(index) == 0
 
     def get_volume(self) -> int:
@@ -121,6 +135,7 @@ class AudioPlayer:
     def set_volume(self, volume_percentage: int):
         ''' Set the player's volume 
         @param volume_percentage: int: the volume to be set from 0 to twice the <AudioPlayer.AUDIO_VOLUME_BASE>'''
+        self.volume = min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2)
         media_player = self.audio_list_player.get_media_player()
-        media_player.audio_set_volume(min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2))
+        media_player.audio_set_volume(self.volume)
         media_player.release()
