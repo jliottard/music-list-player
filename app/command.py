@@ -22,7 +22,7 @@ class Command(Enum):
         command_help = {
             Command.HELP: "show the details of the commands' usages",
             Command.QUIT: "exit the application",
-            Command.IMPORT: "load the default playlist's musics. Alternatively load a custom playlist from the configuration: \"import <profile_name>\"",
+            Command.IMPORT: "load the default playlist's musics. Alternatively load a custom playlist from the configuration: \"import <profile_name>\". While the audio are loading, you can use command as usual.",
             Command.LIST: "show the playlist's musics",
             Command.PLAY: "play first audio by default or if prefixed by the playlist's audio index, play the corresponding audio: \"play <i>\"",
             Command.NEXT: "skip the current music to play the next one in the playlist",

@@ -28,13 +28,13 @@ def load(audio_name: str, file_extension: FileExtension, profile: str) -> Audio:
     @return: an Audio or None if the audio could not be found or downloaded
     """
     if _is_audio_loaded(audio_name, file_extension, profile):
-        print(f"The audio \"{audio_name}\" is found in cache memory.")
+        print(f"Info: the audio \"{audio_name}\" is found in cache memory.")
         return Audio(
             name=audio_name,
             filepath=configuration.get_audio_file_path(audio_name + file_extension.value, profile),
             file_extension=file_extension
         )
-    print(f"The audio \"{audio_name}\" is not found in cache memory. Downloading audio from internet.")
+    print(f"Info: the audio \"{audio_name}\" is not found in cache memory. Downloading audio from internet.")
     youtube_video_url: str = download.get_youtube_video_url(audio_name)
     try:
         audio_download_absolute_path = download.download_audio_from_youtube(
@@ -56,7 +56,7 @@ def load(audio_name: str, file_extension: FileExtension, profile: str) -> Audio:
         file_extension=file_extension
     )
 
-def import_playlist_audios(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
+def load_playlist_audios(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
     """ Parse playlist file and load the music into cache
     @param playlist_file_absolute_path a filepath of the text file describing the music playlist
     @return a list of the audios
@@ -70,7 +70,20 @@ def import_playlist_audios(playlist_file_absolute_path: str, playlist_profile: s
         audios.append(maybe_audio)
     return audios
 
+def iterate_over_loading_playlist(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
+    """ Parse playlist file and load the music into cache
+    @param playlist_file_absolute_path a filepath of the text file describing the music playlist
+    @yield: Audio
+    """
+    playlist_lines: list[str] = _parse_playlist_text_file(playlist_file_absolute_path)
+    for audio_name in playlist_lines:
+        maybe_audio: Audio = load(audio_name, FileExtension.MP3, playlist_profile)
+        if maybe_audio is None:
+            continue
+        yield maybe_audio
+
 def unload_music(audio: Audio, profile: str) -> None:
+    ''' Remove the local audio is found '''
     if _is_audio_loaded(audio.name, audio.extension, profile):
         cached_audio_filepath: str = configuration.get_audio_file_path(audio.name + audio.extension.value, profile)
         os.remove(cached_audio_filepath)

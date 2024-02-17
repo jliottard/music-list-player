@@ -87,7 +87,7 @@ pytest
 - [x] Erase cached when quitting the application as a setting
 - [x] Setup a continuous integration in GitHub to check the tests on Linux docker
 - [x] Add a volume changer
-- [ ] Import the songs in background to play early the first song while it finishes downloading the rest
+- [x] Import the songs in background to play early the first song while it finishes downloading the rest
 - [ ] Print lyrics as the music is playing
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
