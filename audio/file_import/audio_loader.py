@@ -81,7 +81,7 @@ def unload_music(audio: Audio, profile: str) -> None:
     if _is_file_loaded(audio.name + audio.extension.value, profile):
         cached_audio_filepath: str = configuration.get_audio_file_path(audio.name + audio.extension.value, profile)
         os.remove(cached_audio_filepath)
-    if audio.lyrics_filepath is not None and _is_file_in_cache(audio.lyrics_filepath, profile):
+    if audio.lyrics_filepath is not None and _is_file_in_cache(audio.lyrics_filepath):
         os.remove(configuration.get_audio_file_path(audio.lyrics_filepath, profile))
 
 

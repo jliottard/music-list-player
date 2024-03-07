@@ -9,6 +9,11 @@ from audio.playlist import Playlist
 from lyrics.lyric_import import prepare_lyrics
 
 def _produce_audio(queue: Queue, playlist_path: str, profile: str):
+    '''Load the playlist's audios and put them into the queue
+    @param queue Queue: the FIFO's reference to fill of Audio instances
+    @param playlist_path str: absolute path to the playlist file
+    @param profile str: playlist's profile from the configuration file
+    '''
     for audio in audio_loader.iterate_over_loading_playlist(
         playlist_file_absolute_path=playlist_path,
         playlist_profile=profile
@@ -18,6 +23,10 @@ def _produce_audio(queue: Queue, playlist_path: str, profile: str):
     queue.put(None)
 
 def _consume_audio(queue: Queue, player_reference: AudioPlayer):
+    '''Get audios from the queue and add them to the player until the queue is empty.
+    @param queue Queue; a FIFO of Audio instance
+    @param player_reference AudioPlayer: the reference to add the queue's audios
+    '''
     while True:
         audio = queue.get()
         if audio is None:
@@ -28,7 +37,7 @@ def _load_playlist_in_background(playlist_path: str, profile: str) -> AudioPlaye
     ''' Load the playlist's audios in background and early return the player
     @param playlist_path: str: the absolute path to the text file containing the audios' name
     @param profile: str: the name of a playlist's profile
-    @return: AudioPlayer
+    @return: AudioPlayer, the reference of the player that the playlist is loaded into.
     '''
     loaded_audio_queue = Queue()
     player = AudioPlayer(playlist=Playlist(), volume=AudioPlayer.AUDIO_VOLUME_BASE)
@@ -48,7 +57,7 @@ def import_playlist(args: List[str], current_player: AudioPlayer) -> Tuple[Audio
         profile = configuration.DEFAULT_PROFILE
     else:
         profile = str(args[1])
-    playlist_path = configuration.get_playlist_file_path(profile)    
+    playlist_path = configuration.get_playlist_file_path(profile)
     new_player = _load_playlist_in_background(
         playlist_path=playlist_path,
         profile=profile

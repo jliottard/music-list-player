@@ -80,15 +80,18 @@ pytest
 - [x] Change "pause" keyword to resume and its printing
 - [x] Handle age restricted youtube video
 
-### Incoming in version 2.0 (end of February 2024)
+### Implemented in version 2.0
 
 - [x] Support Windows
-- [x] Switch playlist profiles on the fly: import <profile_name>
+- [x] Switch playlist profiles in app
 - [x] Erase cached when quitting the application as a setting
-- [x] Setup a continuous integration in GitHub to check the tests on Linux docker
-- [x] Add a volume changer
-- [x] Import the songs in background to play early the first song while it finishes downloading the rest
-- [ ] Print lyrics as the music is playing
+- [x] Setup a continuous integration in GitHub with test on Linux platform
+- [x] Change volume
+- [x] Import the audios in background
+- [x] Print music's lyrics matching music's audio
+
+### Incoming in version 3.0 (end of March 2024)
+
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
 - [ ] Spell check the command keywords and the audio name argument for the Play command
@@ -96,9 +99,6 @@ pytest
 - [ ] Add colors to the prints
 - [ ] Change the prints to a log system
 - [ ] Setup a continuous integration in GitHub to check the tests on Windows docker
-
-### Incoming in version 3.0 (end of March 2024)
-
 - [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Add a music recommendation feature

@@ -2,14 +2,18 @@ import time
 from threading import Thread
 
 import pylrc
-import syncedlyrics
 
 from app import configuration
 from audio.audio_player import AudioPlayer
 from audio.audio import Audio
 
+# Constants
+SHOW_LYRICS_IN_ADVANCE_DURATION_IN_SEC = 1
+REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC = 0.1
+
+# Class
 class LyricsDisplayer:
-    
+    '''Lyric displaying class'''
     def __init__(self, player: AudioPlayer):
         self.is_displaying = False
         self.lyric_thread = None
@@ -19,6 +23,9 @@ class LyricsDisplayer:
         self.set_lyrics(False)
 
     def set_lyrics(self, active: bool):
+        '''Active or deactivate the lyrics printing of the playing audio
+        @param active bool: if True, the lyric are displayed
+        '''
         self.is_displaying = active
         if self.is_displaying:
             maybe_audio = self.player.get_playing_audio()
@@ -44,8 +51,6 @@ class LyricsDisplayer:
         @param audio: Audio: audio that can contain the lyric to show
         @param audio_progression_in_sec: float: the timing the audio is currently playing at
         '''
-        SHOW_LYRICS_IN_ADVANCE_DURATION_IN_SEC = 1
-        REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC = 0.1
         if audio.lyrics_filepath is None:
             print("Warning: there is no lyrics prepared for the audio.")
             return
@@ -53,13 +58,11 @@ class LyricsDisplayer:
         with open(audio.lyrics_filepath, "rt", encoding=configuration.TEXT_ENCODING) as lyric_file:
             lyric_text: pylrc.classes.Lyrics = pylrc.parse(lyric_file.read())
             for lyric_line in lyric_text:                
-                time_passed_from_start = time.time() - starting_time_in_sec
-                while time_passed_from_start < lyric_line.time - REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC - SHOW_LYRICS_IN_ADVANCE_DURATION_IN_SEC:
-                    time.sleep(REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC)
-                    time_passed_from_start = time.time() - starting_time_in_sec
                 if self.is_displaying:
+                    time_passed_from_start = time.time() - starting_time_in_sec
+                    while time_passed_from_start < lyric_line.time - REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC - SHOW_LYRICS_IN_ADVANCE_DURATION_IN_SEC:
+                        time.sleep(REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC)
+                        time_passed_from_start = time.time() - starting_time_in_sec
                     print(lyric_line.text)
                 else:
                     break
-
-    

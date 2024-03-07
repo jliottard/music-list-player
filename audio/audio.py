@@ -1,8 +1,7 @@
-from typing import List
-from pylrc import classes
 from audio.file_extension import FileExtension
 
-class Audio:
+class Audio: 
+    '''Audio file metadata representation class'''
     def __init__(self, name: str, filepath: str, file_extension: FileExtension):
         self.name: str = name
         self.filepath: str = filepath

@@ -1,15 +1,18 @@
 import os
 import toml
 
+# Constants
 TEXT_ENCODING = "utf-8"
 CONFIGURATION_FILE_PATH = "configuration.toml"
 CONFIGURATION_PLAYLIST_PATH_KEYWORD = "playlist-file-relative-path"
 CONFIGURATION_CACHE_DIRECTORY_PATH_KEYWORD = "download-directory-relative-path"
 CONFIGURATION_KEEP_CACHE_POLICY_KEYWORD = "persistant-audio-cache"
+CONFIGURATION_PREPARE_LYRICS_ON_IMPORT_KEYWORD = "music-lyrics-search-on-import"
 DEFAULT_PROFILE = "default"
 
+# Functions
 def operating_system_proof_path(path: str) -> str:
-    """ Return a absolute path that is separated according to the runner machine's operating system """
+    """Return a absolute path that is separated according to the runner machine's operating system"""
     return os.path.abspath(os.path.expanduser(path))
 
 def _get_profile_suffix(name: str) -> str:
@@ -46,3 +49,8 @@ def is_audio_cache_persistant(profile_name: str) -> bool:
     with open(CONFIGURATION_FILE_PATH, "rt", encoding=TEXT_ENCODING) as config_file:
         config = toml.load(config_file)
     return config[_get_profile_suffix(profile_name)][CONFIGURATION_KEEP_CACHE_POLICY_KEYWORD]
+
+def is_music_lyrics_searched_on_import(profile_name: str) -> bool:
+    with open(CONFIGURATION_FILE_PATH, "rt", encoding=TEXT_ENCODING) as config_file:
+        config = toml.load(config_file)
+    return config[_get_profile_suffix(profile_name)][CONFIGURATION_PREPARE_LYRICS_ON_IMPORT_KEYWORD]
