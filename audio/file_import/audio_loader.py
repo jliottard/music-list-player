@@ -1,6 +1,7 @@
 import os
 
 from app import configuration
+from app.file_management import _is_file_in_cache, _is_file_loaded
 from audio.audio import Audio
 from audio.file_import import download
 from audio.file_import.cannot_download_error import CannotDownloadError
@@ -16,18 +17,11 @@ def _parse_playlist_text_file(playlist_file_absolute_path: str) -> list[str]:
             return string.strip("\n")
         return list(map(remove_carriage_return, lines))
 
-def _is_audio_in_cache(absolute_audio_path: str) -> bool:
-    return os.path.exists(absolute_audio_path)
-
-def _is_audio_loaded(audio_name: str, file_extension: FileExtension, profile: str) -> bool:
-    audio_file_path: str = configuration.get_audio_file_path(audio_name + file_extension.value, profile)
-    return _is_audio_in_cache(audio_file_path)
-
 def load(audio_name: str, file_extension: FileExtension, profile: str) -> Audio:
     """ Load the audio from the cache or from the Internet
     @return: an Audio or None if the audio could not be found or downloaded
     """
-    if _is_audio_loaded(audio_name, file_extension, profile):
+    if _is_file_loaded(audio_name + file_extension.value, profile):
         print(f"Info: the audio \"{audio_name}\" is found in cache memory.")
         return Audio(
             name=audio_name,
@@ -56,7 +50,7 @@ def load(audio_name: str, file_extension: FileExtension, profile: str) -> Audio:
         file_extension=file_extension
     )
 
-def load_playlist_audios(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
+def _load_playlist_audios(playlist_file_absolute_path: str, playlist_profile: str) -> list[Audio]:
     """ Parse playlist file and load the music into cache
     @param playlist_file_absolute_path a filepath of the text file describing the music playlist
     @return a list of the audios
@@ -84,9 +78,12 @@ def iterate_over_loading_playlist(playlist_file_absolute_path: str, playlist_pro
 
 def unload_music(audio: Audio, profile: str) -> None:
     ''' Remove the local audio is found '''
-    if _is_audio_loaded(audio.name, audio.extension, profile):
+    if _is_file_loaded(audio.name + audio.extension.value, profile):
         cached_audio_filepath: str = configuration.get_audio_file_path(audio.name + audio.extension.value, profile)
         os.remove(cached_audio_filepath)
+    if audio.lyrics_filepath is not None and _is_file_in_cache(audio.lyrics_filepath, profile):
+        os.remove(configuration.get_audio_file_path(audio.lyrics_filepath, profile))
+
 
 def flush_playlist_cache(playlist: Playlist, playlist_profile: str) -> None:
     """ Description: Remove playlist cached files

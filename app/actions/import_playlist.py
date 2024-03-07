@@ -6,12 +6,14 @@ from app import configuration
 from audio.audio_player import AudioPlayer
 from audio.file_import import audio_loader
 from audio.playlist import Playlist
+from lyrics.lyric_import import prepare_lyrics
 
 def _produce_audio(queue: Queue, playlist_path: str, profile: str):
     for audio in audio_loader.iterate_over_loading_playlist(
         playlist_file_absolute_path=playlist_path,
         playlist_profile=profile
     ):
+        prepare_lyrics(audio, profile)
         queue.put(audio)
     queue.put(None)
 
@@ -30,8 +32,8 @@ def _load_playlist_in_background(playlist_path: str, profile: str) -> AudioPlaye
     '''
     loaded_audio_queue = Queue()
     player = AudioPlayer(playlist=Playlist(), volume=AudioPlayer.AUDIO_VOLUME_BASE)
-    Thread(target=_produce_audio, args=[loaded_audio_queue, playlist_path, profile], daemon=True).start()
-    Thread(target=_consume_audio, args=[loaded_audio_queue, player], daemon=True).start()
+    Thread(target=_produce_audio, args=(loaded_audio_queue, playlist_path, profile), daemon=True).start()
+    Thread(target=_consume_audio, args=(loaded_audio_queue, player), daemon=True).start()
     return player
 
 def import_playlist(args: List[str], current_player: AudioPlayer) -> Tuple[AudioPlayer, str]:

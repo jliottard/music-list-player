@@ -1,10 +1,13 @@
+from typing import List
+from pylrc import classes
 from audio.file_extension import FileExtension
 
 class Audio:
     def __init__(self, name: str, filepath: str, file_extension: FileExtension):
-        self.name = name
-        self.filepath = filepath
-        self.extension = file_extension
+        self.name: str = name
+        self.filepath: str = filepath
+        self.extension: str = file_extension
+        self.lyrics_filepath: str = None
 
     def __str__(self) -> str:
         return f"Audio named \"{self.name}\" at {self.filepath}"

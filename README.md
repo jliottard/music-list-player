@@ -103,3 +103,4 @@ pytest
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Add a music recommendation feature
 - [ ] Show the time progress of the player over the audio duration
+- [ ] Allow shorter alias for command, "pl" or "pla" for "play"
