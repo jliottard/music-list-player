@@ -14,6 +14,7 @@ class Command(Enum):
     SHUFFLE = "shuffle"
     MODE = "mode"
     VOLUME = "volume"
+    LYRIC = "lyric"
 
     def __str__(self) -> str:
         return self.value
@@ -33,7 +34,8 @@ class Command(Enum):
             Command.MODE: "show the current play mode, or with argument(s), set the play mode accordingly: {}".format(
                 [str(mode) for mode in PlayMode]
             ),
-            Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\""
+            Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\"",
+            Command.LYRIC: "print the lyrics of the current song."
         }
         return command_help[self]
 

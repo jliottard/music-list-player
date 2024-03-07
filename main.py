@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import sys
+
 from typing import List
 
 from app import configuration, interface
 from app.actions.help import print_help
 from app.actions.import_playlist import import_playlist
 from app.actions.list import print_list
+from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.next import skip_music
 from app.actions.play import play
@@ -15,6 +17,7 @@ from app.command import Command, parse_command
 from app.termination import clean_app_termination
 from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
+from lyrics.lyrics_displayer import LyricsDisplayer
 
 def setup() -> bool:
     """ Check app initialization """
@@ -27,6 +30,7 @@ if __name__ == "__main__":
         print("Error while app initialization.")
         sys.exit()
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
+    lyrics_displayer = LyricsDisplayer(player)
     profile = configuration.DEFAULT_PROFILE
     print(f"Welcome to music list player! Please enter a command (type: \"{str(Command.HELP)}\" for help).")
     while True:
@@ -46,6 +50,7 @@ if __name__ == "__main__":
                 print_help()
             case Command.IMPORT:
                 player, profile = import_playlist(maybe_args, player)
+                lyrics_displayer = LyricsDisplayer(player)
             case Command.LIST:
                 print_list(player)
             case Command.PLAY:
@@ -69,5 +74,7 @@ if __name__ == "__main__":
                 request_mode(maybe_args, player)
             case Command.VOLUME:
                 request_volume(maybe_args, player)
+            case Command.LYRIC:
+                request_lyrics(maybe_args, lyrics_displayer)
             case _:
                 pass

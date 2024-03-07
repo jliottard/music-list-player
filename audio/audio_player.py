@@ -1,9 +1,9 @@
 import random
+import time
 import vlc
 from audio.audio import Audio
 from audio.playlist import Playlist
 from audio.play_mode import PlayMode, translate_play_mode
-
 
 class AudioPlayer:
     AUDIO_VOLUME_BASE = 100
@@ -139,3 +139,21 @@ class AudioPlayer:
         media_player = self.audio_list_player.get_media_player()
         media_player.audio_set_volume(self.volume)
         media_player.release()
+
+    def get_playing_audio_duration_in_ms(self) -> float:
+        ''' Return the time duration of the current playing audio)
+        @return float
+        '''
+        while self.get_playing_audio() is None:
+            time.sleep(1)
+
+        playing_media = self.media_list[self.get_playing_audio_index()]
+        playing_media.parse()
+        return playing_media.get_duration()
+
+    def get_audio_progress_time_in_sec(self) -> float:
+        ''' Return the current playing audio time progression '''
+        while self.get_playing_audio() is None:
+            time.sleep(1)
+        time_in_ms = self.audio_list_player.get_media_player().get_time()
+        return time_in_ms * (10 ** (-3))
