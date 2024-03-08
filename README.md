@@ -80,7 +80,7 @@ pytest
 - [x] Change "pause" keyword to resume and its printing
 - [x] Handle age restricted youtube video
 
-### Implemented in version 2.0
+### Implemented in version 1.1
 
 - [x] Support Windows
 - [x] Switch playlist profiles in app
