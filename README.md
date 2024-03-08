@@ -1,6 +1,6 @@
 # Music list player
 
-A python script that downloads and plays musics from a music list text file.
+A python script that downloads and plays musics from a music list text file. So you can store your playlist in plain text.
 
 ## How to use
 
@@ -64,14 +64,14 @@ pytest
 
 ### Implemented in version 1.0
 
+- [x] Command-line interface definition in-app
+- [x] Play audio
+- [x] Download musics from Internet
 - [x] Python virtual environment usage
 - [x] Shuffle the playlist order
 - [x] Audio is cached
 - [x] Autoplay at the end of music
-- [x] Command-line interface definition in-app
 - [x] Stop and skip the music
-- [x] Play audio
-- [x] Download musics from Internet
 - [x] Show the name of the current and the upcoming songs and as a status
 - [x] Add some tests
 - [x] Check end of list when using "next" command
@@ -90,7 +90,7 @@ pytest
 - [x] Import the audios in background
 - [x] Print music's lyrics matching music's audio
 
-### Incoming in version 3.0 (end of March 2024)
+### Incoming
 
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
