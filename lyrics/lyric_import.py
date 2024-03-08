@@ -1,7 +1,7 @@
 import syncedlyrics
 
 from app import configuration
-from app.file_management import _is_file_in_cache
+from app.file_management import is_file_in_cache
 from audio.audio import Audio
 
 COEF_SEC_TO_MS = 10 ** 3
@@ -14,7 +14,7 @@ def prepare_lyrics(audio: Audio, profile: str) -> bool:
     '''
     lyric_filename = f"{audio.name}.lrc"
     lyric_filepath = configuration.get_audio_file_path(lyric_filename, profile)
-    if _is_file_in_cache(lyric_filepath):
+    if is_file_in_cache(lyric_filepath):
         audio.lyrics_filepath = lyric_filepath
     else:
         audio.lyrics_filepath = None

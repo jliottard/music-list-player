@@ -35,7 +35,7 @@ class Command(Enum):
                 [str(mode) for mode in PlayMode]
             ),
             Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\"",
-            Command.LYRIC: "print the lyrics of the current song."
+            Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display."
         }
         return command_help[self]
 
