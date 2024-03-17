@@ -7,11 +7,11 @@ from audio.audio import Audio
 COEF_SEC_TO_MS = 10 ** 3
 
 def prepare_lyrics(audio: Audio, profile: str) -> bool:
-    ''' Load the lyrics if the audio's lyric can be found
+    """ Load the lyrics if the audio's lyric can be found
     @param audio: Audio: the audio to search lyrics for
     @param profile: str: the in-use configuration profile
     @return bool: True if the lyrics have been loaded or False 
-    '''
+    """
     lyric_filename = f"{audio.name}.lrc"
     lyric_filepath = configuration.get_audio_file_path(lyric_filename, profile)
     if is_file_in_cache(lyric_filepath):

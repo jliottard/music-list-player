@@ -16,12 +16,12 @@ def search_videos_on_youtube(term_search: str) -> List[YouTubeVideoMetadata]:
         metadatas.append(
             YouTubeVideoMetadata(
                 video_id=result['id'],
-                link=result['link'],
+                url=result['link'],
                 title=result['title'],
                 author=result['channel']['name'],
                 duration=result['duration'],
                 views=result['viewCount']['text'],
-                publish_date=result['publishedTime']
+                publication_date=result['publishedTime']
             )
         )
     return metadatas

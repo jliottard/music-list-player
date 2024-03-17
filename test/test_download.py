@@ -2,7 +2,7 @@ from os import path
 import os
 import pytest
 
-from audio.file_import import download, cannot_download_error
+from audio_import import download, cannot_download_error
 
 FIRST_YOUTUBE_VIDEO_TITLE = "Me at the zoo"
 FIRST_YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v=jNQXAC9IVRw"

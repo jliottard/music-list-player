@@ -1,8 +1,11 @@
 from app.command import Command
+from app.interface import Interface
 
-def print_help() -> None:
-    """Print the command names and their usage"""
-    print("The available commands are :")
+def print_help(user_interface: Interface) -> None:
+    """Print the command names and their usage
+    @param user_interface: Interface
+    """
+    user_interface.request_output_to_user("The available commands are :")
     for command in list(Command):
         help_text = command.help()
-        print(f"- {command.value:10s}\t{help_text}")
+        user_interface.request_output_to_user(f"- {command.value:10s}\t{help_text}")
