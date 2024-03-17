@@ -31,7 +31,7 @@ if __name__ == "__main__":
         sys.exit()
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player)
-    profile = configuration.DEFAULT_PROFILE
+    profile = configuration.DEFAULT_PLAYLIST_PROFILE_NAME
     print(f"Welcome to music list player! Please enter a command (type: \"{str(Command.HELP)}\" for help).")
     while True:
         user_input_command: str = input()

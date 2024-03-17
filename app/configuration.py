@@ -8,7 +8,7 @@ CONFIGURATION_PLAYLIST_PATH_KEYWORD = "playlist-file-relative-path"
 CONFIGURATION_CACHE_DIRECTORY_PATH_KEYWORD = "download-directory-relative-path"
 CONFIGURATION_KEEP_CACHE_POLICY_KEYWORD = "persistant-audio-cache"
 CONFIGURATION_PREPARE_LYRICS_ON_IMPORT_KEYWORD = "music-lyrics-search-on-import"
-DEFAULT_PROFILE = "default"
+DEFAULT_PLAYLIST_PROFILE_NAME = "default"
 
 # Functions
 def operating_system_proof_path(path: str) -> str:

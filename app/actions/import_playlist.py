@@ -4,7 +4,7 @@ from typing import Tuple, List
 
 from app import configuration
 from audio.audio_player import AudioPlayer
-from audio.file_import import audio_loader
+from audio_import import audio_loader
 from audio.playlist import Playlist
 from lyrics.lyric_import import prepare_lyrics
 
@@ -54,7 +54,7 @@ def import_playlist(args: List[str], current_player: AudioPlayer) -> Tuple[Audio
         return None
     profile = None
     if len(args) == 1:
-        profile = configuration.DEFAULT_PROFILE
+        profile = configuration.DEFAULT_PLAYLIST_PROFILE_NAME
     else:
         profile = str(args[1])
     playlist_path = configuration.get_playlist_file_path(profile)
