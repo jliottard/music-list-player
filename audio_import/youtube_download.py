@@ -8,11 +8,12 @@ from audio.file_extension import FileExtension
 
 
 def download_audio_from_youtube(youtube_url: str, output_directory_relative_path: str) -> str:
-    # Description: Download the video's audio to a MP3 file
-    # Input: a valid youtube video URL
-    # Output: an absolute path to the music audio
-    # Exceptions: can throw a CannotDownloadError if the download is not
-    # sucessful
+    """Download the video's audio to a MP3 file
+    @param youtube_url: str a valid youtube video URL
+    @param output_directory_relative_path; str filepath to save the download
+    @returns str: an absolute path to the music audio
+    @raises: CannotDownloadError if the download is not sucessful
+    """
     try:
         audio_filepath = YouTube(youtube_url).streams.filter(only_audio=True).first().download(
             output_path=output_directory_relative_path

@@ -11,6 +11,7 @@ from lyrics.lyric_import import prepare_lyrics
 
 def _produce_audio(queue: Queue, playlist_path: str, profile: str, user_interface: Interface):
     """Load the playlist's audios and put them into the queue.
+    Assume the user's input is booked
     Free the booked user's input of the <user_interface>
     @param queue Queue: the FIFO's reference to fill of Audio instances
     @param playlist_path str: absolute path to the playlist file
@@ -22,10 +23,11 @@ def _produce_audio(queue: Queue, playlist_path: str, profile: str, user_interfac
         playlist_profile=profile,
         user_interface=user_interface
     ):
-        prepare_lyrics(audio, profile)
+        prepare_lyrics(audio, profile, user_interface)
         queue.put(audio)
     queue.put(None)
-    user_interface.free_user_input()
+    if configuration.is_audio_source_selected_on_import(profile):
+        user_interface.free_user_input() # allow back main loop to get user's input
 
 def _consume_audio(queue: Queue, player_reference: AudioPlayer):
     """Get audios from the queue and add them to the player until the queue is empty.
@@ -38,18 +40,17 @@ def _consume_audio(queue: Queue, player_reference: AudioPlayer):
             break
         player_reference.append_audio_to_playlist(audio)
 
-def _load_playlist_in_background(playlist_path: str, profile: str, user_interface: Interface, are_audios_selected_by_user: bool) -> AudioPlayer:
+def _load_playlist_in_background(playlist_path: str, profile: str, user_interface: Interface) -> AudioPlayer:
     """Load the playlist's audios in background and early return the player
     @param playlist_path: str: the absolute path to the text file containing the audios' name
     @param profile: str: the name of a playlist's profile
     @param user_interface: Interface
-    @param are_audios_selected_by_user: bool 
     @return: AudioPlayer, the reference of the player that the playlist is loaded into.
     """
     loaded_audio_queue = Queue()
     player = AudioPlayer(playlist=Playlist(), volume=AudioPlayer.AUDIO_VOLUME_BASE)
-    if are_audios_selected_by_user:
-        user_interface.book_user_input()
+    if configuration.is_audio_source_selected_on_import(profile):
+        user_interface.book_user_input() # prevent main loop from getting user's input
     Thread(target=_produce_audio, args=(loaded_audio_queue, playlist_path, profile, user_interface), daemon=True).start()
     Thread(target=_consume_audio, args=(loaded_audio_queue, player), daemon=True).start()
     return player
@@ -73,7 +74,6 @@ def import_playlist(args: list, current_player: AudioPlayer, user_interface: Int
         playlist_path=playlist_path,
         profile=profile,
         user_interface=user_interface,
-        are_audios_selected_by_user=True
     )
     if current_player is not None:
         new_player.set_volume(current_player.get_volume())

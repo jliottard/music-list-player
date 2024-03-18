@@ -17,11 +17,11 @@ HALT_TIME_BEFORE_TRYING_TO_GET_PLAYING_AUDIO_IN_SEC = 2
 class LyricsDisplayer:
     """Lyric displaying class"""
     def __init__(self, player: AudioPlayer, user_interface: Interface):
-        self.are_lyrics_on = False
-        self.lyric_thread = None
-        self.player = player
-        self.user_interface = user_interface
-        self.displayed_lyric_audio = None
+        self.are_lyrics_on: bool = False
+        self.lyric_thread: Thread = None
+        self.player: AudioPlayer = player
+        self.user_interface: Interface = user_interface
+        self.displayed_lyric_audio: Audio | None = None
 
     def __del__(self):
         self.set_lyrics(False)
@@ -34,7 +34,7 @@ class LyricsDisplayer:
         if self.are_lyrics_on:
             self.lyric_thread = Thread(
                 target=self.show_lyrics,
-                args=(self, self.user_interface),
+                args=[self.user_interface],
                 daemon=True
             )
             self.lyric_thread.start()
@@ -63,6 +63,7 @@ class LyricsDisplayer:
                 lyric_text: pylrc.classes.Lyrics = self.get_lyric_text(maybe_base_audio)
                 self.displayed_lyric_audio = maybe_base_audio
                 last_lyric = lyric_text[-1]
+                user_interface.request_output_to_user(f"Info:\n - \"{self.displayed_lyric_audio.name}\" audio's lyrics:")
                 for lyric_line in lyric_text:
                     if self.are_lyrics_on:
                         maybe_progress_time_in_sec = self.player.get_audio_progress_time_in_sec()
@@ -78,7 +79,7 @@ class LyricsDisplayer:
                         if not self.are_lyrics_on or has_audio_changed:
                             break
                         if self.player.is_playing():
-                            user_interface.request_output_to_user(lyric_line.text)
+                            user_interface.request_output_to_user("\t-" + lyric_line.text)
                     else:
                         break
             else:

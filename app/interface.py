@@ -6,11 +6,11 @@ from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
 class Interface:
-    """Class responsible to controlling input and ouput from and to user for multhreading access"""
+    """Class responsible for controlling input and ouput from and to user for multhreading access"""
 
     def __init__(self):
-        self.stin_lock = Lock()
-        self.stout_lock = Lock()
+        self.stdin_lock = Lock()
+        self.stdout_lock = Lock()
 
     @staticmethod
     def _clean_terminal() -> None:
@@ -36,21 +36,21 @@ class Interface:
                 current_song_name = "unknown"
             else:
                 current_song_name = maybe_current_song.name
-            status_info = f"Currently playing: {current_song_name}."
+            status_info = f"Info:\n - Currently playing: \"{current_song_name}\"."
             maybe_next_audio: Audio = player.get_next_audio()
             if maybe_next_audio is not None:
-                status_info +=  f"\nNext song: {maybe_next_audio.name}."
+                status_info +=  f"\n - Next song: \"{maybe_next_audio.name}\"."
         else:
-            status_info = "No audio is playing."
+            status_info = "Info: no audio is playing."
         return status_info
 
     def book_user_input(self):
         """Acquire the lock for accessing user's input"""
-        self.stin_lock.acquire()
+        self.stdin_lock.acquire()
 
     def free_user_input(self):
         """Acquire the lock for accessing user's input"""
-        self.stin_lock.release()
+        self.stdin_lock.release()
 
     def receive_input_from_user(self) -> str:
         """Place to interface's next requested action to get the user's <input>
@@ -73,13 +73,13 @@ class Interface:
         """Place to interface's next requested action to user_interface.request_output_to_user the <output>
         @param output: str the message to user_interface.request_output_to_user to the user
         """
-        with self.stout_lock:
+        with self.stdout_lock:
             print(output)
 
     def update_app_display(self, player: AudioPlayer):
         """Refresh the terminal to display current status information
         @param player: AudioPlayer
         """
-        with self.stout_lock:
+        with self.stdout_lock:
             self._clean_terminal()
         self.request_output_to_user(Interface.status_information_str(player))
