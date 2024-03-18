@@ -94,13 +94,17 @@ pytest
 
 - [ ] Handle errors on not finding a Youtube video for the given names of the playlist
 - [ ] Use Search function of the pytube library
+- [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
+- [ ] Add a resume mechanism to restart playlist on the song where the application did quit
+- [ ] Provide an executable entry point file for Windows application per release
+
+### Backlog
+
 - [ ] Spell check the command keywords and the audio name argument for the Play command
 - [ ] Import automatically the playlist from configuration on application start
 - [ ] Add colors to the prints
 - [ ] Change the prints to a log system
 - [ ] Setup a continuous integration in GitHub to check the tests on Windows docker
-- [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
-- [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Add a music recommendation feature
 - [ ] Show the time progress of the player over the audio duration
 - [ ] Allow shorter alias for command, "pl" or "pla" for "play"
