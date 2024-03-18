@@ -60,6 +60,11 @@ To run the tests, use in the project root directory:
 pytest
 ```
 
+To run the linter check, execute in the project root directory:
+```bash
+pylint *
+```
+
 ## Features
 
 ### Implemented in version 1.0
