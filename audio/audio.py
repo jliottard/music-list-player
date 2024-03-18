@@ -1,7 +1,7 @@
 from audio.file_extension import FileExtension
 
 class Audio: 
-    '''Audio file metadata representation class'''
+    """Audio file metadata representation class"""
     def __init__(self, name: str, filepath: str, file_extension: FileExtension):
         self.name: str = name
         self.filepath: str = filepath

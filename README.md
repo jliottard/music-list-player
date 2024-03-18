@@ -60,6 +60,11 @@ To run the tests, use in the project root directory:
 pytest
 ```
 
+To run the linter check, execute in the project root directory:
+```bash
+pylint *
+```
+
 ## Features
 
 ### Implemented in version 1.0
@@ -90,11 +95,14 @@ pytest
 - [x] Import the audios in background
 - [x] Print music's lyrics matching music's audio
 
+### Implemented in incoming version
+
+- [x] Handle errors on not finding a Youtube video for the given names of the playlist
+- [x] Use a search function of a Python library
+- [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
+
 ### Incoming
 
-- [ ] Handle errors on not finding a Youtube video for the given names of the playlist
-- [ ] Use Search function of the pytube library
-- [ ] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
 
