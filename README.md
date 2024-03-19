@@ -31,7 +31,7 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 
 ### Configuration
 
-Use the `configuration.toml` file to specify where is your playlist file and where to store audios.
+Use the `configuration.toml` file to specify where is your playlist file(s), where to store audio files and other settings. Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository.
 
 The playlist file must be a list of the songs to play, with one song name per line.
 
