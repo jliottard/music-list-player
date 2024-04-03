@@ -95,24 +95,18 @@ pylint *
 - [x] Import the audios in background
 - [x] Print music's lyrics matching music's audio
 
-### Implemented in incoming version
+### Implemented
 
 - [x] Handle errors on not finding a Youtube video for the given names of the playlist
 - [x] Use a search function of a Python library
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 
-### Incoming
+### Backlog
 
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
-
-### Backlog
-
-- [ ] Spell check the command keywords and the audio name argument for the Play command
+- [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")
 - [ ] Import automatically the playlist from configuration on application start
-- [ ] Add colors to the prints
-- [ ] Change the prints to a log system
-- [ ] Setup a continuous integration in GitHub to check the tests on Windows docker
+- [ ] Add colors to the prints and use a log system
+- [ ] Jump forward or backward in the current audio timeline
 - [ ] Add a music recommendation feature
-- [ ] Show the time progress of the player over the audio duration
-- [ ] Allow shorter alias for command, "pl" or "pla" for "play"
