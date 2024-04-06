@@ -4,7 +4,7 @@ from vlc import PlaybackMode
 class PlayMode(Enum):
     ONE_PASS = PlaybackMode.default, "one pass"
     PLAYLIST_LOOP = PlaybackMode.loop, "playlist loop"
-    
+
     def __str__(self) -> str:
         return self.value[1]
 

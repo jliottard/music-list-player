@@ -23,7 +23,8 @@ def match_string_among_strings(searched_string: str, strings: List[str]) -> int:
 def match_some_strings_among_strings(searched_arguments: List[str], expected_arguments: List[str]) -> int:
     # Search at least one matching string from searched_arguments among strings, ignore case
     # It does not necessary return the first match if there are multiples matches
-    # @raise CannotFindAMatchError: if there is no match, or the only matching searched argument is an empty string to non-empty string
+    # @raise CannotFindAMatchError: if there is no match, or the only matching searched argument is
+    #  an empty string to non-empty string
     for searched_argument in searched_arguments:
         for arg_index, expected_argument in enumerate(expected_arguments):
             if searched_argument == "" and expected_argument != "":

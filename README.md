@@ -4,7 +4,7 @@ A python script that downloads and plays musics from a music list text file. So 
 
 ## How to use
 
-### Dependencies
+### How to install the application and the dependencies
 
 The project uses `Python 3.10` and it is not developped nor tested for earlier Python version.
 
@@ -29,13 +29,13 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 - On Linux, VLC version 3.0.16 works.
 - On Windows, VLC version 3.0.20 works.
 
-### Configuration
+### How to configure
 
 Use the `configuration.toml` file to specify where is your playlist file(s), where to store audio files and other settings. Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository.
 
 The playlist file must be a list of the songs to play, with one song name per line.
 
-### Run the application
+### How to run the application
 
 In the virtual environment, run in the project root directory:
 - On Linux:
@@ -53,7 +53,7 @@ Deactivate the virtual environment:
 deactivate
 ```
 
-### Tests
+### How to test
 
 To run the tests, use in the project root directory:
 ```bash

@@ -17,11 +17,13 @@ class Command(Enum):
     MODE = "mode"
     VOLUME = "volume"
     LYRIC = "lyric"
+    MOVE = "move"
 
     def __str__(self) -> str:
         return self.value
-    
+
     def help(self):
+        """ Provide a help description for the commande instance """
         command_help = {
             Command.HELP: "show the details of the commands' usages",
             Command.QUIT: "exit the application",
@@ -37,7 +39,8 @@ class Command(Enum):
                 [str(mode) for mode in PlayMode]
             ),
             Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\"",
-            Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display."
+            Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display.",
+            Command.MOVE: "move the play moment of the current audio (in second): \"move 10.0\" : move the time of the audio to the 10th second."
         }
         return command_help[self]
 
@@ -46,8 +49,8 @@ def parse_command(command_input: str) -> list:
     # Return:
     # - a list of the command arguments with the first argument as a Command element
     # - None if the command is not recognized
-    def is_not_empty_string(e: str) -> bool:
-        return e != ""
+    def is_not_empty_string(string: str) -> bool:
+        return string != ""
     args = list(filter(is_not_empty_string, command_input.split(" ")))
     if len(args) == 0:
         return None

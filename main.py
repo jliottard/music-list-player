@@ -9,6 +9,7 @@ from app.actions.import_playlist import import_playlist
 from app.actions.list import print_list
 from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
+from app.actions.move_timeline import request_move
 from app.actions.next import skip_music
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
@@ -28,8 +29,12 @@ def setup() -> bool:
 
 if __name__ == "__main__":
     user_interface = Interface()
-    if not setup():
-        user_interface.request_output_to_user("Error while app initialization.")
+    try:
+        setup()
+    except Exception as e:
+        user_interface.request_output_to_user(
+            f"Error while app initialization. More details {e}"
+        )
         sys.exit()
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
@@ -79,5 +84,7 @@ if __name__ == "__main__":
                 request_volume(maybe_args, player, user_interface)
             case Command.LYRIC:
                 request_lyrics(maybe_args, lyrics_displayer)
+            case Command.MOVE:
+                request_move(maybe_args, player)
             case _:
                 pass

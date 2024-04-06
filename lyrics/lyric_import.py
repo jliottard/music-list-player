@@ -22,7 +22,9 @@ def prepare_lyrics(audio: Audio, profile: str, user_interface: Interface) -> boo
         audio.lyrics_filepath = None
         if configuration.is_music_lyrics_searched_on_import(profile):
             try:
-                user_interface.request_output_to_user(f"Info: searching the lyrics of \"{audio.name}\" on Internet.")
+                user_interface.request_output_to_user(
+                    f"Info: searching the lyrics of \"{audio.name}\" on Internet."
+                )
                 maybe_lyric_text = syncedlyrics.search(audio.name, save_path=lyric_filepath)
                 if maybe_lyric_text is not None:
                     with open(lyric_filepath, 'wt', encoding=configuration.TEXT_ENCODING) as lyric_file:

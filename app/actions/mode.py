@@ -12,9 +12,9 @@ def request_mode(args: list, player: AudioPlayer, user_interface: Interface) -> 
     """
     if len(args) >= 2:
         try:
-            MODES = [str(mode) for mode in PlayMode]
-            mode_index = match_string_among_strings(" ".join(args[1:]), MODES)
-            player.set_play_mode(from_string(MODES[mode_index]))
+            modes = [str(mode) for mode in PlayMode]
+            mode_index = match_string_among_strings(" ".join(args[1:]), modes)
+            player.set_play_mode(from_string(modes[mode_index]))
         except CannotFindAMatchError:
             user_interface.request_output_to_user(f"Cannot find a matching mode with \"{args[1:]}\".")
         else:
