@@ -1,6 +1,6 @@
 from audio.file_extension import FileExtension
 
-class Audio: 
+class Audio:
     """Audio file metadata representation class"""
     def __init__(self, name: str, filepath: str, file_extension: FileExtension):
         self.name: str = name
@@ -18,4 +18,9 @@ class Audio:
             return True
         if isinstance(other, type(self)):
             return False
-        return self.name == other.name and self.filepath == other.filepath and self.extension == other.extension
+        sames_attributes = [
+            self.name == other.name,
+            self.filepath == other.filepath,
+            self.extension == other.extension
+        ]
+        return all(sames_attributes)

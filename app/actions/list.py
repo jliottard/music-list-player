@@ -1,6 +1,5 @@
 from app.interface import Interface
 from audio.audio_player import AudioPlayer
-from audio.playlist import Playlist
 
 def print_list(player: AudioPlayer, user_interface: Interface) -> None:
     """ Print the list of musics in the playlist"""

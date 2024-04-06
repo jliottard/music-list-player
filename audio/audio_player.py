@@ -1,5 +1,4 @@
 import random
-import time
 import vlc
 from audio.audio import Audio
 from audio.playlist import Playlist
@@ -7,6 +6,8 @@ from audio.play_mode import PlayMode, translate_play_mode
 
 class AudioPlayer:
     AUDIO_VOLUME_BASE = 100
+    COEF_MS_TO_SEC = 1e-3
+    COEF_SEC_TO_MS = 1000
 
     def __init__(self, playlist: Playlist, volume: int):
         """ Instanciate the AudioPlayer object
@@ -134,7 +135,8 @@ class AudioPlayer:
 
     def set_volume(self, volume_percentage: int):
         """ Set the player's volume 
-        @param volume_percentage: int: the volume to be set from 0 to twice the <AudioPlayer.AUDIO_VOLUME_BASE>
+        @param volume_percentage: int: the volume to be set from 0 to twice the 
+            <AudioPlayer.AUDIO_VOLUME_BASE>
         """
         self.volume = min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2)
         media_player = self.audio_list_player.get_media_player()
@@ -155,22 +157,20 @@ class AudioPlayer:
         """ Return the current playing audio time progression
         @return float or None if there is no playing audio
         """
-        COEF_MS_TO_SEC = 1e-3
         if not self.is_playing():
             return None
         time_in_ms = self.audio_list_player.get_media_player().get_time()
-        return time_in_ms * COEF_MS_TO_SEC
+        return time_in_ms * AudioPlayer.COEF_MS_TO_SEC
 
     def set_current_audio_time(self, time_in_sec: int):
         """ Set the current audio timeline
         Do nothing if the given time in out of range of the audio length
         @param time_in_sec: int
         """
-        COEF_SEC_TO_MS = 1000
         maybe_audio_time_in_sec = self.get_playing_audio_duration_in_sec()
         if not maybe_audio_time_in_sec:
             return
         if not 0 <= time_in_sec <= maybe_audio_time_in_sec:
             return
-        time_in_ms: int = time_in_sec * COEF_SEC_TO_MS
+        time_in_ms: int = time_in_sec * AudioPlayer.COEF_SEC_TO_MS
         self.audio_list_player.get_media_player().set_time(time_in_ms)

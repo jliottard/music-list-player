@@ -1,5 +1,3 @@
-import datetime
-
 class YouTubeVideoMetadata:
     """ Class describing video metadata """
 

@@ -29,7 +29,6 @@ def test_download_audio_from_youtube_from_valid_url(test_teardown_of_test_downlo
     assert tested_audio_filepath == expected_download_audio_from_youtube_filepath
     assert path.isfile(expected_download_audio_from_youtube_filepath)
     assert path.getsize(expected_download_audio_from_youtube_filepath) > 1
-    test_teardown_of_test_download_audio_from_youtube_from_valid_url
 
 def test_fails_download_audio_from_youtube_raise_cannot_download_error_exception_with_wrong_url():
     # Assume the test machine has an internet connection
