@@ -2,12 +2,12 @@
 "download-directory-relative-path" = "audios_cache"
 "playlist-file-relative-path" = "playlists/playlist.txt"
 "persistant-audio-cache" = true
-"music-lyrics-search-on-import" = true
+"music-lyrics-search-on-import" = false
 "audio-source-selection-on-import" = false
 
 [lofi-profile]
 "download-directory-relative-path" = "audios_cache"
 "playlist-file-relative-path" = "playlists/lofi_playlist.txt"
 "persistant-audio-cache" = false
-"music-lyrics-search-on-import" = true
-"audio-source-selection-on-import" = true
+"music-lyrics-search-on-import" = false
+"audio-source-selection-on-import" = false

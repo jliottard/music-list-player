@@ -28,8 +28,12 @@ def setup() -> bool:
 
 if __name__ == "__main__":
     user_interface = Interface()
-    if not setup():
-        user_interface.request_output_to_user("Error while app initialization.")
+    try:
+        setup()
+    except Exception as e:
+        user_interface.request_output_to_user(
+            f"Error while app initialization. More details {e}"
+        )
         sys.exit()
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
