@@ -24,19 +24,31 @@ class Interface:
                 os.system('clear')
 
     @staticmethod
+    def playing_audio_status(player: AudioPlayer) -> str:
+        """ Return the status for the current playing audio
+        @param player: AudioPlayer
+        """
+        maybe_current_song: Audio = player.get_playing_audio()
+        current_song_name = ""
+        if maybe_current_song is None:
+            current_song_name = "unknown"
+        else:
+            current_song_name = maybe_current_song.name
+        audio_time_progess_in_sec: float = player.get_audio_progress_time_in_sec()
+        audio_duration_in_sec: float = player.get_playing_audio_duration_in_sec()
+        status_info = f"{current_song_name} ({audio_time_progess_in_sec:.2f}s / {audio_duration_in_sec:.2f}s)"
+        return status_info
+
+    @staticmethod
     def status_information_str(player: AudioPlayer) -> str:
         """Return the player basics information such as playing song and upcoming song
-        @param palyer: AudioPlayer
+        @param player: AudioPlayer
         """
         status_info = ""
         if player.is_playing():
-            maybe_current_song: Audio = player.get_playing_audio()
-            current_song_name = ""
-            if maybe_current_song is None:
-                current_song_name = "unknown"
-            else:
-                current_song_name = maybe_current_song.name
-            status_info = f"Info:\n - Currently playing: \"{current_song_name}\"."
+            playing_audio_info: str = Interface.playing_audio_status(player)
+            status_info = "Info:\n"
+            status_info += f" - Currently playing: {playing_audio_info}."
             maybe_next_audio: Audio = player.get_next_audio()
             if maybe_next_audio is not None:
                 status_info +=  f"\n - Next song: \"{maybe_next_audio.name}\"."
