@@ -100,6 +100,7 @@ pylint *
 - [x] Handle errors on not finding a Youtube video for the given names of the playlist
 - [x] Use a search function of a Python library
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
+- [x] Jump forward or backward in the current audio timeline
 
 ### Backlog
 
@@ -108,5 +109,4 @@ pylint *
 - [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")
 - [ ] Import automatically the playlist from configuration on application start
 - [ ] Add colors to the prints and use a log system
-- [ ] Jump forward or backward in the current audio timeline
 - [ ] Add a music recommendation feature
