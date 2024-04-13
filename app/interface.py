@@ -34,9 +34,11 @@ class Interface:
             current_song_name = "unknown"
         else:
             current_song_name = maybe_current_song.name
-        audio_time_progess_in_sec: float = player.get_audio_progress_time_in_sec()
-        audio_duration_in_sec: float = player.get_playing_audio_duration_in_sec()
-        status_info = f"{current_song_name} ({audio_time_progess_in_sec:.2f}s / {audio_duration_in_sec:.2f}s)"
+        maybe_audio_time_progess_in_sec: float = player.get_audio_progress_time_in_sec()
+        maybe_audio_duration_in_sec: float = player.get_playing_audio_duration_in_sec()
+        status_info = f"{current_song_name}"
+        if maybe_audio_time_progess_in_sec is not None and maybe_audio_duration_in_sec is not None:
+            status_info += f" ({maybe_audio_time_progess_in_sec:.2f}s / {maybe_audio_duration_in_sec:.2f}s)"
         return status_info
 
     @staticmethod
