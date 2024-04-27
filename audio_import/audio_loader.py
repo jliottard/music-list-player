@@ -84,7 +84,7 @@ def load(audio_name: str, file_extension: FileExtension, profile: str, user_inte
         )
     else:
         user_interface.request_output_to_user(
-            f"Info: the audio \"{audio_name}\" is not found in cache memory. It must be downloaded from Internet."
+            f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to downloaded it from Internet."
         )
         youtube_videos_metadatas: List[YouTubeVideoMetadata] = youtube_metadata_parser.search_videos_on_youtube(audio_name)
         if configuration.is_audio_source_selected_on_import(profile):

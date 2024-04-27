@@ -31,7 +31,7 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 
 ### How to configure
 
-Use the `configuration.toml` file to specify where is your playlist file(s), where to store audio files and other settings. Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository.
+Use the `configuration.toml` file to specify where is your playlist file(s), where to store audio files and other settings. Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository. But do not remove fields from the `[global-settings]` part, they are mandatory for the global application settings.
 
 The playlist file must be a list of the songs to play, with one song name per line.
 
@@ -101,12 +101,12 @@ pylint *
 - [x] Use a search function of a Python library
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 - [x] Jump forward or backward in the current audio timeline
+- [x] Import automatically the playlist from configuration on application start
 
 ### Backlog
 
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
 - [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")
-- [ ] Import automatically the playlist from configuration on application start
 - [ ] Add colors to the prints and use a log system
 - [ ] Add a music recommendation feature
