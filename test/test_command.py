@@ -1,4 +1,5 @@
 from app import command
+
 def test_parse_command_on_every_command_keyword():
     for expected_command_enum in command.Command:
         testing_command = str(expected_command_enum)

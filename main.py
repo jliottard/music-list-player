@@ -33,14 +33,18 @@ if __name__ == "__main__":
         setup()
     except Exception as e:
         user_interface.request_output_to_user(
-            f"Error while app initialization. More details {e}"
+            f"Error while app initialization. More details: {e}"
         )
         sys.exit()
+    user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
     profile = configuration.DEFAULT_PLAYLIST_PROFILE_NAME
-    user_interface.request_output_to_user("Info: Welcome to music list player!")
-    user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{str(Command.HELP)}\" for help).")
+    if configuration.is_default_profile_imported_on_startup():
+        user_interface.request_output_to_user("Info: Auto-import on startup..")
+        player, profile = import_playlist(parse_command(Command.IMPORT.value), player, user_interface)
+        lyrics_displayer = LyricsDisplayer(player, user_interface)
+    user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
         user_input_command: str = user_interface.request_input_from_user()
         user_interface.update_app_display(player)

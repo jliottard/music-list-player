@@ -3,13 +3,15 @@ import toml
 
 # Constants
 TEXT_ENCODING = "utf-8"
+GLOBAL_APP_SETTINGS_NAME = "global-settings"
+DEFAULT_PLAYLIST_PROFILE_NAME = "default"
 CONFIGURATION_FILE_PATH = "configuration.toml"
 CONFIGURATION_PLAYLIST_PATH_KEYWORD = "playlist-file-relative-path"
 CONFIGURATION_CACHE_DIRECTORY_PATH_KEYWORD = "download-directory-relative-path"
 CONFIGURATION_KEEP_CACHE_POLICY_KEYWORD = "persistant-audio-cache"
 CONFIGURATION_PREPARE_LYRICS_ON_IMPORT_KEYWORD = "music-lyrics-search-on-import"
-DEFAULT_PLAYLIST_PROFILE_NAME = "default"
 CONFIGURATION_USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT_KEYWORD = "audio-source-selection-on-import"
+CONFIGURATION_AUTO_IMPORT_DEFAUT_PLAYLIST_ON_STARTUP_KEYWORD = "default-profile-import-on-startup"
 
 # Functions
 def operating_system_proof_path(path: str) -> str:
@@ -60,3 +62,8 @@ def is_audio_source_selected_on_import(profile_name: str) -> bool:
     with open(CONFIGURATION_FILE_PATH, "rt", encoding=TEXT_ENCODING) as config_file:
         config = toml.load(config_file)
     return config[_get_profile_suffix(profile_name)][CONFIGURATION_USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT_KEYWORD]
+
+def is_default_profile_imported_on_startup() -> bool:
+    with open(CONFIGURATION_FILE_PATH, "rt", encoding=TEXT_ENCODING) as config_file:
+        config = toml.load(config_file)
+    return config[GLOBAL_APP_SETTINGS_NAME][CONFIGURATION_AUTO_IMPORT_DEFAUT_PLAYLIST_ON_STARTUP_KEYWORD]

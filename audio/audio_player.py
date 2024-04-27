@@ -95,14 +95,14 @@ class AudioPlayer:
             case _:
                 return None
 
-    def get_playing_audio(self) -> Audio:
+    def get_playing_audio(self) -> Audio | None:
         """ Return None if there is no playing audio """
         maybe_audio_index = self.get_playing_audio_index()
         if maybe_audio_index is None:
             return None
         return self.playlist.audios[maybe_audio_index]
 
-    def get_next_audio(self) -> Audio:
+    def get_next_audio(self) -> Audio | None:
         """ Return None if there is no playing audio or the play mode is one pass and the current audio is the last """
         maybe_next_audio_index = self.get_next_audio_index()
         if maybe_next_audio_index is None:
