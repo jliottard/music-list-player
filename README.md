@@ -105,6 +105,11 @@ pylint *
 
 ### Backlog
 
+- [ ] Parse author part of the audio line in plain text file
+- [ ] Sanitize the audio's name with keywords and wildcard of filepath (like '/', '\', or '*')
+- [ ] Speed up or down audios
+- [ ] Create playlist dynamically based on tag(s) present on each audio name (line)
+- [ ] Use directly a YouTube link if presents in the audio name (line)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
 - [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")

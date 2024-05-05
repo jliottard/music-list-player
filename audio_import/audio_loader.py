@@ -8,6 +8,7 @@ from audio.audio import Audio
 from audio.file_extension import FileExtension
 from audio.playlist import Playlist
 from audio_import import youtube_download, youtube_metadata_parser
+from audio_import.audio_metadata import AudioMetadata
 from audio_import.cannot_download_error import CannotDownloadError
 from audio_import.plain_text_parse import parse_plain_text_playlist_file
 from audio_import.youtube_video_metadata import YouTubeVideoMetadata
@@ -122,6 +123,20 @@ def load(audio_name: str, file_extension: FileExtension, profile: str, user_inte
         )
     return returned_audio
 
+def sanitize_filename(filename: str) -> str:
+    """ Escape characters from the given filename that would be interpreted in a filepath context
+        @param filename: str
+        @return str: the filename sanitized
+    """
+    UNIX_FORBIDDEN_CHAR = ['/', '\0']
+    MS_FORBIDDEN_CHAR = ['/', '\\', '*', ':', '?', '"', '<', '>', '|', '\0']
+    ESCAPING_CHAR = '_'
+    sanitized_name = list(filename)
+    for i, char in enumerate(sanitized_name):
+        if char in UNIX_FORBIDDEN_CHAR or char in MS_FORBIDDEN_CHAR:
+            sanitized_name[i] = ESCAPING_CHAR
+    return ''.join(sanitized_name)
+
 def iterate_over_loading_playlist(playlist_file_absolute_path: str, playlist_profile: str, user_interface: Interface) -> List[Audio]:
     """Parse playlist file and load the music into cache
     @param playlist_file_absolute_path a filepath of the text file describing the music playlist
@@ -129,9 +144,12 @@ def iterate_over_loading_playlist(playlist_file_absolute_path: str, playlist_pro
     @param user_interface: Interface, assume the user's input is booked
     @yield: Audio
     """
-    playlist_lines: list[str] = parse_plain_text_playlist_file(playlist_file_absolute_path, user_interface)
-    for audio_name in playlist_lines:
-        maybe_audio: Audio = load(audio_name, FileExtension.MP3, playlist_profile, user_interface)
+    playlist_audio_metadatas: list[AudioMetadata] = parse_plain_text_playlist_file(playlist_file_absolute_path, user_interface)
+    for audio_metadata in playlist_audio_metadatas:
+        name = sanitize_filename(audio_metadata.name)
+        _source = audio_metadata.source     # TODO: use for directly download the audio from
+        _any_tags = audio_metadata.tags     # TODO: use to craete tag based playlists
+        maybe_audio: Audio = load(name, FileExtension.MP3, playlist_profile, user_interface)
         if maybe_audio is None:
             continue
         yield maybe_audio
