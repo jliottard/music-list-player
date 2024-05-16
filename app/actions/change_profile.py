@@ -48,5 +48,7 @@ def request_profile(args: list | None, current_profile: Profile, user_interface:
     )
     profile = Profile(name=profile_name)
     profile.audio_metadatas = playlist_audio_metadatas
+    n_metadatas = len(profile.audio_metadatas)
+    user_interface.request_output_to_user(f"Profile updated: \"{n_metadatas}\" lines of metadatas found.")
 
     return profile
