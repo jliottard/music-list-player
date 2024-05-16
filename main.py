@@ -11,11 +11,13 @@ from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.move_timeline import request_move
 from app.actions.next import skip_music
+from app.actions.change_profile import request_profile
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.actions.volume import request_volume
 from app.command import Command, parse_command
 from app.interface import Interface
+from app.profile import Profile
 from app.termination import clean_app_termination
 from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
@@ -39,10 +41,10 @@ if __name__ == "__main__":
     user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
-    profile = configuration.DEFAULT_PLAYLIST_PROFILE_NAME
+    profile = Profile(configuration.DEFAULT_PLAYLIST_PROFILE_NAME)
     if configuration.is_default_profile_imported_on_startup():
         user_interface.request_output_to_user("Info: Auto-import on startup..")
-        player, profile = import_playlist(parse_command(Command.IMPORT.value), player, user_interface)
+        player, profile = import_playlist(parse_command(Command.IMPORT.value), profile, player, user_interface)
         lyrics_displayer = LyricsDisplayer(player, user_interface)
     user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
@@ -61,7 +63,7 @@ if __name__ == "__main__":
             case Command.HELP:
                 print_help(user_interface)
             case Command.IMPORT:
-                player, profile = import_playlist(maybe_args, player, user_interface)
+                player = import_playlist(maybe_args, profile, player, user_interface)
                 lyrics_displayer = LyricsDisplayer(player, user_interface)
             case Command.LIST:
                 print_list(player, user_interface)
@@ -90,5 +92,7 @@ if __name__ == "__main__":
                 request_lyrics(maybe_args, lyrics_displayer)
             case Command.MOVE:
                 request_move(maybe_args, player)
+            case Command.PROFILE:
+                profile = request_profile(maybe_args, profile, user_interface)
             case _:
                 pass

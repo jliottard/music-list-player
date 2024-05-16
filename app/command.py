@@ -18,6 +18,7 @@ class Command(Enum):
     VOLUME = "volume"
     LYRIC = "lyric"
     MOVE = "move"
+    PROFILE = "profile"
 
     def __str__(self) -> str:
         return self.value
@@ -27,7 +28,7 @@ class Command(Enum):
         command_help = {
             Command.HELP: "show the details of the commands' usages",
             Command.QUIT: "exit the application",
-            Command.IMPORT: f"load the default playlist's musics. Alternatively load a custom playlist from the configuration: \"import <profile_name>\". While the audio are loading, you can use command as usual if the configuration's setting \"{configuration.CONFIGURATION_USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT_KEYWORD}\" is set to 'false'.",
+            Command.IMPORT: f"load the whole playlist's musics by default. Alternatively load a tag-based-playlist from the playlist: \"import <tag_name>\". While the audio are loading, you can use command as usual if the configuration's setting \"{configuration.CONFIGURATION_USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT_KEYWORD}\" is set to 'false'.",
             Command.LIST: "show the playlist's musics",
             Command.PLAY: "play first audio by default or if prefixed by the playlist's audio index, play the corresponding audio: \"play <i>\"",
             Command.NEXT: "skip the current music to play the next one in the playlist",
@@ -40,7 +41,8 @@ class Command(Enum):
             ),
             Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\"",
             Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display.",
-            Command.MOVE: "move the play moment of the current audio (in second): \"move 10.0\" : move the time of the audio to the 10th second."
+            Command.MOVE: "move the play moment of the current audio (in second): \"move 10.0\" : move the time of the audio to the 10th second.",
+            Command.PROFILE: "change the profile, or without arguments show the current profile : \"profile default\": change the profile to the \"default-profile\" from the configuration file"
         }
         return command_help[self]
 

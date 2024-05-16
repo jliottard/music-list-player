@@ -2,16 +2,22 @@ import os
 from typing import List
 
 from app import configuration
+from app.cannot_find_a_match_error import CannotFindAMatchError
 from app.file_management import is_file_in_cache, _is_file_loaded
 from app.interface import Interface
+from app.profile import Profile
+from app.search import match_some_strings_among_strings
 from audio.audio import Audio
 from audio.file_extension import FileExtension
 from audio.playlist import Playlist
 from audio_import import youtube_download, youtube_metadata_parser
 from audio_import.audio_metadata import AudioMetadata
 from audio_import.cannot_download_error import CannotDownloadError
-from audio_import.plain_text_parse import parse_plain_text_playlist_file
 from audio_import.youtube_video_metadata import YouTubeVideoMetadata
+
+UNIX_FORBIDDEN_CHAR = ['/', '\0']
+MS_FORBIDDEN_CHAR = ['/', '\\', '*', ':', '?', '"', '<', '>', '|', '\0']
+ESCAPING_CHAR = '_'
 
 def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetadata], user_interface: Interface) -> YouTubeVideoMetadata|None:
     """Ask the terminal's user by a command line interaction to select a YouTube video from the list
@@ -68,10 +74,11 @@ def _get_first_youtube_search(video_metadatas: List[YouTubeVideoMetadata]) -> Yo
     """
     return video_metadatas[0] if len(video_metadatas) != 0 else None
 
-def load(audio_name: str, file_extension: FileExtension, profile: str, user_interface: Interface) -> Audio:
+def load(audio_name: str, file_extension: FileExtension, profile: Profile, user_interface: Interface) -> Audio:
     """Load the audio from the cache or from the Internet
     @param audio_name: str
     @param file_extension: FileExtension
+    @param profile: Profile
     @param user_interface: Interface, assume the user's input is booked
     @return: an Audio or None if the audio could not be found or downloaded
     """
@@ -128,33 +135,35 @@ def sanitize_filename(filename: str) -> str:
         @param filename: str
         @return str: the filename sanitized
     """
-    UNIX_FORBIDDEN_CHAR = ['/', '\0']
-    MS_FORBIDDEN_CHAR = ['/', '\\', '*', ':', '?', '"', '<', '>', '|', '\0']
-    ESCAPING_CHAR = '_'
     sanitized_name = list(filename)
     for i, char in enumerate(sanitized_name):
         if char in UNIX_FORBIDDEN_CHAR or char in MS_FORBIDDEN_CHAR:
             sanitized_name[i] = ESCAPING_CHAR
     return ''.join(sanitized_name)
 
-def iterate_over_loading_playlist(playlist_file_absolute_path: str, playlist_profile: str, user_interface: Interface) -> List[Audio]:
+def iterate_over_loading_playlist(playlist_profile: Profile, meta_query: AudioMetadata, user_interface: Interface) -> List[Audio]:
     """Parse playlist file and load the music into cache
-    @param playlist_file_absolute_path a filepath of the text file describing the music playlist
     @param playlist_profile: str
+    @param meta_query: AudioMetada
     @param user_interface: Interface, assume the user's input is booked
     @yield: Audio
     """
-    playlist_audio_metadatas: list[AudioMetadata] = parse_plain_text_playlist_file(playlist_file_absolute_path, user_interface)
-    for audio_metadata in playlist_audio_metadatas:
+    for audio_metadata in playlist_profile.audio_metadatas:
         name = sanitize_filename(audio_metadata.name)
-        _source = audio_metadata.source     # TODO: use for directly download the audio from
-        _any_tags = audio_metadata.tags     # TODO: use to craete tag based playlists
+        _source = audio_metadata.source     # TODO: use the youtube id to directly download the audio without search
+        any_tags = audio_metadata.tags
+        if len(meta_query.tags) != 0:
+            try:
+                match_some_strings_among_strings(any_tags, meta_query.tags)
+            except CannotFindAMatchError:
+                # the current audio's metadata does not match the query's tags
+                continue
         maybe_audio: Audio = load(name, FileExtension.MP3, playlist_profile, user_interface)
         if maybe_audio is None:
             continue
         yield maybe_audio
 
-def unload_music(audio: Audio, profile: str) -> None:
+def unload_music(audio: Audio, profile: str) -> None: # TODO adapt the profile that are name into the class Profile
     """Remove the local audio is found"""
     if _is_file_loaded(audio.name + audio.extension.value, profile):
         cached_audio_filepath: str = configuration.get_audio_file_path(audio.name + audio.extension.value, profile)
