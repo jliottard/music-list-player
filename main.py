@@ -41,10 +41,16 @@ if __name__ == "__main__":
     user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
-    profile = Profile(configuration.DEFAULT_PLAYLIST_PROFILE_NAME)
+    profile: Profile = None
     if configuration.is_default_profile_imported_on_startup():
+        profile = Profile(configuration.DEFAULT_PLAYLIST_PROFILE_NAME)
+        profile = request_profile(
+            [Command.PROFILE, configuration.DEFAULT_PLAYLIST_PROFILE_NAME],
+            Profile(configuration.DEFAULT_PLAYLIST_PROFILE_NAME),
+            user_interface
+        )
         user_interface.request_output_to_user("Info: Auto-import on startup..")
-        player, profile = import_playlist(parse_command(Command.IMPORT.value), profile, player, user_interface)
+        player = import_playlist(parse_command(Command.IMPORT.value), profile, player, user_interface)
         lyrics_displayer = LyricsDisplayer(player, user_interface)
     user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
@@ -63,6 +69,11 @@ if __name__ == "__main__":
             case Command.HELP:
                 print_help(user_interface)
             case Command.IMPORT:
+                if profile is None:
+                    user_interface.request_output_to_user(
+                        "There is no profile set. Use the profile command to set the playlist profile"
+                    )
+                    continue
                 player = import_playlist(maybe_args, profile, player, user_interface)
                 lyrics_displayer = LyricsDisplayer(player, user_interface)
             case Command.LIST:

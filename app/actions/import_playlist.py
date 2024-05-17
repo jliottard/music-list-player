@@ -59,7 +59,7 @@ def _load_playlist_in_background(playlist_path: str, profile: Profile, meta_quer
     Thread(target=_consume_audio, args=(loaded_audio_queue, player), daemon=True).start()
     return player
 
-def import_playlist(args: list, profile: Profile, current_player: AudioPlayer, user_interface: Interface) -> Tuple[AudioPlayer, str]:
+def import_playlist(args: list, profile: Profile, current_player: AudioPlayer, user_interface: Interface) -> AudioPlayer:
     """Get playlist contents from the args' profile and load the player for the audios
     If the args is only containing the import keyword, it loads the whole audio list into a new playlist.
     If the args also contains a tag name, it loads only the tagged audios into the new playlist.
