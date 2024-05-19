@@ -1,4 +1,5 @@
 from audio import audio_player, playlist, audio, file_extension
+from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
 
 def test_audio_player_audios_order():
     audios = []
@@ -21,3 +22,8 @@ def test_get_playing_audio_index_in_non_playing_player():
 def test_play_audio_at_index_in_empty_player_playlist():
     tested_audio_player = audio_player.AudioPlayer(playlist.Playlist(), audio_player.AudioPlayer.AUDIO_VOLUME_BASE)
     assert tested_audio_player.play_audio_at_index(0) is False
+
+def test_audio_player_next(setup_and_teardown_playlist_and_configuration_files):
+    config: dict = setup_and_teardown_playlist_and_configuration_files
+    
+    # TODO test something interesting / relevant

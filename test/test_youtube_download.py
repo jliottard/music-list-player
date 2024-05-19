@@ -3,17 +3,7 @@ import os
 import pytest
 
 from audio_import import cannot_download_error, youtube_download, youtube_metadata_parser
-
-FIRST_YOUTUBE_VIDEO_TITLE = "Me at the zoo"
-FIRST_YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v=jNQXAC9IVRw"
-LONGEST_YOUTUBE_LIVE_TITLE = "lofi hip hop radio 📚 - beats to relax/study to"
-
-def test_get_exact_youtube_url_from_name():
-    # Assume the test machine has an internet connection
-    testing_term = FIRST_YOUTUBE_VIDEO_TITLE
-    expected_url = FIRST_YOUTUBE_VIDEO_URL
-    tested_url = youtube_metadata_parser.get_youtube_video_url(testing_term)
-    assert tested_url == expected_url
+from test.constants_for_test import FIRST_YOUTUBE_VIDEO_TITLE, FIRST_YOUTUBE_VIDEO_URL, LONGEST_YOUTUBE_LIVE_TITLE
 
 @pytest.fixture
 def test_teardown_of_test_download_audio_from_youtube_from_valid_url():

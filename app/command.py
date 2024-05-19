@@ -1,6 +1,6 @@
 from enum import Enum
 
-from app import configuration
+from app.config.configuration_keyword import ConfigurationKeyword
 from audio.play_mode import PlayMode
 
 class Command(Enum):
@@ -28,7 +28,7 @@ class Command(Enum):
         command_help = {
             Command.HELP: "show the details of the commands' usages",
             Command.QUIT: "exit the application",
-            Command.IMPORT: f"load all the playlist's musics by default. Alternatively load a tag-based-playlist from the playlist: \"import #<tag_name>\". While the audio are loading, you can use command as usual if the configuration's setting \"{configuration.CONFIGURATION_USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT_KEYWORD}\" is set to 'false'.",
+            Command.IMPORT: f"load all the playlist's musics by default. Alternatively load a tag-based-playlist from the playlist: \"import #<tag_name>\". While the audio are loading, you can use command as usual if the configuration's setting \"{ConfigurationKeyword.USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT.value}\" is set to 'false'.",
             Command.LIST: "show the playlist's musics",
             Command.PLAY: "play first audio by default . If prefixed by the playlist's audio index (one argument), play the corresponding audio: \"play <i>\". If the command is prefixed with at least 2 arguments as audio's name, it will try to play the matching audio: \"play <first_audio_name_part> <second_audio_name_part> [<other_audio_name_part>]*\"",
             Command.NEXT: "skip the current music to play the next one in the playlist",

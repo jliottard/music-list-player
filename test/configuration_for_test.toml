@@ -1,0 +1,16 @@
+[global-settings]
+"default-profile-import-on-startup" = false
+[test]
+"download-directory-relative-path" = "test/audio_cache_for_test"
+"playlist-file-relative-path" = "test/playlist_for_test.txt"
+"persistant-audio-cache" = false
+"music-lyrics-search-on-import" = false
+"audio-source-selection-on-import" = false
+[global-settings]
+"default-profile-import-on-startup" = false
+[test]
+"download-directory-relative-path" = "test/audio_cache_for_test"
+"playlist-file-relative-path" = "test/playlist_for_test.txt"
+"persistant-audio-cache" = false
+"music-lyrics-search-on-import" = false
+"audio-source-selection-on-import" = false

@@ -1,6 +1,6 @@
 from typing import List
 import re
-from app import configuration
+from app.config.configuration import TEXT_ENCODING
 from app.interface import Interface
 from audio_import.audio_metadata import AudioMetadata
 
@@ -29,7 +29,7 @@ def try_extract_tags(audio_line: str) -> List[str]:
         @param audio_line: str
         @return: List[str], empty list if there is no tag found
     """
-    TAG_REGEX = r'#[a-zA-Z0-9_]*'
+    TAG_REGEX = r'#[a-zA-Z0-9_\-]+'
     return re.findall(TAG_REGEX, audio_line)
 
 def _is_there_one_space_before_substring(string: str, substring: str) -> bool:
@@ -76,7 +76,7 @@ def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interf
     """
     user_interface.request_output_to_user("Info: parsing playlist file.")
     audio_data = []
-    with open(playlist_file_absolute_path, "rt", encoding=configuration.TEXT_ENCODING) as playlist_file:
+    with open(playlist_file_absolute_path, "rt", encoding=TEXT_ENCODING) as playlist_file:
         lines = playlist_file.readlines()
         for line in lines:
             line = remove_carriage_return(line)
