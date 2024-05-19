@@ -20,7 +20,7 @@ def is_a_directory_path_keyword(string: str) -> bool:
 
 # Class
 class Configuration():
-    """TODO: class desc"""
+    """CLass representing the app configuration's state from the TOML configuration file and its profile"""
 
     def __init__(self, profile: Profile, configuration_filepath: str = CONFIGURATION_FILE_PATH):
         self.config: dict = self.load_configuration(configuration_filepath)

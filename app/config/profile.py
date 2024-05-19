@@ -5,7 +5,7 @@ from audio_import.audio_metadata import AudioMetadata
 
 
 class Profile():
-    """ TODO write a description """
+    """Class representing a playlist profile with its metadatas"""
 
     def __init__(self, name: str = DEFAULT_PLAYLIST_PROFILE_NAME):
         self.name: str = name

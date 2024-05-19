@@ -8,7 +8,10 @@ from audio_import.audio_metadata import AudioMetadata
 from audio_import.plain_text_parse import parse_plain_text_playlist_file
 
 def _display_profile(profile: Profile, user_interface: Interface) -> None:
-    """ TODO"""
+    """Display throught the interface the profile's presentation including metadatas
+    @param profile: Profile
+    @param user_interface: Interface
+    """
     user_interface.request_output_to_user(f"Profile: {profile.name}")
 
     unique_tags = set()
