@@ -68,6 +68,20 @@ def remove_metadata(audio_line: str) -> str:
         purged_line = purged_line.replace(source_string_with_separator, '')
     return purged_line.strip()
 
+def _playlist_line_to_audio_metadata(line: str) -> AudioMetadata:
+    """Extract the metadata from the line"""
+    line = remove_carriage_return(line)
+    maybe_web_source: str | None = try_extract_web_url(line)
+    any_tags: List[str] = try_extract_tags(line)
+    title = remove_metadata(line)
+    author = ''     # TODO: try to parse the author in the title of the audio
+    return AudioMetadata(
+        name=title,
+        author=author,
+        source=maybe_web_source,
+        tags=any_tags
+    )
+
 def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interface: Interface) -> List[AudioMetadata]:
     """Parse the plain text playlist file into a list of audios
         @param playlist_file_absolute_path: str the file path to the plain text file
@@ -79,15 +93,5 @@ def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interf
     with open(playlist_file_absolute_path, "rt", encoding=TEXT_ENCODING) as playlist_file:
         lines = playlist_file.readlines()
         for line in lines:
-            line = remove_carriage_return(line)
-            maybe_web_source: str | None = try_extract_web_url(line)
-            any_tags: List[str] = try_extract_tags(line)
-            title = remove_metadata(line)
-            author = ''     # TODO: try to parse the author in the title of the audio
-            audio_data.append(AudioMetadata(
-                name=title,
-                author=author,
-                source=maybe_web_source,
-                tags=any_tags
-            ))
+            audio_data.append(_playlist_line_to_audio_metadata(line))
     return audio_data

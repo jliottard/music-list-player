@@ -30,7 +30,7 @@ def setup_and_teardown_test_configuration():
     with open(configuration_path, "wt", encoding=TEXT_ENCODING) as config_file:
         config_file.write(configuration_backup)
 
-def test_check_required_files_from_configuration_exist():
+def test_check_required_files_from_configuration_exist(setup_and_teardown_test_configuration):
     configuration = setup_and_teardown_test_configuration
     assert configuration.check_required_files_from_configuration_exist() is True
 
