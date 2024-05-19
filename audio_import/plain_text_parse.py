@@ -54,7 +54,7 @@ def remove_metadata(audio_line: str) -> str:
     maybe_source = try_extract_web_url(audio_line)
     if maybe_source is not None:
         source_start_index = purged_line.find(maybe_source)
-        source_end_index = source_start_index + len(maybe_source)
+        source_end_index = source_start_index + len(maybe_source) - 1
         # Try to remove delimiting source characters
         previous_source_char_index = max(0, source_start_index - 1)
         if purged_line[previous_source_char_index] != EXPECTED_SOURCE_SEPARATION:
