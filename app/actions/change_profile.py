@@ -23,9 +23,10 @@ def _display_profile(profile: Profile, user_interface: Interface) -> None:
     user_interface.request_output_to_user("\nAudio's list:")
     for audio_metadata in profile.audio_metadatas:
         track_info = f"{audio_metadata.name}"
-        track_info += f"by {audio_metadata.author}" if audio_metadata.author != '' else ''
-        track_info += f", tags: {audio_metadata.tags}"
-        track_info += ", source: " + "yes" if audio_metadata.source != '' else "no"
+        track_info += f"by {audio_metadata.author}" if audio_metadata.author is not None else ''
+        track_info += ', tags: '
+        track_info += f"{audio_metadata.tags}" if audio_metadata.tags else 'no'
+        track_info += ', source: ' + 'yes' if audio_metadata.source != '' else 'no'
         user_interface.request_output_to_user(
             f"- {track_info}"
         )

@@ -10,7 +10,7 @@ from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.move_timeline import request_move
 from app.actions.next import skip_music
-from app.actions.change_profile import request_profile
+from app.actions.change_profile import request_profile, _fill_profile_with_metadata
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.actions.volume import request_volume
@@ -44,6 +44,7 @@ if __name__ == "__main__":
         )
         sys.exit()
     user_interface.request_output_to_user("Info: Welcome to music list player!")
+    profile = _fill_profile_with_metadata(configuration, user_interface)    # display info after the first welcome message
     if configuration.is_default_profile_imported_on_startup():
         user_interface.request_output_to_user("Info: Auto-import on startup..")
         player: AudioPlayer | None = import_playlist(parse_command(Command.IMPORT.value), configuration, player, user_interface)
