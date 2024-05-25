@@ -85,7 +85,6 @@ def _rename_filename(source_filepath: str, new_filename: str) -> str:
     os.rename(source_filepath, playlist_name_like_audio_absolute_path)
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
-# TODO test it without interactive choice
 def load(audio_name: str, file_extension: FileExtension, configuration: Configuration, user_interface: Interface) -> Audio:
     """Load the audio from the cache or from the Internet
     @param audio_name: str
