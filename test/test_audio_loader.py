@@ -1,6 +1,11 @@
+import os.path
 import pytest
 
+from app.config.configuration import Configuration
+from audio.playlist import Playlist
+from audio_import import audio_loader
 from audio_import.audio_loader import sanitize_filename, UNIX_FORBIDDEN_CHAR, MS_FORBIDDEN_CHAR, ESCAPING_CHAR
+from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
 
 def test_sanitize_filename():
     tested_and_expected_filenames = [
@@ -11,3 +16,11 @@ def test_sanitize_filename():
     for tested_and_expected_filename in tested_and_expected_filenames:
         tested_filename, expected_filename = tested_and_expected_filename
         assert sanitize_filename(tested_filename) == expected_filename
+
+def test_unload_music(setup_and_teardown_playlist_and_configuration_files):
+    test_config = setup_and_teardown_playlist_and_configuration_files
+    configuration: Configuration = test_config['configuration']
+    playlist: Playlist = test_config['playlist']
+    for audio in playlist.audios:
+        audio_loader.unload_music(audio=audio, configuration=configuration)
+        assert not os.path.isfile(audio.filepath)

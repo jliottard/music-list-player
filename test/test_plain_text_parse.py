@@ -67,6 +67,4 @@ def test_parse_plain_text_playlist_file(setup_and_teardown_playlist_and_configur
     ]
 
     for tested_metadata, expected_metadata in zip(audio_metadatas, expected_metadatas):
-        print(tested_metadata)
-        print(expected_metadata)
         assert tested_metadata == expected_metadata

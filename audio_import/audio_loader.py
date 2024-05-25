@@ -175,7 +175,6 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
             continue
         yield maybe_audio
 
-# TODO test it
 def unload_music(audio: Audio, configuration: Configuration) -> None:
     """Remove the local audio is found"""
     if _is_file_loaded(audio.name + audio.extension.value, configuration):
@@ -184,7 +183,6 @@ def unload_music(audio: Audio, configuration: Configuration) -> None:
     if audio.lyrics_filepath is not None and is_file_in_cache(audio.lyrics_filepath):
         os.remove(configuration.get_audio_file_path(audio.lyrics_filepath))
 
-# TODO test it
 def flush_playlist_cache(playlist: Playlist, configuration: Configuration) -> None:
     """Description: Remove playlist cached files
     @param playlist: Playlist: the playlist containing the audio to remove from cache

@@ -5,7 +5,7 @@ class Audio:
     def __init__(self, name: str, filepath: str, file_extension: FileExtension):
         self.name: str = name
         self.filepath: str = filepath
-        self.extension: str = file_extension
+        self.extension: FileExtension = file_extension
         self.lyrics_filepath: str = None
 
     def __str__(self) -> str:
