@@ -3,7 +3,8 @@ from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
 def skip_music(player: AudioPlayer, user_interface: Interface) -> None:
-    """Make the player play the following the music
+    """Make the player play the following the music if there is a next audio
+    See play mode for more info.
     @param player: AudioPlayer
     @param user_interface: Interface
     """

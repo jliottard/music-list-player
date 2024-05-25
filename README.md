@@ -102,9 +102,14 @@ pylint *
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
 - [x] Jump forward or backward in the current audio timeline
 - [x] Import automatically the playlist from configuration on application start
+- [x] Sanitize the audio's name with keywords and wildcard of filepath (like '/', '\', or '*')
+- [x] Create playlist dynamically based on tag(s) present on each audio name (line)
 
 ### Backlog
 
+- [ ] Parse author part of the audio line in plain text file
+- [ ] Speed up or down audios
+- [ ] Use directly a YouTube link if presents in the audio name (line)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
 - [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")

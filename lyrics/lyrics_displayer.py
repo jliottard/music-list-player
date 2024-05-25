@@ -3,7 +3,8 @@ from threading import Thread
 
 import pylrc
 
-from app import configuration, file_management
+from app import file_management
+from app.config.configuration import TEXT_ENCODING
 from app.interface import Interface
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
@@ -49,7 +50,7 @@ class LyricsDisplayer:
     def get_lyric_text(self, audio: Audio) -> pylrc.classes.Lyrics:
         """Return the lyric text contents of the audio"""
         lyric_text = None
-        with open(audio.lyrics_filepath, "rt", encoding=configuration.TEXT_ENCODING) as lyric_file:
+        with open(audio.lyrics_filepath, "rt", encoding=TEXT_ENCODING) as lyric_file:
             lyric_text: pylrc.classes.Lyrics = pylrc.parse(lyric_file.read())
         return lyric_text
 
@@ -63,7 +64,7 @@ class LyricsDisplayer:
                 lyric_text: pylrc.classes.Lyrics = self.get_lyric_text(maybe_base_audio)
                 self.displayed_lyric_audio = maybe_base_audio
                 last_lyric = lyric_text[-1]
-                user_interface.request_output_to_user(f"Info:\n - \"{self.displayed_lyric_audio.name}\" audio's lyrics:")
+                user_interface.request_output_to_user(f"Info: \"{self.displayed_lyric_audio.name}\" audio's lyrics:")
                 for lyric_line in lyric_text:
                     if self.are_lyrics_on:
                         maybe_progress_time_in_sec = self.player.get_audio_progress_time_in_sec()
@@ -79,7 +80,7 @@ class LyricsDisplayer:
                         if not self.are_lyrics_on or has_audio_changed:
                             break
                         if self.player.is_playing():
-                            user_interface.request_output_to_user("\t-" + lyric_line.text)
+                            user_interface.request_output_to_user("\t" + lyric_line.text)
                     else:
                         break
             else:
