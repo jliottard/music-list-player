@@ -57,7 +57,8 @@ def test_parse_plain_text_playlist_file(setup_and_teardown_playlist_and_configur
         user_interface=interface_mock
     )
 
-    # author  parsings is not yet implemented
+    # TODO test author parsing when implemented
+    # author  parsing is not yet implemented
     expected_metadatas = [
         AudioMetadata(name='nocturne op 55 no 1 by frédéric chopin', author=None, source=None, tags=['#chopin']),
         AudioMetadata(name='nocturne op 9 no 2 by frédéric chopin', author=None, source=None, tags=['#chopin']),
