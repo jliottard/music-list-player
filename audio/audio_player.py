@@ -109,6 +109,7 @@ class AudioPlayer:
             return None
         return self.playlist.audios[maybe_next_audio_index]
 
+    # TODO test it
     def set_play_mode(self, mode: PlayMode):
         self.play_mode = mode
         self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
@@ -116,6 +117,7 @@ class AudioPlayer:
     def get_play_mode(self) -> PlayMode:
         return self.play_mode
 
+    # TODO test it
     def play_audio_at_index(self, index: int) -> bool:
         """
         Returns:

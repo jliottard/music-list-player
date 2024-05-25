@@ -1,5 +1,6 @@
 import os
 import shutil
+import platform
 import pytest
 
 from app.actions.change_profile import _fill_profile_with_metadata
@@ -16,11 +17,12 @@ TEST_PLAYLIST_RELATIVE_PATH = os.path.join(
     TEST_WORK_DIRECTORY_RELATIVE_PATH,
     "playlist_for_test.txt"
 )
-TEST_PLAYLIST_FILE_CONTENTS = "\n".join(
+CARRIAGE_RETURN_CHAR = "\n" if platform.system() == 'linux' else "\r\n"
+TEST_PLAYLIST_FILE_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
     [
-        'nocturne op. 55 no 1 by frédéric chopin #chopin',
-        'nocturne op.9 no 2 by frédéric chopin #chopin',
-        'etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oHiU-u2ddJ4) '
+        'nocturne op 55 no 1 by frédéric chopin #chopin',
+        'nocturne op 9 no 2 by frédéric chopin #chopin',
+        'etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oHiU-u2ddJ4)',
         'hungarian dance no 5 by johannes brahms'
     ]
 )

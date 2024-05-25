@@ -74,7 +74,7 @@ def _playlist_line_to_audio_metadata(line: str) -> AudioMetadata:
     maybe_web_source: str | None = try_extract_web_url(line)
     any_tags: List[str] = try_extract_tags(line)
     title = remove_metadata(line)
-    author = ''     # TODO: try to parse the author in the title of the audio
+    author = None     # TODO: try to parse the author in the title of the audio
     return AudioMetadata(
         name=title,
         author=author,
