@@ -3,7 +3,6 @@ import sys
 
 from typing import List
 
-from app import configuration
 from app.actions.help import print_help
 from app.actions.import_playlist import import_playlist
 from app.actions.list import print_list
@@ -11,17 +10,21 @@ from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.move_timeline import request_move
 from app.actions.next import skip_music
+from app.actions.change_profile import request_profile, _fill_profile_with_metadata
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.actions.volume import request_volume
 from app.command import Command, parse_command
+from app.config.configuration import Configuration
+from app.config.configuration_keyword import DEFAULT_PLAYLIST_PROFILE_NAME
+from app.config.profile import Profile
 from app.interface import Interface
 from app.termination import clean_app_termination
 from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
 from lyrics.lyrics_displayer import LyricsDisplayer
 
-def setup() -> bool:
+def setup(configuration: Configuration) -> bool:
     """ Check app initialization """
     if not configuration.check_required_files_from_configuration_exist():
         return False
@@ -29,20 +32,22 @@ def setup() -> bool:
 
 if __name__ == "__main__":
     user_interface = Interface()
+    player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
+    lyrics_displayer = LyricsDisplayer(player, user_interface)
+    profile: Profile = Profile(DEFAULT_PLAYLIST_PROFILE_NAME)
+    configuration = Configuration(profile)
     try:
-        setup()
+        setup(configuration)
     except Exception as e:
         user_interface.request_output_to_user(
             f"Error while app initialization. More details: {e}"
         )
         sys.exit()
     user_interface.request_output_to_user("Info: Welcome to music list player!")
-    player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
-    lyrics_displayer = LyricsDisplayer(player, user_interface)
-    profile = configuration.DEFAULT_PLAYLIST_PROFILE_NAME
+    profile = _fill_profile_with_metadata(configuration, user_interface)    # display info after the first welcome message
     if configuration.is_default_profile_imported_on_startup():
         user_interface.request_output_to_user("Info: Auto-import on startup..")
-        player, profile = import_playlist(parse_command(Command.IMPORT.value), player, user_interface)
+        player: AudioPlayer | None = import_playlist(parse_command(Command.IMPORT.value), configuration, player, user_interface)
         lyrics_displayer = LyricsDisplayer(player, user_interface)
     user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
@@ -55,13 +60,13 @@ if __name__ == "__main__":
             continue
         match maybe_args[0]:
             case Command.QUIT:
-                clean_app_termination(player, profile, user_interface)
+                clean_app_termination(player, configuration, user_interface)
                 user_interface.request_output_to_user("Goodbye!")
                 break
             case Command.HELP:
                 print_help(user_interface)
             case Command.IMPORT:
-                player, profile = import_playlist(maybe_args, player, user_interface)
+                player: AudioPlayer | None = import_playlist(maybe_args, configuration, player, user_interface)
                 lyrics_displayer = LyricsDisplayer(player, user_interface)
             case Command.LIST:
                 print_list(player, user_interface)
@@ -90,5 +95,7 @@ if __name__ == "__main__":
                 request_lyrics(maybe_args, lyrics_displayer)
             case Command.MOVE:
                 request_move(maybe_args, player)
+            case Command.PROFILE:
+                configuration.profile: Profile | None = request_profile(maybe_args, configuration, user_interface)
             case _:
                 pass

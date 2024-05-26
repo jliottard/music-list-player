@@ -28,7 +28,7 @@ jobs:
         py -m venv .venv
         .venv\Scripts\activate
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r dev_requirements.txt
         pip install flake8 pytest
         deactivate
     - name: Install VLC

@@ -1,5 +1,4 @@
 import os
-import sys
 from pytube import YouTube
 from pytube import exceptions
 

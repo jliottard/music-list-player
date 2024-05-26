@@ -27,7 +27,7 @@ def search_videos_on_youtube(term_search: str) -> List[YouTubeVideoMetadata]:
     return metadatas
 
 def get_youtube_video_url(music_name: str) -> str:
-    """
+    """Search the YouTube URL for the given music_name as a search term
         @param music_name: str string of the format "NAME AUTHOR" of the music video to search
         @return: str youtube URL of the first result of the searched music
     """

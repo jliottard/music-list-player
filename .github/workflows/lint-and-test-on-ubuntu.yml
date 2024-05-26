@@ -28,7 +28,7 @@ jobs:
         sudo apt-get update
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f dev_requirements.txt ]; then pip install -r dev_requirements.txt; fi
         sudo apt-get install vlc
     - name: Lint with flake8
       run: |
