@@ -1,10 +1,6 @@
 from typing import List
 import re
-<<<<<<< HEAD
-from app import configuration
-=======
 from app.config.configuration import TEXT_ENCODING
->>>>>>> 86038c346f64657f5d291baf751fc2321a99cc4d
 from app.interface import Interface
 from audio_import.audio_metadata import AudioMetadata
 
