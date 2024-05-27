@@ -1,16 +1,12 @@
+# The folowing section is global for the app and necessary
 [global-settings]
-"default-profile-import-on-startup" = true
+"default-profile-import-on-startup" = false
+"default-profile-name" = "example"
 
-[default-profile]
-"download-directory-relative-path" = "audios_cache"
-"playlist-file-relative-path" = "playlists/playlist.txt"
-"persistant-audio-cache" = true
-"music-lyrics-search-on-import" = true
-"audio-source-selection-on-import" = false
-
-[lofi-profile]
-"download-directory-relative-path" = "audios_cache"
-"playlist-file-relative-path" = "playlists/lofi_playlist.txt"
-"persistant-audio-cache" = false
-"music-lyrics-search-on-import" = false
-"audio-source-selection-on-import" = false
+# The following commented lines are a model for defining a profile:
+# [example_profile]
+# "download-directory-relative-path" = "path/to/audio/cache/directory"  # the path is relative to the music-list-player directory
+# "playlist-file-relative-path" = "path/to/playlist/file.txt"           # the path is relative to the music-list-player directory
+# "persistant-audio-cache" = false
+# "music-lyrics-search-on-import" = false
+# "audio-source-selection-on-import" = false
