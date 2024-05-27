@@ -8,7 +8,7 @@ def request_volume(args: list, player: AudioPlayer, user_interface: Interface):
     @param user_interface: Interface
     """
     if len(args) == 1:
-        user_interface.request_output_to_user(f"Audio's volume is {player.get_volume()}%.")
+        user_interface.request_output_to_user(f"Info: Audio's volume is {player.get_volume()}%.")
     elif len(args) == 2:
         volume_integer = 0
         try:
@@ -17,4 +17,4 @@ def request_volume(args: list, player: AudioPlayer, user_interface: Interface):
             user_interface.request_output_to_user(f"Error: the second argument \"{args[1]}\" is not an integer. So, the audio's volume cannot be changed.")
             return
         player.set_volume(volume_integer)
-        user_interface.request_output_to_user("Updating audio's volume")
+        user_interface.request_output_to_user("Info: Updating audio's volume")

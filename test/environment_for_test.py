@@ -3,7 +3,6 @@ import shutil
 import platform
 import pytest
 
-from app.actions.change_profile import _fill_profile_with_metadata
 from app.config.configuration import Configuration, TEXT_ENCODING
 from app.config.profile import Profile
 from audio.audio import Audio
@@ -63,7 +62,7 @@ def setup_and_teardown_playlist_and_configuration_files():
     profile = Profile(TEST_PROFILE_NAME)
     configuration = Configuration(profile, TEST_PROFILE_CONFIGURATION_RELATIVE_PATH)
     mock_interface = InterfaceMock()
-    _fill_profile_with_metadata(configuration, mock_interface)
+    configuration.fill_profile_with_metadata(mock_interface)
 
     playlist = Playlist()
     file_extension = FileExtension.MP3

@@ -14,6 +14,6 @@ def clean_app_termination(player: AudioPlayer, configuration: Configuration | No
         return
     if not configuration.is_audio_cache_persistant():
         user_interface.request_output_to_user(
-            f"Erasing saved audios from the \"{configuration.get_audios_directory_path()}\" directory."
+            f"Info: Erasing saved audios from the \"{configuration.get_audios_directory_path()}\" directory."
         )
         flush_playlist_cache(player.playlist, configuration)

@@ -1,11 +1,8 @@
 from typing import List
 
 from app.config.configuration import Configuration
-from app.config.configuration_keyword import DEFAULT_PLAYLIST_PROFILE_NAME
 from app.config.profile import Profile
 from app.interface import Interface
-from audio_import.audio_metadata import AudioMetadata
-from audio_import.plain_text_parse import parse_plain_text_playlist_file
 
 def _display_profile(profile: Profile, user_interface: Interface) -> None:
     """Display throught the interface the profile's presentation including metadatas
@@ -31,18 +28,6 @@ def _display_profile(profile: Profile, user_interface: Interface) -> None:
             f"- {track_info}"
         )
 
-def _fill_profile_with_metadata(configuration: Configuration, user_interface: Interface) -> Profile:
-    """File the metadata fields of profile
-    @param configuration: Configuration
-    @param user_interface: Interface
-    @return Profile: the same profile
-    """
-    configuration.profile.audio_metadatas: List[AudioMetadata] = parse_plain_text_playlist_file(
-        playlist_file_absolute_path=configuration.get_playlist_file_path(),
-        user_interface=user_interface
-    )
-    return configuration.profile
-
 def request_profile(args: list | None, configuration: Configuration, user_interface: Interface) -> Profile:
     """Change the app's profile or display the current profile if no arguments are given
     @param args: List[str] or None
@@ -56,24 +41,20 @@ def request_profile(args: list | None, configuration: Configuration, user_interf
     if len(args) == 1:
         if configuration.profile is None:
             user_interface.request_output_to_user(
-                "There is no profile set."
+                "There is no profile set. Please set a profile."
             )
-            user_interface.request_output_to_user(
-                f"Setting the default profile ({DEFAULT_PLAYLIST_PROFILE_NAME}) as the playlist profile."
-            )
-            configuration.profile = Profile(name=DEFAULT_PLAYLIST_PROFILE_NAME)
-            configuration.profile = _fill_profile_with_metadata(configuration.profile, user_interface)
+            return
         _display_profile(configuration.profile, user_interface)
         return configuration.profile
     
     profile_name = str(args[1]) # TODO is the profile name just a string without space allowed or can it have space?
     if profile_name not in configuration.get_profiles():
-        user_interface.request_output_to_user(f"Unknown profile: \"{profile_name}\"")
+        user_interface.request_output_to_user(f"Warning: Unknown profile: \"{profile_name}\"")
         return configuration.profile
 
     configuration.profile = Profile(name=profile_name)
-    configuration.profile = _fill_profile_with_metadata(configuration, user_interface)
+    configuration.fill_profile_with_metadata(user_interface)
     n_metadatas = len(configuration.profile.audio_metadatas)
-    user_interface.request_output_to_user(f"Profile updated: \"{n_metadatas}\" lines of metadatas found.")
+    user_interface.request_output_to_user(f"Info: Profile updated: \"{n_metadatas}\" lines of metadatas found.")
 
     return configuration.profile

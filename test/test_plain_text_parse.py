@@ -1,6 +1,7 @@
 import pytest
 from typing import List
 
+from app.config.configuration import TEXT_ENCODING
 from audio_import.audio_metadata import AudioMetadata
 from audio_import.plain_text_parse import remove_metadata, try_extract_web_url, try_extract_tags, parse_plain_text_playlist_file
 
@@ -54,7 +55,8 @@ def test_parse_plain_text_playlist_file(setup_and_teardown_playlist_and_configur
 
     audio_metadatas: List[AudioMetadata] = parse_plain_text_playlist_file(
         playlist_file_absolute_path=playlist_filepath,
-        user_interface=interface_mock
+        user_interface=interface_mock,
+        text_encoding=TEXT_ENCODING
     )
 
     # TODO test author parsing when implemented

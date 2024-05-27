@@ -1,11 +1,10 @@
 # Music list player
+An audio player that uses text file to define your music playlist. It downloads audio files, plays musics, navigates through playlists and display song's lyrics.
 
-A python script that downloads and plays musics from a music list text file. So you can store your playlist in plain text.
+The idea is to write your musics line by line in a simple plaintext file, so you can save your favorite songs anywhere.
 
 ## How to use
-
 ### How to install the application and the dependencies
-
 The project uses `Python 3.10` and it is not developped nor tested for earlier Python version.
 
 Python libraries are listed in the `requirements.txt` files. To import the dependencies in a virtual environment, run:
@@ -30,13 +29,11 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 - On Windows, VLC version 3.0.20 works.
 
 ### How to configure
+For the configuration, use the `configuration.toml` file (must be located in this music-list-player directory) to specify your profiles (playlist file location, store audio files location and other settings). Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository. But do not remove fields from the `[global-settings]` part, they are mandatory for the global application settings.
 
-Use the `configuration.toml` file to specify where is your playlist file(s), where to store audio files and other settings. Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository. But do not remove fields from the `[global-settings]` part, they are mandatory for the global application settings.
-
-The playlist file must be a list of the songs to play, with one song name per line.
+For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
 ### How to run the application
-
 In the virtual environment, run in the project root directory:
 - On Linux:
 ```bash
@@ -47,14 +44,13 @@ In the virtual environment, run in the project root directory:
 python main.py
 ```
 
-Deactivate the virtual environment:
+When you have finished using the application, quit it and deactivate the virtual environment:
 - On Linux and Windows:
 ```bash
 deactivate
 ```
 
 ### How to test
-
 To run the tests, use in the project root directory:
 ```bash
 pytest
@@ -66,9 +62,7 @@ pylint *
 ```
 
 ## Features
-
 ### Implemented in version 1.0
-
 - [x] Command-line interface definition in-app
 - [x] Play audio
 - [x] Download musics from Internet
@@ -86,7 +80,6 @@ pylint *
 - [x] Handle age restricted youtube video
 
 ### Implemented in version 1.1
-
 - [x] Support Windows
 - [x] Switch playlist profiles in app
 - [x] Erase cached when quitting the application as a setting
@@ -96,7 +89,6 @@ pylint *
 - [x] Print music's lyrics matching music's audio
 
 ### Implemented
-
 - [x] Handle errors on not finding a Youtube video for the given names of the playlist
 - [x] Use a search function of a Python library
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
@@ -106,7 +98,6 @@ pylint *
 - [x] Create playlist dynamically based on tag(s) present on each audio name (line)
 
 ### Backlog
-
 - [ ] Parse author part of the audio line in plain text file
 - [ ] Speed up or down audios
 - [ ] Use directly a YouTube link if presents in the audio name (line)
