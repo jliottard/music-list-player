@@ -29,7 +29,7 @@ def check_configuration(configuration: Configuration, user_interface: Interface)
     '''
     missing_filepaths: List[str] = configuration.search_missing_but_required_files_from_configuration_exist()
     if missing_filepaths:
-        user_interface.request_output_to_user('Error: The following filepath(s) defined in the {CONFIGURATION_FILE_PATH} file do not exist:')
+        user_interface.request_output_to_user(f"Error: The following filepath(s) defined in the {CONFIGURATION_FILE_PATH} file do not exist:")
         for missing_filepath in missing_filepaths:
             user_interface.request_output_to_user(f"{missing_filepath}")
         return False
