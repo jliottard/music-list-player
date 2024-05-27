@@ -108,11 +108,11 @@ pylint *
 - [x] Create playlist dynamically based on tag(s) present on each audio name (line)
 
 ### Backlog
+- [ ] Use directly a YouTube link if presents in the audio name (line)
+- [ ] Check remaining disk usage when downloading audios
 - [ ] Parse author part of the audio line in plain text file
 - [ ] Speed up or down audios
-- [ ] Use directly a YouTube link if presents in the audio name (line)
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
-- [ ] Spell check the command keywords and the audio name argument for the Play command, so we can use alias for command ("pl" or "pla" for "play")
 - [ ] Add colors to the prints and use a log system
 - [ ] Add a music recommendation feature
