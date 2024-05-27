@@ -31,6 +31,16 @@ The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) so
 ### How to configure
 For the configuration, use the `configuration.toml` file (must be located in this music-list-player directory) to specify your profiles (playlist file location, store audio files location and other settings). Use the provided `configuration.toml` file as a reference and feel free to modify it on your local repository. But do not remove fields from the `[global-settings]` part, they are mandatory for the global application settings.
 
+A recommanded configuration is:
+```toml
+[my_profile]
+"playlist-file-relative-path" = "playlists/my_playlist.txt" # must exists
+"download-directory-relative-path" = "audios_downloads"     # must exists
+"audio-source-selection-on-import" = false
+"persistant-audio-cache" = true
+"music-lyrics-search-on-import" = false 
+```
+
 For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
 ### How to run the application
