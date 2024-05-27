@@ -1,12 +1,12 @@
 # The folowing section is global for the app and necessary
 [global-settings]
-"default-profile-import-on-startup" = false
-"default-profile-name" = "example"
+"default-profile-import-on-startup" = false                             # if true, the default profile and its entier playlist are loaded on startup
+"default-profile-name" = "example"                                      # the name of the profile that must be defined as the 'example_profile' profile
 
 # The following commented lines are a model for defining a profile:
-# [example_profile]
-# "download-directory-relative-path" = "path/to/audio/cache/directory"  # the path is relative to the music-list-player directory
-# "playlist-file-relative-path" = "path/to/playlist/file.txt"           # the path is relative to the music-list-player directory
-# "persistant-audio-cache" = false
-# "music-lyrics-search-on-import" = false
-# "audio-source-selection-on-import" = false
+# [example_profile]                                                     # between the brackets is the profile name to enter in the command 'profile <profile_name>'
+# "playlist-file-relative-path" = "path/to/playlist/file.txt"           # where the plain-text playlist file shall be, it is relative to the music-list-player directory
+# "download-directory-relative-path" = "path/to/audio/cache/directory"  # twhere the audio's file shall be, it is relative to the music-list-player directory
+# "audio-source-selection-on-import" = false                            # if true, when the audios are imported from internet, you choose from a list which YouTube video download the audio from
+# "persistant-audio-cache" = true                                       # if false, on quitting the application, the audio fils are deleted
+# "music-lyrics-search-on-import" = false                               # if true, on importing audios, the audio's lyric are downloaded or loaded if possible

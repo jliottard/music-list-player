@@ -10,13 +10,12 @@ from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.move_timeline import request_move
 from app.actions.next import skip_music
-from app.actions.change_profile import request_profile, _fill_profile_with_metadata
+from app.actions.change_profile import request_profile
 from app.actions.play import play
 from app.actions.shuffle import shuffle_playlist
 from app.actions.volume import request_volume
 from app.command import Command, parse_command
-from app.config.configuration import Configuration
-from app.config.configuration_keyword import DEFAULT_PLAYLIST_PROFILE_NAME
+from app.config.configuration import Configuration, CONFIGURATION_FILE_PATH
 from app.config.profile import Profile
 from app.interface import Interface
 from app.termination import clean_app_termination
@@ -24,31 +23,45 @@ from audio.audio_player import AudioPlayer
 from audio.playlist import Playlist
 from lyrics.lyrics_displayer import LyricsDisplayer
 
-def setup(configuration: Configuration) -> bool:
-    """ Check app initialization """
-    if not configuration.check_required_files_from_configuration_exist():
+def check_configuration(configuration: Configuration, user_interface: Interface) -> bool:
+    '''Check application's configuration
+    @return: bool, True if the configuration is correct, False if something is missing.
+    '''
+    missing_filepaths: List[str] = configuration.search_missing_but_required_files_from_configuration_exist()
+    if missing_filepaths:
+        user_interface.request_output_to_user('Error: The following filepath(s) defined in the {CONFIGURATION_FILE_PATH} file do not exist:')
+        for missing_filepath in missing_filepaths:
+            user_interface.request_output_to_user(f"{missing_filepath}")
+        return False
+    if not configuration.check_default_profile_is_defined_in_configuration():
+        user_interface.request_output_to_user(f"Error: The default profile named \"{configuration.get_default_profile_name()}\" is not defined in the {CONFIGURATION_FILE_PATH} file")
         return False
     return True
 
 if __name__ == "__main__":
+    # Initialization
     user_interface = Interface()
+    user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
     lyrics_displayer = LyricsDisplayer(player, user_interface)
-    profile: Profile = Profile(DEFAULT_PLAYLIST_PROFILE_NAME)
-    configuration = Configuration(profile)
+    configuration = Configuration(profile=None)
+    is_configuration_valid = False
     try:
-        setup(configuration)
+        is_configuration_valid = check_configuration(configuration, user_interface)
     except Exception as e:
-        user_interface.request_output_to_user(
-            f"Error while app initialization. More details: {e}"
-        )
-        sys.exit()
-    user_interface.request_output_to_user("Info: Welcome to music list player!")
-    profile = _fill_profile_with_metadata(configuration, user_interface)    # display info after the first welcome message
+        pass
+    finally:
+        if not is_configuration_valid:
+            user_interface.request_output_to_user(
+                "Info: Application's initialization failed! Exiting application.."
+            )
+            sys.exit()
+    configuration.fill_profile_with_metadata(user_interface)
     if configuration.is_default_profile_imported_on_startup():
         user_interface.request_output_to_user("Info: Auto-import on startup..")
         player: AudioPlayer | None = import_playlist(parse_command(Command.IMPORT.value), configuration, player, user_interface)
         lyrics_displayer = LyricsDisplayer(player, user_interface)
+    # Main loop
     user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
         user_input_command: str = user_interface.request_input_from_user()
@@ -56,12 +69,12 @@ if __name__ == "__main__":
         maybe_played_audio = player.get_playing_audio()
         maybe_args: List[str] = parse_command(user_input_command)
         if maybe_args is None:
-            user_interface.request_output_to_user(f"\"{user_input_command}\" command is unknown.")
+            user_interface.request_output_to_user(f"Warning: \"{user_input_command}\" command is unknown.")
             continue
         match maybe_args[0]:
             case Command.QUIT:
                 clean_app_termination(player, configuration, user_interface)
-                user_interface.request_output_to_user("Goodbye!")
+                user_interface.request_output_to_user("Info: Goodbye!")
                 break
             case Command.HELP:
                 print_help(user_interface)
@@ -76,14 +89,14 @@ if __name__ == "__main__":
                 skip_music(player, user_interface)
             case Command.STOP:
                 player.stop()
-                user_interface.request_output_to_user("Stopping the audio.")
+                user_interface.request_output_to_user("Info: Stopping the audio.")
             case Command.PAUSE:
                 if player.is_playing():
-                    user_interface.request_output_to_user("Pausing the audio.")
+                    user_interface.request_output_to_user("Info; Pausing the audio.")
                     player.pause()
             case Command.RESUME:
                 if not player.is_playing():
-                    user_interface.request_output_to_user("Resuming the audio.")
+                    user_interface.request_output_to_user("Info: Resuming the audio.")
                     player.resume()
             case Command.SHUFFLE:
                 shuffle_playlist(player, user_interface)

@@ -10,7 +10,7 @@ def skip_music(player: AudioPlayer, user_interface: Interface) -> None:
     """
     maybe_next_audio: Audio = player.get_next_audio()
     if maybe_next_audio is None:
-        user_interface.request_output_to_user("Cannot skip, end of playlist reached as one pass mode.")
+        user_interface.request_output_to_user("Warning: Cannot skip, end of playlist reached as one pass mode.")
     else:
         player.next()
-        user_interface.request_output_to_user(f"Skipping to \"{maybe_next_audio.name}\".")
+        user_interface.request_output_to_user(f"Info: Skipping to \"{maybe_next_audio.name}\".")

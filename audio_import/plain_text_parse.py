@@ -1,6 +1,5 @@
 from typing import List
 import re
-from app.config.configuration import TEXT_ENCODING
 from app.interface import Interface
 from audio_import.audio_metadata import AudioMetadata
 
@@ -82,15 +81,16 @@ def _playlist_line_to_audio_metadata(line: str) -> AudioMetadata:
         tags=any_tags
     )
 
-def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interface: Interface) -> List[AudioMetadata]:
+def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interface: Interface, text_encoding: str) -> List[AudioMetadata]:
     """Parse the plain text playlist file into a list of audios
         @param playlist_file_absolute_path: str the file path to the plain text file
         @param user_interface: Interface
+        @param text_encoding:
         @return List[AudioMetadata]: the audios' informations
     """
     user_interface.request_output_to_user("Info: parsing playlist file.")
     audio_data = []
-    with open(playlist_file_absolute_path, "rt", encoding=TEXT_ENCODING) as playlist_file:
+    with open(playlist_file_absolute_path, "rt", encoding=text_encoding) as playlist_file:
         lines = playlist_file.readlines()
         for line in lines:
             audio_data.append(_playlist_line_to_audio_metadata(line))

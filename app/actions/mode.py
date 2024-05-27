@@ -16,8 +16,8 @@ def request_mode(args: list, player: AudioPlayer, user_interface: Interface) -> 
             mode_index = match_string_among_strings(" ".join(args[1:]), modes)
             player.set_play_mode(from_string(modes[mode_index]))
         except CannotFindAMatchError:
-            user_interface.request_output_to_user(f"Cannot find a matching mode with \"{args[1:]}\".")
+            user_interface.request_output_to_user(f"Warning: Cannot find a matching mode with \"{args[1:]}\".")
         else:
-            user_interface.request_output_to_user(f"Setting play mode as {player.get_play_mode()}.")
+            user_interface.request_output_to_user(f"Info: Setting play mode as {player.get_play_mode()}.")
     else:
-        user_interface.request_output_to_user(f"Current play mode is {player.get_play_mode()}.")
+        user_interface.request_output_to_user(f"Info: Current play mode is {player.get_play_mode()}.")
