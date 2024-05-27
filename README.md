@@ -34,8 +34,8 @@ For the configuration, use the `configuration.toml` file (must be located in thi
 A recommanded configuration is:
 ```toml
 [my_profile]
-"playlist-file-relative-path" = "playlists/my_playlist.txt" # must exists
-"download-directory-relative-path" = "audios_downloads"     # must exists
+"playlist-file-relative-path" = "playlists/my_playlist.txt" # must exist
+"download-directory-relative-path" = "audios_downloads"     # must exist
 "audio-source-selection-on-import" = false
 "persistant-audio-cache" = true
 "music-lyrics-search-on-import" = false 
