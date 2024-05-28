@@ -9,7 +9,6 @@ def shuffle_playlist(player: AudioPlayer, user_interface: Interface):
     """
     maybe_current_audio: Audio | None = player.get_playing_audio()
     maybe_time_progression_in_sec: float | None = player.get_audio_progress_time_in_sec()
-    print("audio", maybe_current_audio, "time", maybe_time_progression_in_sec)
     player.stop()
     user_interface.request_output_to_user("Info: Shuffling the playlist.")
     player.shuffle()

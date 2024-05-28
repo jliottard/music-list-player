@@ -41,8 +41,6 @@ def test_load_with_cached_audio(setup_and_teardown_playlist_and_configuration_fi
             configuration=configuration,
             user_interface=interface_mock,
         )
-        print(tested_audio.debug())
-        print(cached_audio.debug())
         assert tested_audio == cached_audio
 
 def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files):
@@ -61,7 +59,5 @@ def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files)
             configuration=configuration,
             user_interface=interface_mock,
         )
-        print(tested_audio.debug())
-        print(cached_audio.debug())
         assert os.path.isfile(tested_audio.filepath)
         assert tested_audio == cached_audio
