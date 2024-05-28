@@ -39,7 +39,7 @@ def _consume_audio(queue: Queue, player_reference: AudioPlayer):
         audio = queue.get()
         if audio is None:
             break
-        player_reference.append_audio_to_playlist(audio)
+        player_reference.append_audio_to_player_playlist(audio)
 
 def _load_playlist_in_background(configuration: Configuration, meta_query: AudioMetadata, user_interface: Interface) -> AudioPlayer:
     """Load the playlist's audios in background and early return the player

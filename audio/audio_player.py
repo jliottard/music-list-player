@@ -1,4 +1,5 @@
 import random
+import time
 import vlc
 from audio.audio import Audio
 from audio.playlist import Playlist
@@ -27,7 +28,7 @@ class AudioPlayer:
         self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
         self.set_volume(volume)
 
-    def append_audio_to_playlist(self, audio: Audio):
+    def append_audio_to_player_playlist(self, audio: Audio):
         """ Add the audio to the playlist and load it to the media list
         @param: audio: Audio: instanciated audio with an existing file path
         """
@@ -36,8 +37,9 @@ class AudioPlayer:
 
     def _overwrite_playlist(self, playlist: Playlist):
         self.playlist = Playlist()
+        self.media_list = self.player.media_list_new()
         for audio in playlist.audios:
-            self.append_audio_to_playlist(audio)
+            self.append_audio_to_player_playlist(audio)
         self.audio_list_player.set_media_list(self.media_list)
 
     def play(self):
@@ -70,9 +72,20 @@ class AudioPlayer:
         return -1
 
     def get_playing_audio_index(self) -> int:
-        """ Return None if there is no playing audio """
+        '''Get the index of the playing audio or None if there is no media being played
+        It is assumed that one audio file is loaded only once in the AudioPlayer's playlist,
+            so there is no Audios that share the same audio file path.
+        @return int | None
+        '''
+        maybe_media_player = self.audio_list_player.get_media_player()
+        if maybe_media_player is not None:
+            maybe_media = maybe_media_player.get_media()
+            if maybe_media is None:
+                return None
+        else:
+            return None
         for media_index, media in enumerate(self.media_list):
-            if media.get_state() in [vlc.State.Playing, vlc.State.Opening, vlc.State.Buffering]:
+            if media.get_mrl() == maybe_media.get_mrl():
                 return media_index
         return None
 
@@ -147,11 +160,12 @@ class AudioPlayer:
         """ Return the time duration of the playing audio
         @return float or None if there is no playing audio
         """
-        if not self.is_playing():
+        maybe_playing_audio_index = self.get_playing_audio_index()
+        if not maybe_playing_audio_index:
             return None
-        playing_media = self.media_list[self.get_playing_audio_index()]
+        playing_media = self.media_list[maybe_playing_audio_index]
         playing_media.parse()
-        return playing_media.get_duration() * 1e-3
+        return playing_media.get_duration() * AudioPlayer.COEF_MS_TO_SEC
 
     def get_audio_progress_time_in_sec(self) -> float | None:
         """ Return the current playing audio time progression
@@ -165,6 +179,7 @@ class AudioPlayer:
     def set_current_audio_time(self, time_in_sec: int):
         """ Set the current audio timeline
         Do nothing if the given time in out of range of the audio length
+        Do nothing if there is not playing media
         @param time_in_sec: int
         """
         maybe_audio_time_in_sec = self.get_playing_audio_duration_in_sec()

@@ -1,5 +1,3 @@
-import time
-
 from audio import audio_player, playlist, play_mode, audio, file_extension
 from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
 
@@ -44,7 +42,6 @@ def test_set_play_mode_one_pass(setup_and_teardown_playlist_and_configuration_fi
     player.set_play_mode(mode=play_mode.PlayMode.ONE_PASS)
     assert player.play_audio_at_index(len(test_playlist.audios) - 1)
     player.next()
-    time.sleep(1)   # the player can be slow
     # in one_pass the last audio cannot be skipped since there is not next audio
     assert player.get_playing_audio_index() == len(test_playlist.audios) - 1
 
@@ -54,10 +51,8 @@ def test_set_play_mode_loop(setup_and_teardown_playlist_and_configuration_files)
     player = audio_player.AudioPlayer(playlist=test_playlist, volume=0)
     player.set_play_mode(mode=play_mode.PlayMode.PLAYLIST_LOOP)
     assert player.play_audio_at_index(len(test_playlist.audios) - 1)
-    time.sleep(1)   # the player can be slow
     assert player.get_playing_audio_index() == len(test_playlist.audios) - 1
     player.next()
-    time.sleep(1)   # the player can be slow
     assert player.get_playing_audio_index() == FIRST_AUDIO_INDEX
 
 def test_play_audio_at_index(setup_and_teardown_playlist_and_configuration_files):
@@ -66,6 +61,5 @@ def test_play_audio_at_index(setup_and_teardown_playlist_and_configuration_files
     player = audio_player.AudioPlayer(playlist=test_playlist, volume=0)
     for audio_index in range(len(test_playlist.audios)):
         assert player.play_audio_at_index(audio_index) is True
-        time.sleep(1)
         assert player.get_playing_audio_index() == audio_index
     assert player.play_audio_at_index(len(test_playlist.audios)) is False
