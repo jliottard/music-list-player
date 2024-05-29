@@ -17,6 +17,7 @@ from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 UNIX_FORBIDDEN_CHAR = ['/', '\0']
 MS_FORBIDDEN_CHAR = ['/', '\\', '*', ':', '?', '"', '<', '>', '|', '\0']
 ESCAPING_CHAR = '_'
+IO_ERROR_NO_SPACE_LEFT_NUMBER = 28
 
 def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetadata], user_interface: Interface) -> YouTubeVideoMetadata|None:
     """Ask the terminal's user by a command line interaction to select a YouTube video from the list
@@ -85,13 +86,15 @@ def _rename_filename(source_filepath: str, new_filename: str) -> str:
     os.rename(source_filepath, playlist_name_like_audio_absolute_path)
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
-def load(audio_name: str, file_extension: FileExtension, configuration: Configuration, user_interface: Interface) -> Audio:
+def load(audio_name: str, file_extension: FileExtension, configuration: Configuration, user_interface: Interface, only_local: bool) -> Audio:
     """Load the audio from the cache or from the Internet
     @param audio_name: str
     @param file_extension: FileExtension
     @param configuration: COnfiguration
     @param user_interface: Interface, assume the user's input is booked
+    @param only_local: bool only try to load local audios
     @return: an Audio or None if the audio could not be found or downloaded
+    @raise IOError
     """
     returned_audio = None
     if _is_file_loaded(audio_name + file_extension.value, configuration):
@@ -101,7 +104,7 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
             filepath=configuration.get_audio_file_path(audio_name + file_extension.value),
             file_extension=file_extension
         )
-    else:
+    elif not only_local:
         user_interface.request_output_to_user(
             f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to downloaded it from Internet."
         )
@@ -128,6 +131,11 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
                 f"Warning: the audio \"{audio_name}\" could not be downloaded because {video_cannot_be_downloaded}"
             )
             return None
+        except IOError as io_error:
+            user_interface.request_output_to_user(
+                f"Warning: the audio \"{audio_name}\" cannot be downloaded because {io_error.strerror}"
+            )
+            raise io_error
         # Rename the file having Youtube video title as name to the audio name
         #  from the playlist file
         renamed_filepath = _rename_filename(
@@ -159,6 +167,7 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
     @param user_interface: Interface, assume the user's input is booked
     @yield: Audio
     """
+    load_only_local_audio = False
     for audio_metadata in configuration.profile.audio_metadatas:
         name = sanitize_filename(audio_metadata.name)
         _source = audio_metadata.source     # TODO: use the youtube id to directly download the audio without search
@@ -169,7 +178,14 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
             except CannotFindAMatchError:
                 # the current audio's metadata does not match the query's tags
                 continue
-        maybe_audio: Audio = load(name, FileExtension.MP3, configuration, user_interface)
+        try:
+            maybe_audio: Audio = load(name, FileExtension.MP3, configuration, user_interface, load_only_local_audio)
+        except IOError as io_error:
+            if io_error.errno == IO_ERROR_NO_SPACE_LEFT_NUMBER:
+                user_interface.request_output_to_user(
+                    'Warning: Since there is no more space left for downloading, only local audios will be loaded from now.'
+                )
+                load_only_local_audio = True
         if maybe_audio is None:
             continue
         yield maybe_audio
