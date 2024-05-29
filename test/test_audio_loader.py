@@ -40,8 +40,36 @@ def test_load_with_cached_audio(setup_and_teardown_playlist_and_configuration_fi
             file_extension=FileExtension.MP3,
             configuration=configuration,
             user_interface=interface_mock,
+            only_local=False
         )
         assert tested_audio == cached_audio
+
+def test_load_only_local_audio(setup_and_teardown_playlist_and_configuration_files):
+    test_config = setup_and_teardown_playlist_and_configuration_files
+    configuration: Configuration = test_config['configuration']
+    playlist: Playlist = test_config['playlist']
+    interface_mock: InterfaceMock = InterfaceMock()
+    not_downloaded_audios = [
+        Audio(
+            name="this file does not exist",
+            filepath="this filepath does not exist either",
+            file_extension=FileExtension.MP3
+        ),
+        Audio(
+            name="this second file does not exist too",
+            filepath="this filepath does not exist either too",
+            file_extension=FileExtension.MP3
+        )
+    ]
+    for not_in_cache_audio in not_downloaded_audios:
+        tested_maybe_audio: Audio | None = audio_loader.load(
+            audio_name=not_in_cache_audio.name,
+            file_extension=FileExtension.MP3,
+            configuration=configuration,
+            user_interface=interface_mock,
+            only_local=True
+        )
+        assert tested_maybe_audio is None
 
 def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files):
     test_config = setup_and_teardown_playlist_and_configuration_files
@@ -58,6 +86,7 @@ def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files)
             file_extension=FileExtension.MP3,
             configuration=configuration,
             user_interface=interface_mock,
+            only_local=False
         )
         assert os.path.isfile(tested_audio.filepath)
         assert tested_audio == cached_audio

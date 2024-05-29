@@ -14,6 +14,8 @@ def _display_profile(profile: Profile, user_interface: Interface) -> None:
     unique_tags = set()
     for audio_metadata in profile.audio_metadatas:
         unique_tags = unique_tags | set(audio_metadata.tags)
+    unique_tags = list(unique_tags)
+    unique_tags.sort()
     tags_list = ", ".join(unique_tags)
     user_interface.request_output_to_user(f"\nTags found:\n {tags_list}")
 
