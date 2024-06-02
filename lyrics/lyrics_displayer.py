@@ -50,37 +50,37 @@ class LyricsDisplayer:
         audio: Audio = maybe_audio
         return audio.lyrics_filepath is not None and file_management.is_file_in_cache(audio.lyrics_filepath)
 
-    def get_lyric_text(self, audio: Audio) -> pylrc.classes.Lyrics:
+    @staticmethod
+    def get_lyric_text(audio: Audio) -> pylrc.classes.Lyrics:
         """Return the lyric text contents of the audio"""
-        lyric_text = None
+        lyrics = None
         with open(audio.lyrics_filepath, "rt", encoding=TEXT_ENCODING) as lyric_file:
-            lyric_text: pylrc.classes.Lyrics = pylrc.parse(lyric_file.read())
-        return lyric_text
+            lyrics: pylrc.classes.Lyrics = pylrc.parse(lyric_file.read())
+        return lyrics
 
     def show_lyrics(self, user_interface: Interface):
         """Print the lyric if the music is playing
         @param user_interface: Inteface
         """
-        def _was_last_lyric_reached(last_lyric: pylrc.classes.LyricLine) -> bool:
-            return not self.player.get_audio_progress_time_in_sec() or self.player.get_audio_progress_time_in_sec() > last_lyric.time
-        def _has_audio_changed() -> bool:
-            return not self.player.get_playing_audio() and self.displayed_lyric_audio != self.player.get_playing_audio()
         def _is_progress_before_lyric_time(lyric_line: pylrc.classes.LyricLine) -> bool:
             return self.player.get_audio_progress_time_in_sec() < lyric_line.time - REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC - SHOW_LYRICS_IN_ADVANCE_DURATION_IN_SEC
+
+        def _has_audio_with_lyrics_changed() -> bool:
+            return self.player.get_playing_audio() is not None and self.displayed_lyric_audio != self.player.get_playing_audio()
 
         while self.are_lyrics_on:
             maybe_base_audio = self.player.get_playing_audio()
             if self.are_audio_lyrics_available(maybe_base_audio):
-                lyric_text: pylrc.classes.Lyrics = self.get_lyric_text(maybe_base_audio)
-                self.displayed_lyric_audio = maybe_base_audio
-                last_lyric = lyric_text[-1]
-                if not _was_last_lyric_reached(last_lyric):
-                    user_interface.request_output_to_user(f"Info: \"{self.displayed_lyric_audio.name}\" audio's lyrics:")
-                    for lyric_line in lyric_text:
+                base_audio: Audio = maybe_base_audio
+                if _has_audio_with_lyrics_changed():
+                    user_interface.request_output_to_user(f"Info: \"{base_audio.name}\" audio's lyrics:")
+                    self.displayed_lyric_audio = base_audio
+                    lyrics: pylrc.classes.Lyrics = LyricsDisplayer.get_lyric_text(self.displayed_lyric_audio)
+                    for lyric_line in lyrics:
                         if self.are_lyrics_on:
-                            while self.player.get_audio_progress_time_in_sec() is not None and not _has_audio_changed() and _is_progress_before_lyric_time(lyric_line):
+                            while self.player.get_audio_progress_time_in_sec() is not None and not _has_audio_with_lyrics_changed() and _is_progress_before_lyric_time(lyric_line):
                                 time.sleep(REFRESH_NEXT_LYRIC_TIME_CHECK_IN_SEC)
-                            if _was_last_lyric_reached(last_lyric) or not self.are_lyrics_on or _has_audio_changed():
+                            if not self.are_lyrics_on or _has_audio_with_lyrics_changed():
                                 break
                             if self.player.is_playing():
                                 user_interface.request_output_to_user("\t" + lyric_line.text)
