@@ -194,7 +194,7 @@ class AudioPlayer:
         @param time_in_sec: int
         """
         maybe_audio_time_in_sec = self.get_playing_audio_duration_in_sec()
-        if maybe_audio_time_in_sec is not None:
+        if maybe_audio_time_in_sec is None:
             return
         audio_time_in_sec: float = maybe_audio_time_in_sec
         if not 0 <= time_in_sec <= audio_time_in_sec:
