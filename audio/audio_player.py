@@ -20,12 +20,12 @@ class AudioPlayer:
         self.play_mode: PlayMode = PlayMode.ONE_PASS
         self.volume = volume
         # Actors
-        self.player: vlc.Instance = vlc.Instance()
-        self.media_list: vlc.MediaList = self.player.media_list_new()
-        self.audio_list_player: vlc.MediaListPlayer = self.player.media_list_player_new()
+        self.instance: vlc.Instance = vlc.Instance()
+        self.media_list: vlc.MediaList = None
+        self.media_list_player: vlc.MediaListPlayer = self.instance.media_list_player_new()
         # Actors' modifiers
         self._overwrite_playlist(playlist)
-        self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
+        self.media_list_player.set_playback_mode(translate_play_mode(self.play_mode))
         self.set_volume(volume)
 
     def append_audio_to_player_playlist(self, audio: Audio):
@@ -33,32 +33,34 @@ class AudioPlayer:
         @param: audio: Audio: instanciated audio with an existing file path
         """
         self.playlist.audios.append(audio)
-        self.media_list.add_media(self.player.media_new(audio.filepath))
+        self.media_list.add_media(self.instance.media_new(audio.filepath))
 
     def _overwrite_playlist(self, playlist: Playlist):
         self.playlist = Playlist()
-        self.media_list = self.player.media_list_new()
+        if self.media_list is not None:
+            self.media_list.release()
+        self.media_list = self.instance.media_list_new()
         for audio in playlist.audios:
             self.append_audio_to_player_playlist(audio)
-        self.audio_list_player.set_media_list(self.media_list)
+        self.media_list_player.set_media_list(self.media_list)
 
     def play(self):
-        self.audio_list_player.play()
+        self.media_list_player.play()
 
     def pause(self):
-        self.audio_list_player.set_pause(1)
+        self.media_list_player.set_pause(1)
 
     def resume(self):
-        self.audio_list_player.set_pause(0)
+        self.media_list_player.set_pause(0)
 
     def stop(self):
-        self.audio_list_player.stop()
+        self.media_list_player.stop()
 
     def next(self):
-        self.audio_list_player.next()
+        self.media_list_player.next()
 
     def is_playing(self) -> bool:
-        return self.audio_list_player.is_playing()
+        return self.media_list_player.is_playing()
 
     def shuffle(self):
         """ Rearrange the order of the playlist. The state of the played audio can be late to be updated """
@@ -77,16 +79,19 @@ class AudioPlayer:
             so there is no Audios that share the same audio file path.
         @return int | None
         '''
-        maybe_media_player = self.audio_list_player.get_media_player()
+        maybe_media_player: vlc.MediaPlayer = self.media_list_player.get_media_player()
         if maybe_media_player is not None:
-            maybe_media = maybe_media_player.get_media()
+            maybe_media: vlc.Media = maybe_media_player.get_media()
             if maybe_media is None:
+                maybe_media_player.release()
                 return None
         else:
             return None
         for media_index, media in enumerate(self.media_list):
             if media.get_mrl() == maybe_media.get_mrl():
+                maybe_media_player.release()
                 return media_index
+        maybe_media_player.release()
         return None
 
     def get_next_audio_index(self) -> int:
@@ -97,12 +102,13 @@ class AudioPlayer:
         maybe_playing_audio_index = self.get_playing_audio_index()
         if maybe_playing_audio_index is None:
             return None
-        next_audio_index = (maybe_playing_audio_index + 1) % len(self.playlist.audios)
+        playing_audio_index: int = maybe_playing_audio_index
+        next_audio_index = (playing_audio_index + 1) % len(self.playlist.audios)
         match self.get_play_mode():
             case PlayMode.PLAYLIST_LOOP:
                 return next_audio_index
             case PlayMode.ONE_PASS:
-                if maybe_playing_audio_index == len(self.playlist.audios) - 1:
+                if playing_audio_index == len(self.playlist.audios) - 1:
                     return None
                 return next_audio_index
             case _:
@@ -113,18 +119,20 @@ class AudioPlayer:
         maybe_audio_index = self.get_playing_audio_index()
         if maybe_audio_index is None:
             return None
-        return self.playlist.audios[maybe_audio_index]
+        audio_index: int = maybe_audio_index
+        return self.playlist.audios[audio_index]
 
     def get_next_audio(self) -> Audio | None:
         """ Return None if there is no playing audio or the play mode is one pass and the current audio is the last """
         maybe_next_audio_index = self.get_next_audio_index()
         if maybe_next_audio_index is None:
             return None
-        return self.playlist.audios[maybe_next_audio_index]
+        next_audio_index: int = maybe_next_audio_index
+        return self.playlist.audios[next_audio_index]
 
     def set_play_mode(self, mode: PlayMode):
         self.play_mode = mode
-        self.audio_list_player.set_playback_mode(translate_play_mode(self.play_mode))
+        self.media_list_player.set_playback_mode(translate_play_mode(self.play_mode))
 
     def get_play_mode(self) -> PlayMode:
         return self.play_mode
@@ -137,11 +145,11 @@ class AudioPlayer:
         """
         if index >= len(self.playlist.audios):
             return False
-        return self.audio_list_player.play_item_at_index(index) == 0
+        return self.media_list_player.play_item_at_index(index) == 0
 
     def get_volume(self) -> int:
         """ Return the volume percentage """
-        media_player = self.audio_list_player.get_media_player()
+        media_player: vlc.MediaPlayer = self.media_list_player.get_media_player()
         volume = media_player.audio_get_volume()
         media_player.release()
         return volume
@@ -152,7 +160,7 @@ class AudioPlayer:
             <AudioPlayer.AUDIO_VOLUME_BASE>
         """
         self.volume = min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2)
-        media_player = self.audio_list_player.get_media_player()
+        media_player: vlc.MediaPlayer = self.media_list_player.get_media_player()
         media_player.audio_set_volume(self.volume)
         media_player.release()
 
@@ -161,10 +169,11 @@ class AudioPlayer:
         @return float or None if there is no playing audio
         """
         maybe_playing_audio_index = self.get_playing_audio_index()
-        if not maybe_playing_audio_index:
+        if maybe_playing_audio_index is None:
             return None
-        playing_media = self.media_list[maybe_playing_audio_index]
-        playing_media.parse()
+        playing_audio_index: int = maybe_playing_audio_index
+        playing_media: vlc.Media = self.media_list[playing_audio_index]
+        playing_media.parse()   # NOTE: parse method is deprecated but parse_with_options does not work
         return playing_media.get_duration() * AudioPlayer.COEF_MS_TO_SEC
 
     def get_audio_progress_time_in_sec(self) -> float | None:
@@ -173,7 +182,9 @@ class AudioPlayer:
         """
         if not self.is_playing():
             return None
-        time_in_ms = self.audio_list_player.get_media_player().get_time()
+        media_player: vlc.MediaPlayer = self.media_list_player.get_media_player()
+        time_in_ms = media_player.get_time()
+        media_player.release()
         return time_in_ms * AudioPlayer.COEF_MS_TO_SEC
 
     def set_current_audio_time(self, time_in_sec: int):
@@ -183,9 +194,12 @@ class AudioPlayer:
         @param time_in_sec: int
         """
         maybe_audio_time_in_sec = self.get_playing_audio_duration_in_sec()
-        if not maybe_audio_time_in_sec:
+        if maybe_audio_time_in_sec is None:
             return
-        if not 0 <= time_in_sec <= maybe_audio_time_in_sec:
+        audio_time_in_sec: float = maybe_audio_time_in_sec
+        if not 0 <= time_in_sec <= audio_time_in_sec:
             return
         time_in_ms: int = time_in_sec * AudioPlayer.COEF_SEC_TO_MS
-        self.audio_list_player.get_media_player().set_time(time_in_ms)
+        media_player: vlc.MediaPlayer = self.media_list_player.get_media_player()
+        media_player.set_time(time_in_ms)
+        media_player.release()

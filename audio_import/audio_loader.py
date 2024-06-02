@@ -121,9 +121,10 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
                 "Warning: no audio could not be downloaded because no proposed audio was selected."
             )
             return None
+        chosen_youtube_video: YouTubeVideoMetadata = maybe_chosen_youtube_video
         try:
             audio_download_absolute_path = youtube_download.download_audio_from_youtube(
-                youtube_url=maybe_chosen_youtube_video.url,
+                youtube_url=chosen_youtube_video.url,
                 output_directory_relative_path=configuration.get_audios_directory_path()
             )
         except CannotDownloadError as video_cannot_be_downloaded:
@@ -188,7 +189,8 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
                 load_only_local_audio = True
         if maybe_audio is None:
             continue
-        yield maybe_audio
+        audio: Audio = maybe_audio
+        yield audio
 
 def unload_music(audio: Audio, configuration: Configuration) -> None:
     """Remove the local audio is found"""

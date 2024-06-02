@@ -66,7 +66,6 @@ if __name__ == "__main__":
     while True:
         user_input_command: str = user_interface.request_input_from_user()
         user_interface.update_app_display(player)
-        maybe_played_audio = player.get_playing_audio()
         maybe_args: List[str] = parse_command(user_input_command)
         if maybe_args is None:
             user_interface.request_output_to_user(f"Warning: \"{user_input_command}\" command is unknown.")
@@ -92,7 +91,7 @@ if __name__ == "__main__":
                 user_interface.request_output_to_user("Info: Stopping the audio.")
             case Command.PAUSE:
                 if player.is_playing():
-                    user_interface.request_output_to_user("Info; Pausing the audio.")
+                    user_interface.request_output_to_user("Info: Pausing the audio.")
                     player.pause()
             case Command.RESUME:
                 if not player.is_playing():

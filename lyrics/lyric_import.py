@@ -33,13 +33,14 @@ def prepare_lyrics(audio: Audio, configuration: Configuration, user_interface: I
             )
             maybe_lyric_text = None
             try:
-                maybe_lyric_text = syncedlyrics.search(audio.name, save_path=lyric_filepath)
+                maybe_lyric_text: str | None = syncedlyrics.search(audio.name, save_path=lyric_filepath)
             except Exception:
                 user_interface.request_output_to_user(error_lyrics_not_loaded_message)
                 return False
             if maybe_lyric_text is not None:
+                lyric_text: str = maybe_lyric_text
                 with open(lyric_filepath, 'wt', encoding=TEXT_ENCODING) as lyric_file:
-                    lyric_file.write(maybe_lyric_text)
+                    lyric_file.write(lyric_text)
                 audio.lyrics_filepath = lyric_filepath
                 return True
             user_interface.request_output_to_user(error_lyrics_not_loaded_message)
