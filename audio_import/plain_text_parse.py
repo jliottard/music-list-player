@@ -21,7 +21,8 @@ def try_extract_web_url(audio_line: str) -> str | None:
     )
     if maybe_regex_match is None:
         return None
-    return maybe_regex_match.group(0)
+    regex_match: re.Match = maybe_regex_match
+    return regex_match.group(0)
 
 def try_extract_tags(audio_line: str) -> List[str]:
     """ Parse the line and extract any tags in it
@@ -52,8 +53,9 @@ def remove_metadata(audio_line: str) -> str:
     # Remove source and it is potential delimiter
     maybe_source = try_extract_web_url(audio_line)
     if maybe_source is not None:
-        source_start_index = purged_line.find(maybe_source)
-        source_end_index = source_start_index + len(maybe_source) - 1
+        source: str = maybe_source
+        source_start_index = purged_line.find(source)
+        source_end_index = source_start_index + len(source) - 1
         # Try to remove delimiting source characters
         previous_source_char_index = max(0, source_start_index - 1)
         if purged_line[previous_source_char_index] != EXPECTED_SOURCE_SEPARATION:

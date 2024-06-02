@@ -8,6 +8,7 @@ from app.config.profile import Profile
 from audio.audio import Audio
 from audio.file_extension import FileExtension
 from audio_import import youtube_metadata_parser, audio_loader, youtube_download, plain_text_parse
+from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 from audio.playlist import Playlist
 from test.interface_mock import InterfaceMock
 
@@ -71,9 +72,11 @@ def setup_and_teardown_playlist_and_configuration_files():
             audio_metadata = plain_text_parse._playlist_line_to_audio_metadata(line)
             audio_name = audio_loader.sanitize_filename(audio_metadata.name)
             youtube_videos_metadatas = youtube_metadata_parser.search_videos_on_youtube(audio_name)
-            maybe_chosen_youtube_video = audio_loader._get_first_youtube_search(youtube_videos_metadatas)
+            maybe_chosen_youtube_video: YouTubeVideoMetadata | None = audio_loader._get_first_youtube_search(youtube_videos_metadatas)
+            assert maybe_chosen_youtube_video is not None
+            chosen_youtube_video: YouTubeVideoMetadata = maybe_chosen_youtube_video
             audio_download_absolute_path = youtube_download.download_audio_from_youtube(
-                youtube_url=maybe_chosen_youtube_video.url,
+                youtube_url=chosen_youtube_video.url,
                 output_directory_relative_path=configuration.get_audios_directory_path()
             )
             renamed_filepath = audio_loader._rename_filename(
