@@ -1,7 +1,10 @@
 #!/usr/bin/python3
+import os
+import platform
+import subprocess
 import sys
 
-from typing import List
+from typing import List, Tuple
 
 from app.actions.help import print_help
 from app.actions.import_playlist import import_playlist
@@ -38,8 +41,23 @@ def check_configuration(configuration: Configuration, user_interface: Interface)
         return False
     return True
 
-if __name__ == "__main__":
-    # Initialization
+def init() -> Tuple[Configuration, Interface, AudioPlayer, LyricsDisplayer]:
+    '''Check the configuration and load any initialization states that are needed
+    @returns Configuration, Interface, AudioPlayer, LyricsDisplayer
+    '''
+    match platform.system():
+        case "Windows":
+            # TODO: check vlc library import for Window platform
+            # https://github.com/pyinstaller/pyinstaller/issues/3448#issuecomment-607933332
+            pass
+        case "Linux":
+            # NOTE: vlc library needs the path to the plugins to be exported, a workaround is described in the issue:
+            # https://github.com/pyinstaller/pyinstaller/issues/4506#issuecomment-1294303471
+            myvar=subprocess.check_output("find /usr/lib/ -type f 2>&1 | grep -v 'Permission denied' | grep 'vlc/plugins/plugins.dat'",shell=True)
+            plugin_path = myvar.decode('utf-8').replace("vlc/plugins/plugins.dat", "vlc/plugins").replace("\n","")
+            os.environ['VLC_PLUGIN_PATH'] = plugin_path
+        case _:
+            pass
     user_interface = Interface()
     user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)
@@ -48,7 +66,7 @@ if __name__ == "__main__":
     is_configuration_valid = False
     try:
         is_configuration_valid = check_configuration(configuration, user_interface)
-    except Exception as e:
+    except Exception:
         pass
     finally:
         if not is_configuration_valid:
@@ -61,7 +79,15 @@ if __name__ == "__main__":
         user_interface.request_output_to_user("Info: Auto-import on startup..")
         player: AudioPlayer | None = import_playlist(parse_command(Command.IMPORT.value), configuration, player, user_interface)
         lyrics_displayer = LyricsDisplayer(player, user_interface)
-    # Main loop
+    return configuration, user_interface, player, lyrics_displayer
+
+def loop(configuration: Configuration, user_interface: Interface, player: AudioPlayer, lyrics_displayer: LyricsDisplayer):
+    '''Loop over the command of the user
+    @param configuration: Configuration
+    @param user_inteface: Inteface
+    @param player: AudioPlayer
+    @param lyrics_displayer: LyricsDisplayer
+    '''
     user_interface.request_output_to_user(f"Request: Please enter a command (type: \"{Command.HELP.value}\" for help).")
     while True:
         user_input_command: str = user_interface.request_input_from_user()
@@ -111,3 +137,10 @@ if __name__ == "__main__":
                 configuration.profile: Profile | None = request_profile(maybe_args, configuration, user_interface)
             case _:
                 pass
+
+def main():
+    '''Application entry point'''
+    loop(*init())
+
+if __name__ == "__main__":
+    main()
