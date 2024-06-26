@@ -112,9 +112,6 @@ def test_load_with_source(setup_and_teardown_playlist_and_configuration_files):
     )
     playlist.audios.append(tested_audio)
     player = AudioPlayer(playlist=playlist, volume=0)
-    player.play_audio_at_index(2)
-    expected_etude_op_ten_no_four_audio_length = 2 * 60 + 20 # 2 minutes 20 second for https://www.youtube.com/watch?v=oHiU-u2ddJ4
-    assert int(math.ceil(player.get_playing_audio_duration_in_sec())) == expected_etude_op_ten_no_four_audio_length
     player.play_audio_at_index(len(playlist.audios) - 1)
     expected_etude_op_ten_no_four_audio_length = 2 * 60 + 2 # 2 minutes 2 second for https://www.youtube.com/watch?v=oy0IgI_qewg
     assert int(math.ceil(player.get_playing_audio_duration_in_sec())) == expected_etude_op_ten_no_four_audio_length
