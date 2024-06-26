@@ -19,11 +19,12 @@ TEST_PLAYLIST_RELATIVE_PATH = os.path.join(
     "playlist_for_test.txt"
 )
 CARRIAGE_RETURN_CHAR = "\n" if platform.system() == 'linux' else "\r\n"
+
 TEST_PLAYLIST_FILE_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
     [
         'nocturne op 55 no 1 by frédéric chopin #chopin',
         'nocturne op 9 no 2 by frédéric chopin #chopin',
-        'etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oHiU-u2ddJ4)',
+        'etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oy0IgI_qewg)',
         'hungarian dance no 5 by johannes brahms'
     ]
 )
@@ -72,7 +73,7 @@ def setup_and_teardown_playlist_and_configuration_files():
             audio_metadata = plain_text_parse._playlist_line_to_audio_metadata(line)
             audio_name = audio_loader.sanitize_filename(audio_metadata.name)
             youtube_videos_metadatas = youtube_metadata_parser.search_videos_on_youtube(audio_name)
-            maybe_chosen_youtube_video: YouTubeVideoMetadata | None = audio_loader._get_first_youtube_search(youtube_videos_metadatas)
+            maybe_chosen_youtube_video: YouTubeVideoMetadata | None = audio_loader._get_first_youtube_result(youtube_videos_metadatas)
             assert maybe_chosen_youtube_video is not None
             chosen_youtube_video: YouTubeVideoMetadata = maybe_chosen_youtube_video
             audio_download_absolute_path = youtube_download.download_audio_from_youtube(

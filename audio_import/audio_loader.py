@@ -67,7 +67,7 @@ def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetada
         )
         return None
 
-def _get_first_youtube_search(video_metadatas: List[YouTubeVideoMetadata]) -> YouTubeVideoMetadata|None:
+def _get_first_youtube_result(video_metadatas: List[YouTubeVideoMetadata]) -> YouTubeVideoMetadata|None:
     """Return the YouTube result
     @param video_metadatas: List[YouTubeVideoMetadata]
     @return: YouTubeVideoMetadata|None the choosen one, or nothing if no metadata were chosen
@@ -86,13 +86,15 @@ def _rename_filename(source_filepath: str, new_filename: str) -> str:
     os.rename(source_filepath, playlist_name_like_audio_absolute_path)
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
-def load(audio_name: str, file_extension: FileExtension, configuration: Configuration, user_interface: Interface, only_local: bool) -> Audio:
+def load(audio_name: str, file_extension: FileExtension, configuration: Configuration,
+         user_interface: Interface, only_local: bool, maybe_source: str | None) -> Audio:
     """Load the audio from the cache or from the Internet
     @param audio_name: str
     @param file_extension: FileExtension
     @param configuration: COnfiguration
     @param user_interface: Interface, assume the user's input is booked
     @param only_local: bool only try to load local audios
+    @param maybe_source: str | None: the YouTube URL to the audio source
     @return: an Audio or None if the audio could not be found or downloaded
     @raise IOError
     """
@@ -115,7 +117,10 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
                 user_interface=user_interface
             )
         else:
-            maybe_chosen_youtube_video: YouTubeVideoMetadata | None = _get_first_youtube_search(youtube_videos_metadatas)
+            if maybe_source is not None:
+                maybe_chosen_youtube_video = _get_first_youtube_result(youtube_metadata_parser.search_videos_on_youtube(maybe_source))
+            else:
+                maybe_chosen_youtube_video: YouTubeVideoMetadata | None = _get_first_youtube_result(youtube_videos_metadatas)
         if maybe_chosen_youtube_video is None:
             user_interface.request_output_to_user(
                 "Warning: no audio could not be downloaded because no proposed audio was selected."
@@ -171,7 +176,6 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
     load_only_local_audio = False
     for audio_metadata in configuration.profile.audio_metadatas:
         name = sanitize_filename(audio_metadata.name)
-        _source = audio_metadata.source     # TODO: use the youtube id to directly download the audio without search
         any_tags = audio_metadata.tags
         if len(meta_query.tags) != 0:
             try:
@@ -180,7 +184,14 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
                 # the current audio's metadata does not match the query's tags
                 continue
         try:
-            maybe_audio: Audio = load(name, FileExtension.MP3, configuration, user_interface, load_only_local_audio)
+            maybe_audio: Audio = load(
+                audio_name=name,
+                file_extension=FileExtension.MP3,
+                configuration=configuration,
+                user_interface=user_interface,
+                only_local=load_only_local_audio,
+                maybe_source=audio_metadata.source
+            )
         except IOError as io_error:
             if io_error.errno == IO_ERROR_NO_SPACE_LEFT_NUMBER:
                 user_interface.request_output_to_user(
