@@ -4,7 +4,7 @@
 "default-profile-name" = "example"                                      # the name of the profile that must be defined as the 'example_profile' profile
 
 # The following commented lines are a model for defining a profile:
-# [example_profile]                                                     # between the brackets is the profile name to enter in the command 'profile <profile_name>'
+# [example]                                                             # between the brackets is the profile name to enter in the command 'profile <profile_name>'
 # "playlist-file-relative-path" = "path/to/playlist/file.txt"           # where the plain-text playlist file shall be, it is relative to the music-list-player directory
 # "download-directory-relative-path" = "path/to/audio/cache/directory"  # twhere the audio's file shall be, it is relative to the music-list-player directory
 # "audio-source-selection-on-import" = false                            # if true, when the audios are imported from internet, you choose from a list which YouTube video download the audio from
