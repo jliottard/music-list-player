@@ -66,7 +66,7 @@ def init() -> Tuple[Configuration, Interface, AudioPlayer, LyricsDisplayer]:
     return configuration, user_interface, player, lyrics_displayer
 
 def loop(configuration: Configuration, user_interface: Interface, player: AudioPlayer, lyrics_displayer: LyricsDisplayer):
-    '''Loop over the command of the user
+    '''Loop over the commands of the user
     @param configuration: Configuration
     @param user_inteface: Inteface
     @param player: AudioPlayer
