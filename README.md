@@ -73,23 +73,15 @@ pylint *
 
 ## Build an executable
 ### On Windows
-To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller:
+To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller from the repository directory with:
 ```powershell
-pyinstaller main.py --clean --noconfirm --onedir --name music-list-player --add-data='C:\Program Files\VideoLAN\VLC\plugins':plugins --add-data='C:\Program Files\VideoLAN\VLC':VLC
+.\scripts\build.ps1
 ```
-The executable's result is located in the `dist\music-list-player` directory. In it, delete the `_internal/plugins/plugins.dat` file and add your `configuration.toml`, `playlist.txt` files to the `dist/music-list-player` directory.
-```powershell
-Remove-Item -Path 'dist\music-list-player\_internal/plugins/plugins.dat'
-Copy-Item -Path "configuration.toml" -Destination "dist\music-list-player\configuration.toml"
-Copy-Item -Path "playlist.txt" -Destination "dist\music-list-player\playlist.txt"
-New-Item -ItemType Directory -Force -Path "dist\music-list-player\.cache"
-```
+The executable's result is located in the `dist\music-list-player` directory.
 
-To clean the reposity of the build artefacts, remove the builds with:
+To clean the reposity of the build artefacts, remove the builds from the repository directory with:
 ```powershell
-Remove-Item -Path 'build' -Recurse
-Remove-Item -Path 'dist' -Recurse -Force
-Remove-Item -Path 'music-list-player.spec'
+.\scripts\clean.ps1
 ```
 
 ## Features
