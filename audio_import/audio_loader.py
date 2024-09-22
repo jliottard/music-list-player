@@ -106,7 +106,7 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
         )
     elif not only_local:
         user_interface.request_output_to_user(
-            f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to downloaded it from Internet."
+            f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to download it from Internet."
         )
         youtube_videos_metadatas: List[YouTubeVideoMetadata] = youtube_metadata_parser.search_videos_on_youtube(audio_name)
         if configuration.is_audio_source_selected_on_import():
@@ -179,14 +179,19 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
             except CannotFindAMatchError:
                 # the current audio's metadata does not match the query's tags
                 continue
+        maybe_audio = None
         try:
             maybe_audio: Audio = load(name, FileExtension.MP3, configuration, user_interface, load_only_local_audio)
         except IOError as io_error:
             if io_error.errno == IO_ERROR_NO_SPACE_LEFT_NUMBER:
                 user_interface.request_output_to_user(
-                    'Warning: Since there is no more space left for downloading, only local audios will be loaded from now.'
+                    'Warning: Since there is no more memory space left for downloading, only local audios will be loaded from now.'
                 )
                 load_only_local_audio = True
+            else:
+                user_interface.request_output_to_user(
+                    f"Warning: IOError returned {io_error.msg}"
+                )
         if maybe_audio is None:
             continue
         audio: Audio = maybe_audio

@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-import os
-import platform
-import subprocess
 import sys
 
 from typing import List, Tuple
@@ -45,19 +42,6 @@ def init() -> Tuple[Configuration, Interface, AudioPlayer, LyricsDisplayer]:
     '''Check the configuration and load any initialization states that are needed
     @returns Configuration, Interface, AudioPlayer, LyricsDisplayer
     '''
-    match platform.system():
-        case "Windows":
-            # TODO: check vlc library import for Window platform
-            # https://github.com/pyinstaller/pyinstaller/issues/3448#issuecomment-607933332
-            pass
-        case "Linux":
-            # NOTE: vlc library needs the path to the plugins to be exported, a workaround is described in the issue:
-            # https://github.com/pyinstaller/pyinstaller/issues/4506#issuecomment-1294303471
-            myvar=subprocess.check_output("find /usr/lib/ -type f 2>&1 | grep -v 'Permission denied' | grep 'vlc/plugins/plugins.dat'",shell=True)
-            plugin_path = myvar.decode('utf-8').replace("vlc/plugins/plugins.dat", "vlc/plugins").replace("\n","")
-            os.environ['VLC_PLUGIN_PATH'] = plugin_path
-        case _:
-            pass
     user_interface = Interface()
     user_interface.request_output_to_user("Info: Welcome to music list player!")
     player = AudioPlayer(Playlist(), AudioPlayer.AUDIO_VOLUME_BASE)

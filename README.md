@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```
 
 - On Windows:
-```shell
+```powershell
 py -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip
@@ -34,8 +34,8 @@ For the configuration, use the `configuration.toml` file (must be located in thi
 A recommanded configuration is:
 ```toml
 [my_profile]
-"playlist-file-relative-path" = "playlists/my_playlist.txt" # must exist
-"download-directory-relative-path" = "audios_downloads"     # must exist
+"playlist-file-relative-path" = "playlists/my_playlist.txt" # the path must exist on your machine
+"download-directory-relative-path" = "audios_downloads"     # the path must exist on your machine
 "audio-source-selection-on-import" = false
 "persistant-audio-cache" = true
 "music-lyrics-search-on-import" = false 
@@ -69,6 +69,27 @@ pytest
 To run the linter check, execute in the project root directory:
 ```bash
 pylint *
+```
+
+## Build an executable
+### On Windows
+To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller:
+```powershell
+pyinstaller main.py --clean --noconfirm --onedir --name music-list-player --add-data='C:\Program Files\VideoLAN\VLC\plugins':plugins --add-data='C:\Program Files\VideoLAN\VLC':VLC
+```
+The executable's result is located in the `dist\music-list-player` directory. In it, delete the `_internal/plugins/plugins.dat` file and add your `configuration.toml`, `playlist.txt` files to the `dist/music-list-player` directory.
+```powershell
+Remove-Item -Path 'dist\music-list-player\_internal/plugins/plugins.dat'
+Copy-Item -Path "configuration.toml" -Destination "dist\music-list-player\configuration.toml"
+Copy-Item -Path "playlist.txt" -Destination "dist\music-list-player\playlist.txt"
+New-Item -ItemType Directory -Force -Path "dist\music-list-player\.cache"
+```
+
+To clean the reposity of the build artefacts, remove the builds with:
+```powershell
+Remove-Item -Path 'build' -Recurse
+Remove-Item -Path 'dist' -Recurse -Force
+Remove-Item -Path 'music-list-player.spec'
 ```
 
 ## Features

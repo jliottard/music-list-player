@@ -1,5 +1,6 @@
 import random
 import time
+
 import vlc
 from audio.audio import Audio
 from audio.playlist import Playlist
