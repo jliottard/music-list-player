@@ -74,7 +74,7 @@ class AudioPlayer:
                 return index
         return -1
 
-    def get_playing_audio_index(self) -> int:
+    def get_playing_audio_index(self) -> int | None:
         '''Get the index of the playing audio or None if there is no media being played
         It is assumed that one audio file is loaded only once in the AudioPlayer's playlist,
             so there is no Audios that share the same audio file path.
@@ -95,7 +95,7 @@ class AudioPlayer:
         maybe_media_player.release()
         return None
 
-    def get_next_audio_index(self) -> int:
+    def get_next_audio_index(self) -> int | None:
         """
         Get the next index from the playing audio in the player's playlist. Assume the playlist loops.
         @return: None if there is no playing audio or the current audio is the last while the play mode is one pass

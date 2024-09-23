@@ -120,9 +120,9 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 - [x] Sanitize the audio's name with keywords and wildcard of filepath (like '/', '\', or '*')
 - [x] Create playlist dynamically based on tag(s) present on each audio name (line)
 - [x] Check remaining disk usage when downloading audios
+- [x] Use directly a YouTube link if presents in the audio name (line)
 
 ### Backlog
-- [ ] Use directly a YouTube link if presents in the audio name (line)
 - [ ] Parse author part of the audio line in plain text file
 - [ ] Speed up or down audios
 - [ ] Add a resume mechanism to restart playlist on the song where the application did quit

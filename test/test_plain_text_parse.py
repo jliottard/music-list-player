@@ -64,7 +64,7 @@ def test_parse_plain_text_playlist_file(setup_and_teardown_playlist_and_configur
     expected_metadatas = [
         AudioMetadata(name='nocturne op 55 no 1 by frédéric chopin', author=None, source=None, tags=['#chopin']),
         AudioMetadata(name='nocturne op 9 no 2 by frédéric chopin', author=None, source=None, tags=['#chopin']),
-        AudioMetadata(name='etude op 10 no 4 by frédéric chopin', author=None, source='https://www.youtube.com/watch?v=oHiU-u2ddJ4', tags=['#chopin']),
+        AudioMetadata(name='etude op 10 no 4 by frédéric chopin', author=None, source='https://www.youtube.com/watch?v=oy0IgI_qewg', tags=['#chopin']),
         AudioMetadata(name='hungarian dance no 5 by johannes brahms', author=None, source=None, tags=[]),
     ]
 

@@ -1,9 +1,11 @@
+import math
 import os.path
 import pytest
 
 from app.config.configuration import Configuration
 from app.config.configuration_keyword import ConfigurationKeyword
 from audio.audio import Audio
+from audio.audio_player import AudioPlayer
 from audio.file_extension import FileExtension
 from audio.playlist import Playlist
 from audio_import import audio_loader
@@ -40,7 +42,8 @@ def test_load_with_cached_audio(setup_and_teardown_playlist_and_configuration_fi
             file_extension=FileExtension.MP3,
             configuration=configuration,
             user_interface=interface_mock,
-            only_local=False
+            only_local=False,
+            maybe_source=None
         )
         assert tested_audio == cached_audio
 
@@ -67,7 +70,8 @@ def test_load_only_local_audio(setup_and_teardown_playlist_and_configuration_fil
             file_extension=FileExtension.MP3,
             configuration=configuration,
             user_interface=interface_mock,
-            only_local=True
+            only_local=True,
+            maybe_source=None
         )
         assert tested_maybe_audio is None
 
@@ -86,7 +90,28 @@ def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files)
             file_extension=FileExtension.MP3,
             configuration=configuration,
             user_interface=interface_mock,
-            only_local=False
+            only_local=False,
+            maybe_source=None
         )
         assert os.path.isfile(tested_audio.filepath)
         assert tested_audio == cached_audio
+
+def test_load_with_source(setup_and_teardown_playlist_and_configuration_files):
+    test_config = setup_and_teardown_playlist_and_configuration_files
+    configuration: Configuration = test_config['configuration']
+    playlist: Playlist = test_config['playlist']
+    interface_mock: InterfaceMock = InterfaceMock()
+    etude_op_ten_no_four_index = 2
+    tested_audio: Audio = audio_loader.load(
+        audio_name=playlist.audios[etude_op_ten_no_four_index].name + " test", #change the name to not conflict with the setup
+        file_extension=FileExtension.MP3,
+        configuration=configuration,
+        user_interface=interface_mock,
+        only_local=False,
+        maybe_source=configuration.profile.audio_metadatas[etude_op_ten_no_four_index].source
+    )
+    playlist.audios.append(tested_audio)
+    player = AudioPlayer(playlist=playlist, volume=0)
+    player.play_audio_at_index(len(playlist.audios) - 1)
+    expected_etude_op_ten_no_four_audio_length = 2 * 60 + 2 # 2 minutes 2 second for https://www.youtube.com/watch?v=oy0IgI_qewg
+    assert int(math.ceil(player.get_playing_audio_duration_in_sec())) == expected_etude_op_ten_no_four_audio_length
