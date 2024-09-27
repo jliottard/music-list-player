@@ -60,7 +60,7 @@ class Configuration():
         missing_filepaths = []
         for settings in self.config.values():
             for setting_name, setting_value in settings.items():
-                if isinstance(setting_name, str) and is_a_directory_path_keyword(setting_name):
+                if isinstance(setting_value, str) and is_a_directory_path_keyword(setting_name):
                     os_proof_path = operating_system_proof_path(setting_value)
                     if not os.path.exists(os_proof_path):
                         missing_filepaths.append(os_proof_path)

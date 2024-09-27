@@ -201,7 +201,7 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
                 load_only_local_audio = True
             else:
                 user_interface.request_output_to_user(
-                    f"Warning: IOError returned {io_error.msg}"
+                    f"Warning: IOError returned {str(io_error)}"
                 )
         if maybe_audio is None:
             continue
