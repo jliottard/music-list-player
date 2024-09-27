@@ -12,7 +12,10 @@ from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 from audio.playlist import Playlist
 from test.interface_mock import InterfaceMock
 
-TEST_WORK_DIRECTORY_RELATIVE_PATH = "test/test_workspace"
+TEST_WORK_DIRECTORY_RELATIVE_PATH = os.path.join(
+    'test',
+    'test_workspace'
+)
 
 TEST_PLAYLIST_RELATIVE_PATH = os.path.join(
     TEST_WORK_DIRECTORY_RELATIVE_PATH,
@@ -42,18 +45,22 @@ TEST_PROFILE_CONFIGURATION_CONTENTS = "\n".join(
     [
         '[global-settings]',
         '"default-profile-import-on-startup" = false',
+        f"\"default-profile-name\" = \"{TEST_PROFILE_NAME}\"",
         f"[{TEST_PROFILE_NAME}]",
         f"\"download-directory-relative-path\" = \"{TEST_CACHED_AUDIO_DIRECTORY_PATH}\"",
         f"\"playlist-file-relative-path\" = \"{TEST_PLAYLIST_RELATIVE_PATH}\"",
         '"persistant-audio-cache" = false',
         '"music-lyrics-search-on-import" = false',
         '"audio-source-selection-on-import" = false',
-        ''
     ]
 )
 
-@pytest.fixture
-def setup_and_teardown_playlist_and_configuration_files():
+TEST_CONFIGURATION: dict = None
+
+@pytest.hookimpl()
+def pytest_sessionstart(session):
+    print("\nTest session is begining!")
+    global TEST_CONFIGURATION
     # Setup
     os.makedirs(TEST_WORK_DIRECTORY_RELATIVE_PATH, exist_ok=True)
     with open(TEST_PROFILE_CONFIGURATION_RELATIVE_PATH, "wt", encoding=TEXT_ENCODING) as config_file:
@@ -65,8 +72,8 @@ def setup_and_teardown_playlist_and_configuration_files():
     configuration = Configuration(profile, TEST_PROFILE_CONFIGURATION_RELATIVE_PATH)
     mock_interface = InterfaceMock()
     configuration.fill_profile_with_metadata(mock_interface)
-
     playlist = Playlist()
+
     file_extension = FileExtension.MP3
     with open(TEST_PLAYLIST_RELATIVE_PATH, "rt", encoding=TEXT_ENCODING) as playlist_file:
         for line in playlist_file:
@@ -89,14 +96,20 @@ def setup_and_teardown_playlist_and_configuration_files():
                 filepath=renamed_filepath,
                 file_extension=file_extension
             ))
-
-    yield {
+    TEST_CONFIGURATION = {
         'configuration': configuration,
         'configuration_path': TEST_PROFILE_CONFIGURATION_RELATIVE_PATH,
         'playlist_path': TEST_PLAYLIST_RELATIVE_PATH,
         'playlist': playlist
     }
 
+@pytest.hookimpl()
+def pytest_sessionfinish(session):
+    print("\nTest session finished!")
     # Teardown
-    shutil.rmtree(TEST_CACHED_AUDIO_DIRECTORY_PATH)
+    #shutil.rmtree(TEST_CACHED_AUDIO_DIRECTORY_PATH)
     shutil.rmtree(TEST_WORK_DIRECTORY_RELATIVE_PATH)
+
+@pytest.fixture
+def setup_and_teardown_playlist_and_configuration_files():
+    yield TEST_CONFIGURATION

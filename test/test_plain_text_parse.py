@@ -6,7 +6,7 @@ from audio_import.audio_metadata import AudioMetadata
 from audio_import.plain_text_parse import remove_metadata, try_extract_web_url, try_extract_tags, parse_plain_text_playlist_file
 
 from test.constants_for_test import FIRST_YOUTUBE_VIDEO_URL
-from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
+from test.conftest import setup_and_teardown_playlist_and_configuration_files
 from test.interface_mock import InterfaceMock
 
 def test_try_extract_web_url():
