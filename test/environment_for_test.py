@@ -12,15 +12,17 @@ from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 from audio.playlist import Playlist
 from test.interface_mock import InterfaceMock
 
-TEST_WORK_DIRECTORY_RELATIVE_PATH = "test/test_workspace"
+TEST_WORK_DIRECTORY_RELATIVE_PATH = os.path.join(
+    'test',
+    'test_workspace'
+)
 
 TEST_PLAYLIST_RELATIVE_PATH = os.path.join(
     TEST_WORK_DIRECTORY_RELATIVE_PATH,
-    "playlist_for_test.txt"
+    'playlist_for_test.txt'
 )
-CARRIAGE_RETURN_CHAR = "\n" if platform.system() == 'linux' else "\r\n"
 
-TEST_PLAYLIST_FILE_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
+TEST_PLAYLIST_FILE_CONTENTS = f"\n".join(
     [
         'nocturne op 55 no 1 by frédéric chopin #chopin',
         'nocturne op 9 no 2 by frédéric chopin #chopin',
@@ -32,13 +34,15 @@ TEST_PLAYLIST_FILE_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
 TEST_PROFILE_NAME = 'test'
 TEST_CACHED_AUDIO_DIRECTORY_PATH = os.path.join(
     TEST_WORK_DIRECTORY_RELATIVE_PATH,
-    "audio_cache_for_test"
+    'audio_cache_for_test'
 )
+
 TEST_PROFILE_CONFIGURATION_RELATIVE_PATH = os.path.join(
     TEST_WORK_DIRECTORY_RELATIVE_PATH,
-    "configuration_for_test.toml"
+    'configuration_for_test.toml'
 )
-TEST_PROFILE_CONFIGURATION_CONTENTS = "\n".join(
+
+TEST_PROFILE_CONFIGURATION_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
     [
         '[global-settings]',
         '"default-profile-import-on-startup" = false',
