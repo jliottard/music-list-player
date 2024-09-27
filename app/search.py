@@ -8,8 +8,7 @@ def match_string_among_strings(searched_string: str, strings: List[str]) -> int:
     if searched_string == "":
         if not "" in strings:
             raise CannotFindAMatchError
-        else:
-            return list(strings).index("")
+        return list(strings).index("")
     for string_index, string in enumerate(strings):
         if searched_string.lower() in string.lower():
             return string_index

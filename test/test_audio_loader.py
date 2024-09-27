@@ -1,6 +1,5 @@
 import math
 import os.path
-import pytest
 
 from app.config.configuration import Configuration
 from app.config.configuration_keyword import ConfigurationKeyword

@@ -25,6 +25,7 @@ def prepare_lyrics(audio: Audio, configuration: Configuration, user_interface: I
         user_interface.request_output_to_user(
             f"Info: the lyrics of \"{audio.name}\" is found in cache, thus loaded."
         )
+        return False
     else:
         audio.lyrics_filepath = None
         if configuration.is_music_lyrics_searched_on_import():

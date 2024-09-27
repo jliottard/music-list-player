@@ -67,6 +67,14 @@ class Interface:
             status_info = "Info: no audio is playing."
         return status_info
 
+    @staticmethod
+    def receive_input_from_user() -> str:
+        """Place to interface's next requested action to get the user's <input>
+        Assume the user's input is already booked
+        @return: str the user's input
+        """
+        return input()
+
     def book_user_input(self):
         """Acquire the lock for accessing user's input"""
         self.stdin_lock.acquire()
@@ -74,13 +82,6 @@ class Interface:
     def free_user_input(self):
         """Acquire the lock for accessing user's input"""
         self.stdin_lock.release()
-
-    def receive_input_from_user(self) -> str:
-        """Place to interface's next requested action to get the user's <input>
-        Assume the user's input is already booked
-        @return: str the user's input
-        """
-        return input()
 
     def request_input_from_user(self) -> str:
         """Place to interface's next requested action to get the user's <input>
@@ -93,7 +94,8 @@ class Interface:
         return user_input
 
     def request_output_to_user(self, output: str):
-        """Place to interface's next requested action to user_interface.request_output_to_user the <output>
+        """Place to interface's next requested action to user_interface.request_output_to_user the
+         <output>
         @param output: str the message to user_interface.request_output_to_user to the user
         """
         with self.stdout_lock:

@@ -1,4 +1,3 @@
-import pytest
 from typing import List
 
 from app.config.configuration import TEXT_ENCODING

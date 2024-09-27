@@ -1,5 +1,3 @@
-import pytest
-
 from test.conftest import setup_and_teardown_playlist_and_configuration_files
 
 from app.config.configuration import Configuration

@@ -1,5 +1,4 @@
 import random
-import time
 
 import vlc
 from audio.audio import Audio
@@ -156,8 +155,8 @@ class AudioPlayer:
         return volume
 
     def set_volume(self, volume_percentage: int):
-        """ Set the player's volume 
-        @param volume_percentage: int: the volume to be set from 0 to twice the 
+        """ Set the player's volume
+        @param volume_percentage: int: the volume to be set from 0 to twice the
             <AudioPlayer.AUDIO_VOLUME_BASE>
         """
         self.volume = min(volume_percentage, AudioPlayer.AUDIO_VOLUME_BASE*2)
