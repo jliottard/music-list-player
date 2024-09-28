@@ -42,7 +42,7 @@ TEST_PROFILE_CONFIGURATION_RELATIVE_PATH = os.path.join(
     'configuration_for_test.toml'
 )
 
-TEST_PROFILE_CONFIGURATION_CONTENTS = f"{CARRIAGE_RETURN_CHAR}".join(
+TEST_PROFILE_CONFIGURATION_CONTENTS = "\n".join(
     [
         '[global-settings]',
         '"default-profile-import-on-startup" = false',
