@@ -44,7 +44,7 @@ A recommanded configuration is:
 For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
 ### How to run the application
-In the virtual environment, run in the project root directory:
+In the virtual environment with the `dev_requirements.txt`'s dependencies installed, run in the project root directory:
 - On Linux:
 ```bash
 .venv/bin/python main.py
