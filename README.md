@@ -111,8 +111,5 @@ pylint *
 
 ### Backlog
 - [ ] Parse author part of the audio line in plain text file
-- [ ] Speed up or down audios
-- [ ] Add a resume mechanism to restart playlist on the song where the application did quit
 - [ ] Provide an executable entry point file for Windows application per release
-- [ ] Add colors to the prints and use a log system
 - [ ] Add a music recommendation feature
