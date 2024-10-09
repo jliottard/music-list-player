@@ -26,18 +26,19 @@ class InterfaceMock:
         """
         pass
 
+    @staticmethod
+    def receive_input_from_user() -> str:
+        """Place to interface's next requested action to get the user's <input>
+        Assume the user's input is already booked
+        @return: str the user's input
+        """
+        pass
+
     def book_user_input(self):
         """Acquire the lock for accessing user's input"""
         pass
     def free_user_input(self):
         """Acquire the lock for accessing user's input"""
-        pass
-
-    def receive_input_from_user(self) -> str:
-        """Place to interface's next requested action to get the user's <input>
-        Assume the user's input is already booked
-        @return: str the user's input
-        """
         pass
 
     def request_input_from_user(self) -> str:

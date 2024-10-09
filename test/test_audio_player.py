@@ -1,5 +1,5 @@
 from audio import audio_player, playlist, play_mode, audio, file_extension
-from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
+from test.conftest import setup_and_teardown_playlist_and_configuration_files
 
 # Constants
 FIRST_AUDIO_INDEX = 0

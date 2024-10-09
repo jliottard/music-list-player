@@ -18,9 +18,9 @@ def download_audio_from_youtube(youtube_url: str, output_directory_relative_path
             output_path=output_directory_relative_path
         )
     except exceptions.VideoUnavailable as video_unavailable_error:
-        raise CannotDownloadError(video_unavailable_error.args)
+        raise CannotDownloadError(video_unavailable_error.args) from video_unavailable_error
     except exceptions.PytubeError as pytube_error:
-        raise CannotDownloadError(pytube_error.args)
+        raise CannotDownloadError(pytube_error.args) from pytube_error
     # Rename downloaded file to file.mp3
     name_base, _video_extension = os.path.splitext(audio_filepath)
     audio_mp3_filepath = name_base + FileExtension.MP3.value

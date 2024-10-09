@@ -1,5 +1,3 @@
-from typing import List
-
 from app.config.configuration import Configuration
 from app.config.profile import Profile
 from app.interface import Interface
@@ -30,9 +28,9 @@ def _display_profile(profile: Profile, user_interface: Interface) -> None:
             f"- {track_info}"
         )
 
-def request_profile(args: list | None, configuration: Configuration, user_interface: Interface) -> Profile:
+def request_profile(args, configuration: Configuration, user_interface: Interface) -> Profile:
     """Change the app's profile or display the current profile if no arguments are given
-    @param args: List[str] or None
+    @param args: Tuple[Command, [str]] or None
     @param configuration: Configuration
     @param user_interface: Interface
     @return Profile
@@ -45,10 +43,10 @@ def request_profile(args: list | None, configuration: Configuration, user_interf
             user_interface.request_output_to_user(
                 "There is no profile set. Please set a profile."
             )
-            return
+            return None
         _display_profile(configuration.profile, user_interface)
         return configuration.profile
-    
+
     profile_name = str(args[1]) # TODO is the profile name just a string without space allowed or can it have space?
     if profile_name not in configuration.get_profiles():
         user_interface.request_output_to_user(f"Warning: Unknown profile: \"{profile_name}\"")

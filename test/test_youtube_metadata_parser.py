@@ -1,7 +1,4 @@
-import pytest
-
 from audio_import.youtube_metadata_parser import search_videos_on_youtube, get_youtube_video_url
-from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 
 from test.constants_for_test import FIRST_YOUTUBE_VIDEO_TITLE, FIRST_YOUTUBE_VIDEO_URL
 

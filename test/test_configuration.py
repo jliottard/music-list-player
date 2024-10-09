@@ -1,13 +1,11 @@
-import pytest
-
-from test.environment_for_test import setup_and_teardown_playlist_and_configuration_files
+from test.conftest import setup_and_teardown_playlist_and_configuration_files
 
 from app.config.configuration import Configuration
 
 def test_search_missing_but_required_files_from_configuration_exist(setup_and_teardown_playlist_and_configuration_files):
     configuration: Configuration = setup_and_teardown_playlist_and_configuration_files['configuration']
-    # no file are set up for this unit test, so it is expected to have many missing files
-    assert not configuration.search_missing_but_required_files_from_configuration_exist()
+    # all file must be set up for this unit test, so it is expected to have none missing files
+    assert len(configuration.search_missing_but_required_files_from_configuration_exist()) == 0
 
 def test_get_audios_directory_path_is_string(setup_and_teardown_playlist_and_configuration_files):
     configuration: Configuration = setup_and_teardown_playlist_and_configuration_files['configuration']

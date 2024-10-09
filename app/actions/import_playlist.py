@@ -1,6 +1,5 @@
 from queue import Queue
 from threading import Thread
-from typing import List, Tuple
 
 from app.config.configuration import Configuration
 from app.interface import Interface
@@ -60,7 +59,7 @@ def import_playlist(args: list, configuration: Configuration, current_player: Au
     """Get playlist contents from the args' profile and load the player for the audios
     If the args is only containing the import keyword, it loads the whole audio list into a new playlist.
     If the args also contains a tag name, it loads only the tagged audios into the new playlist.
-    @param args: List[str]: either contain the import's arguments that must be the name of the profile from
+    @param args: either contain the import's arguments that must be the name of the profile from
         the configuration file or none argument means the default playlist
     @param current_player AudioPlayer
     @param user_interface: Interface
