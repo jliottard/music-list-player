@@ -10,7 +10,7 @@ requests>=2.31.0
 requests-oauthlib>=1.3.1
 
 # youtube related packages
-pytube>=15.0.0
+git+https://github.com/jliottard/pytube.git#egg=pytube # custom fix for download instead of 'pytube>=15.0.0'
 youtube-search-python>=1.6.6
 
 # lyrics related packages
@@ -19,4 +19,6 @@ pylrc>=0.1.2
 
 # test related packages (required only for development)
 pytest>=7.1.3
-MAD>=0.2.2
+
+# application distribution related package (only for development)
+pyinstaller>=6.5.0
