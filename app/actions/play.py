@@ -36,4 +36,4 @@ def play(args: list, player: AudioPlayer, user_interface: Interface) -> None:
     if maybe_played_audio is None:
         user_interface.request_output_to_user("Info: Playing..")
     else:
-        user_interface.request_output_to_user(f"Info: Playing \"{maybe_played_audio.name}\".")
+        user_interface.request_output_to_user(f"Info: Playing \"{maybe_played_audio.name_without_extension}\".")

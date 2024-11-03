@@ -143,8 +143,9 @@ class AudioPlayer:
          - True on success
          - False on Failure, if the index is not found
         """
-        if index >= len(self.playlist.audios):
+        if index < 0 or index >= len(self.playlist.audios):
             return False
+        self.play() # FIXME: the play_item_at_index method outputs an error and does not play an audio when the playyer is not playing
         return self.media_list_player.play_item_at_index(index) == 0
 
     def get_volume(self) -> int:

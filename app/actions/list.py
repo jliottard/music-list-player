@@ -11,7 +11,7 @@ def print_list(player: AudioPlayer, user_interface: Interface) -> None:
             audio_info = Interface.playing_audio_status(player)
             is_playing_status = "\t\t (currently playing)"
         else:
-            audio_info = audio.name
+            audio_info = audio.name_without_extension
             is_playing_status = ""
         extra_information = "(lyrics available)" if audio.lyrics_filepath is not None else ""
         user_interface.request_output_to_user(

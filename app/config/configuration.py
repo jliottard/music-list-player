@@ -5,6 +5,7 @@ import toml
 from app.config.configuration_keyword import ConfigurationKeyword, GLOBAL_APP_SETTINGS_NAME
 from app.config.profile import Profile
 from app.interface import Interface
+from app.path import operating_system_proof_path
 
 from audio_import.audio_metadata import AudioMetadata
 from audio_import.plain_text_parse import parse_plain_text_playlist_file
@@ -14,10 +15,6 @@ TEXT_ENCODING = "utf-8"
 CONFIGURATION_FILE_PATH = "configuration.toml"
 
 # Functions
-def operating_system_proof_path(path: str) -> str:
-    """Return a absolute path that is separated according to the runner machine's operating system"""
-    return os.path.abspath(os.path.expanduser(path))
-
 def is_a_directory_path_keyword(string: str) -> bool:
     return "path" in string and "directory" in string
 

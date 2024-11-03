@@ -121,8 +121,8 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 - [x] Create playlist dynamically based on tag(s) present on each audio name (line)
 - [x] Check remaining disk usage when downloading audios
 - [x] Use directly a YouTube link if presents in the audio name (line)
+- [x] Parse author part of the audio line in plain text file
 
 ### Backlog
-- [ ] Parse author part of the audio line in plain text file
 - [ ] Provide an executable entry point file for Windows application per release
 - [ ] Add a music recommendation feature
