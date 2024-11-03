@@ -19,6 +19,10 @@ MAX_CACHE_INIT_ATTEMPTS = 5
 # Path constants
 TEST_WORK_DIRECTORY_RELATIVE_PATH = 'test/test_workspace'
 TEST_CACHE_DIRECTORY_RELATIVE_PATH = 'test/test_cache'
+if platform.system() == "Linux":
+    TEST_WORK_DIRECTORY_RELATIVE_PATH = operating_system_proof_path(TEST_WORK_DIRECTORY_RELATIVE_PATH)
+    TEST_CACHE_DIRECTORY_RELATIVE_PATH = operating_system_proof_path(TEST_CACHE_DIRECTORY_RELATIVE_PATH)
+
 TEST_PLAYLIST_RELATIVE_PATH = '/'.join(
     [
         TEST_WORK_DIRECTORY_RELATIVE_PATH,
@@ -66,6 +70,8 @@ TEST_PLAYLIST_FILE_CONTENTS = f"\n".join(
 
 TEST_CONFIGURATION: dict = None
 AUDIO_FILE_EXTENSION = FileExtension.MP3
+
+
 
 def init_cache_test():
     """Download only once the audios then copy them at each test's start"""
