@@ -13,4 +13,4 @@ def skip_music(player: AudioPlayer, user_interface: Interface) -> None:
         user_interface.request_output_to_user("Warning: Cannot skip, end of playlist reached as one pass mode.")
     else:
         player.next()
-        user_interface.request_output_to_user(f"Info: Skipping to \"{maybe_next_audio.name}\".")
+        user_interface.request_output_to_user(f"Info: Skipping to \"{maybe_next_audio.name_without_extension}\".")

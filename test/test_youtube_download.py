@@ -2,7 +2,7 @@ from os import path
 import os
 import pytest
 
-from app.config.configuration import operating_system_proof_path
+from app.path import operating_system_proof_path
 from audio_import import cannot_download_error, youtube_download, youtube_metadata_parser
 from test.conftest import TEST_WORK_DIRECTORY_RELATIVE_PATH
 from test.constants_for_test import FIRST_YOUTUBE_VIDEO_TITLE, FIRST_YOUTUBE_VIDEO_URL, LONGEST_YOUTUBE_LIVE_TITLE

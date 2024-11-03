@@ -17,24 +17,24 @@ def prepare_lyrics(audio: Audio, configuration: Configuration, user_interface: I
     @return bool: True if the lyrics are loaded for the audio
     @raise TypeError: if the local lyric file is not in a LRC format
     """
-    lyric_filename = f"{audio.name}.lrc"
-    error_lyrics_not_loaded_message = f"Warning: the lyrics of \"{audio.name}\" could not be loaded."
+    lyric_filename = f"{audio.name_without_extension}.lrc"
+    error_lyrics_not_loaded_message = f"Warning: the lyrics of \"{audio.name_without_extension}\" could not be loaded."
     lyric_filepath = configuration.get_audio_file_path(lyric_filename)
     if is_file_in_cache(lyric_filepath):
         audio.lyrics_filepath = lyric_filepath
         user_interface.request_output_to_user(
-            f"Info: the lyrics of \"{audio.name}\" is found in cache, thus loaded."
+            f"Info: the lyrics of \"{audio.name_without_extension}\" is found in cache, thus loaded."
         )
         return False
     else:
         audio.lyrics_filepath = None
         if configuration.is_music_lyrics_searched_on_import():
             user_interface.request_output_to_user(
-                f"Info: searching the lyrics of \"{audio.name}\" on Internet."
+                f"Info: searching the lyrics of \"{audio.name_without_extension}\" on Internet."
             )
             maybe_lyric_text = None
             try:
-                maybe_lyric_text: str | None = syncedlyrics.search(audio.name, save_path=lyric_filepath)
+                maybe_lyric_text: str | None = syncedlyrics.search(audio.name_without_extension, save_path=lyric_filepath)
             except Exception:
                 user_interface.request_output_to_user(error_lyrics_not_loaded_message)
                 return False

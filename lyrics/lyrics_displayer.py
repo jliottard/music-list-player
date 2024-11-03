@@ -73,7 +73,7 @@ class LyricsDisplayer:
             if self.are_audio_lyrics_available(maybe_base_audio):
                 base_audio: Audio = maybe_base_audio
                 if _has_audio_with_lyrics_changed():
-                    user_interface.request_output_to_user(f"Info: \"{base_audio.name}\" audio's lyrics:")
+                    user_interface.request_output_to_user(f"Info: \"{base_audio.name_without_extension}\" audio's lyrics:")
                     self.displayed_lyric_audio = base_audio
                     lyrics: pylrc.classes.Lyrics = LyricsDisplayer.get_lyric_text(self.displayed_lyric_audio)
                     for lyric_line in lyrics:

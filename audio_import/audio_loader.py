@@ -2,9 +2,10 @@ import os
 from typing import List
 
 from app.cannot_find_a_match_error import CannotFindAMatchError
-from app.config.configuration import Configuration, operating_system_proof_path
+from app.config.configuration import Configuration
 from app.file_management import is_file_in_cache, _is_file_loaded
 from app.interface import Interface
+from app.path import operating_system_proof_path
 from app.search import match_some_strings_among_strings
 from audio.audio import Audio
 from audio.file_extension import FileExtension
@@ -74,15 +75,15 @@ def _get_first_youtube_result(video_metadatas: List[YouTubeVideoMetadata]) -> Yo
     """
     return video_metadatas[0] if len(video_metadatas) != 0 else None
 
-def _rename_filename(source_filepath: str, new_filename: str) -> str:
+def _rename_filename(source_filepath: str, new_filename_with_extension: str) -> str:
     """Rename just the filename of the given file
     @param source_filepath: str: the path of the file to rename
-    @param new_filename: str: the filename rename
+    @param new_filename_with_extension: str: the filename rename
     @return str: the new filepath as an absolute filepath
     """
     _drive, path_and_file = os.path.splitdrive(source_filepath)
     path, _file = os.path.split(path_and_file)
-    playlist_name_like_audio_absolute_path = os.path.join(path, new_filename)
+    playlist_name_like_audio_absolute_path = os.path.join(path, new_filename_with_extension)
     os.rename(source_filepath, playlist_name_like_audio_absolute_path)
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
@@ -102,7 +103,7 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
     if _is_file_loaded(audio_name + file_extension.value, configuration):
         user_interface.request_output_to_user(f"Info: the audio \"{audio_name}\" is found in cache memory.")
         returned_audio = Audio(
-            name=audio_name,
+            name_without_extension=audio_name,
             filepath=configuration.get_audio_file_path(audio_name + file_extension.value),
             file_extension=file_extension
         )
@@ -146,10 +147,10 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
         #  from the playlist file
         renamed_filepath = _rename_filename(
             source_filepath=audio_download_absolute_path,
-            new_filename=audio_name + file_extension.value
+            new_filename_with_extension=audio_name + file_extension.value
         )
         returned_audio = Audio(
-            name=audio_name,
+            name_without_extension=audio_name,
             filepath=renamed_filepath,
             file_extension=file_extension
         )
@@ -210,9 +211,11 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
 
 def unload_music(audio: Audio, configuration: Configuration) -> None:
     """Remove the local audio is found"""
-    if _is_file_loaded(audio.name + audio.extension.value, configuration):
-        cached_audio_filepath: str = configuration.get_audio_file_path(audio.name + audio.extension.value)
+    if _is_file_loaded(audio.name_without_extension + audio.extension.value, configuration):
+        print("file is loaded ", audio.name_without_extension + audio.extension.value)
+        cached_audio_filepath: str = configuration.get_audio_file_path(audio.name_without_extension + audio.extension.value)
         os.remove(cached_audio_filepath)
+    print("file is not loaded ", audio.name_without_extension + audio.extension.value)
     if audio.lyrics_filepath is not None and is_file_in_cache(audio.lyrics_filepath):
         os.remove(configuration.get_audio_file_path(audio.lyrics_filepath))
 

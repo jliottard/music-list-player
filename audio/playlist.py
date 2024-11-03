@@ -7,4 +7,4 @@ class Playlist:
 
     def names(self) -> List[str]:
         # Return the name of the audios in order to the playlist
-        return [audio.name for audio in self.audios]
+        return [audio.name_without_extension for audio in self.audios]

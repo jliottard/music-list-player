@@ -33,7 +33,7 @@ class Interface:
         if maybe_current_song is None:
             current_song_name = "unknown"
         else:
-            current_song_name = maybe_current_song.name
+            current_song_name = maybe_current_song.name_without_extension
         maybe_audio_time_progess_in_sec: float = player.get_audio_progress_time_in_sec()
         maybe_audio_duration_in_sec: float = player.get_playing_audio_duration_in_sec()
         status_info = f"{current_song_name}"
@@ -62,7 +62,7 @@ class Interface:
             status_info += f" - Currently playing: {playing_audio_info}."
             maybe_next_audio: Audio = player.get_next_audio()
             if maybe_next_audio is not None:
-                status_info +=  f"\n - Next song: \"{maybe_next_audio.name}\"."
+                status_info +=  f"\n - Next song: \"{maybe_next_audio.name_without_extension}\"."
         else:
             status_info = "Info: no audio is playing."
         return status_info
