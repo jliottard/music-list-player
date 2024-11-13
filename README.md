@@ -43,6 +43,11 @@ A recommanded configuration is:
 
 For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
+An example is, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlist "chopin" and the YouTube video source `oy0IgI_qewg`:
+```
+etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oy0IgI_qewg)
+```
+
 ### How to run the application
 In the virtual environment with the `dev_requirements.txt`'s dependencies installed, run in the project root directory:
 - On Linux:
