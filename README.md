@@ -49,7 +49,7 @@ etude op 10 no 4 by frédéric chopin #chopin #piano (https://www.youtube.com/wa
 ```
 
 ### How to run the application
-In the virtual environment with the `dev_requirements.txt`'s dependencies installed, run in the project root directory:
+In the virtual environment with the dependencies in `requirements.txt` installed, run in the project root directory:
 - On Linux:
 ```bash
 .venv/bin/python main.py
@@ -66,7 +66,7 @@ deactivate
 ```
 
 ### How to test
-To run the tests, use in the project root directory:
+To run the tests, in the virtual environment with the dependencies in `dev_requirements.txt` installed, use in the project root directory:
 ```bash
 pytest
 ```
