@@ -34,18 +34,18 @@ For the configuration, use the `configuration.toml` file (must be located in thi
 A recommanded configuration is:
 ```toml
 [my_profile]
-"playlist-file-relative-path" = "playlists/my_playlist.txt" # the path must exist on your machine
-"download-directory-relative-path" = "audios_downloads"     # the path must exist on your machine
-"audio-source-selection-on-import" = false
-"persistant-audio-cache" = true
-"music-lyrics-search-on-import" = false 
+"playlist-file-relative-path" = "playlist.txt"   # this file must exist on your machine
+"download-directory-relative-path" = ".cache"    # this directory must exist on your machine
+"audio-source-selection-on-import" = false       # it will download the first YouTube result as the audio file
+"persistant-audio-cache" = true                  # it keeps audio and lyric files in cache after leaving the application
+"music-lyrics-search-on-import" = false          # it will not download lyrics, nor use cached lyrics
 ```
 
 For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
-An example is, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlist "chopin" and the YouTube video source `oy0IgI_qewg`:
+An example is for one line, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlists "chopin" and "piano" that can be used as `import #chopin` or `import #piano` and the YouTube video source `[oy0IgI_qewg](https://www.youtube.com/watch?v=oy0IgI_qewg)` that will be directly downloaded from:
 ```
-etude op 10 no 4 by frédéric chopin #chopin (https://www.youtube.com/watch?v=oy0IgI_qewg)
+etude op 10 no 4 by frédéric chopin #chopin #piano (https://www.youtube.com/watch?v=oy0IgI_qewg)
 ```
 
 ### How to run the application
