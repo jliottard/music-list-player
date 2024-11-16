@@ -78,7 +78,7 @@ pylint *
 
 ## Build an executable
 ### On Windows
-To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller from the repository directory with:
+To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment is activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller from the repository directory with:
 ```powershell
 .\scripts\build.ps1
 ```
