@@ -43,7 +43,7 @@ A recommanded configuration is:
 
 For the playlist, the playlist file must be a list of the songs to play, with one song name per line (ending with a carriage return). Thanks to metadata parsing, you can add hashtags followed by a word to a line in order to tag the line. So in one profile you can import and play audios only with a specific tag you chose. In a way, it is like a tagged playlist inside your playlist.
 
-An example is for one line, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlists "chopin" and "piano" that can be used as `import #chopin` or `import #piano` and the YouTube video source `[oy0IgI_qewg](https://www.youtube.com/watch?v=oy0IgI_qewg)` that will be directly downloaded from:
+An example is for one line, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlists "chopin" and "piano" that can be used as `import #chopin` or `import #piano` and the YouTube video source `(https://www.youtube.com/watch?v=oy0IgI_qewg)` that will be directly downloaded from:
 ```
 etude op 10 no 4 by frédéric chopin #chopin #piano (https://www.youtube.com/watch?v=oy0IgI_qewg)
 ```
