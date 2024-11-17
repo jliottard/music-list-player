@@ -90,7 +90,7 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 ```
 
 ## Features
-### Implemented in version 1.0
+### Implemented in version [1.0](https://github.com/jliottard/music-list-player/releases/tag/v1.0.0)
 - [x] Command-line interface definition in-app
 - [x] Play audio
 - [x] Download musics from Internet
@@ -107,7 +107,7 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 - [x] Change "pause" keyword to resume and its printing
 - [x] Handle age restricted youtube video
 
-### Implemented in version 1.1
+### Implemented in version [1.1](https://github.com/jliottard/music-list-player/releases/tag/v1.1.0)
 - [x] Support Windows
 - [x] Switch playlist profiles in app
 - [x] Erase cached when quitting the application as a setting
@@ -116,7 +116,7 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 - [x] Import the audios in background
 - [x] Print music's lyrics matching music's audio
 
-### Implemented
+### Implemented in version [1.2](https://github.com/jliottard/music-list-player/releases/tag/v1.2.0)
 - [x] Handle errors on not finding a Youtube video for the given names of the playlist
 - [x] Use a search function of a Python library
 - [x] Add a selection menu when downloading music from Youtube (with video name, channel name, video duration, views count, release date)
@@ -127,7 +127,7 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 - [x] Check remaining disk usage when downloading audios
 - [x] Use directly a YouTube link if presents in the audio name (line)
 - [x] Parse author part of the audio line in plain text file
+- [x] Provide an executable entry point file for Windows application per release
 
 ### Backlog
-- [ ] Provide an executable entry point file for Windows application per release
 - [ ] Add a music recommendation feature

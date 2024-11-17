@@ -2,3 +2,4 @@
 Remove-Item -Path 'build' -Recurse
 Remove-Item -Path 'dist' -Recurse -Force
 Remove-Item -Path 'music-list-player.spec'
+Remove-Item -Path 'music-list-player.zip'
