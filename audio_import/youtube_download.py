@@ -12,11 +12,15 @@ def download_audio_from_youtube(youtube_url: str, output_directory_relative_path
     @param youtube_url: str a valid youtube video URL
     @param output_directory_relative_path; str filepath to save the download
     @returns str: an absolute path to the music audio
-    @raises: CannotDownloadError if the download is not sucessful
+    @raises: CannotDownloadError if the download is not successful
     """
     try:
-        youtube_stream: Stream = YouTube(youtube_url).streams.get_audio_only()
-        audio_filepath: str = youtube_stream.download(mp3=True, output_path=output_directory_relative_path)
+        maybe_youtube_stream: Stream | None = YouTube(youtube_url).streams.get_audio_only()
+        match maybe_youtube_stream:
+            case None:
+                raise CannotDownloadError("Youtube audio stream source not found")
+            case _:
+                audio_filepath: str = maybe_youtube_stream.download(mp3=True, output_path=output_directory_relative_path)
     except exceptions.VideoUnavailable as video_unavailable_error:
         raise CannotDownloadError(video_unavailable_error.args) from video_unavailable_error
     except exceptions.PytubeFixError as pytube_error:
