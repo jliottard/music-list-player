@@ -43,3 +43,6 @@ def get_youtube_video_url(music_name: str) -> str:
     watch_video_url_part = html_contents[start_index:end_index]
     music_video_url = 'https://www.youtube.com' + watch_video_url_part
     return music_video_url
+
+def is_url_refering_to_youtube(url: str) -> bool:
+    return "youtu.be" in url or "youtube.com" in url
