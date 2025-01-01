@@ -9,3 +9,6 @@ class YouTubeVideoMetadata:
         self.duration = duration
         self.views = views
         self.publication_date = publication_date
+
+    def __str__(self) -> str:
+        return f"{self.id} {self.url} {self.title} {self.author} {self.duration}"

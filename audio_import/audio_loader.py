@@ -88,7 +88,7 @@ def _rename_filename(source_filepath: str, new_filename_with_extension: str) -> 
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
 def load(audio_name: str, file_extension: FileExtension, configuration: Configuration,
-         user_interface: Interface, only_local: bool, maybe_source: str | None) -> Audio:
+         user_interface: Interface, only_local: bool, maybe_source: str | None) -> Audio | None:
     """Load the audio from the cache or from the Internet
     @param audio_name: str
     @param file_extension: FileExtension
@@ -118,8 +118,8 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
                 user_interface=user_interface
             )
         else:
-            if maybe_source is not None:
-                maybe_chosen_youtube_video = _get_first_youtube_result(youtube_metadata_parser.search_videos_on_youtube(maybe_source))
+            if maybe_source is not None and youtube_metadata_parser.is_url_refering_to_youtube(maybe_source):
+                maybe_chosen_youtube_video: YouTubeVideoMetadata = _get_first_youtube_result(youtube_metadata_parser.search_videos_on_youtube(maybe_source))
             else:
                 maybe_chosen_youtube_video: YouTubeVideoMetadata | None = _get_first_youtube_result(youtube_videos_metadatas)
         if maybe_chosen_youtube_video is None:
@@ -212,10 +212,8 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
 def unload_music(audio: Audio, configuration: Configuration) -> None:
     """Remove the local audio is found"""
     if _is_file_loaded(audio.name_without_extension + audio.extension.value, configuration):
-        print("file is loaded ", audio.name_without_extension + audio.extension.value)
         cached_audio_filepath: str = configuration.get_audio_file_path(audio.name_without_extension + audio.extension.value)
         os.remove(cached_audio_filepath)
-    print("file is not loaded ", audio.name_without_extension + audio.extension.value)
     if audio.lyrics_filepath is not None and is_file_in_cache(audio.lyrics_filepath):
         os.remove(configuration.get_audio_file_path(audio.lyrics_filepath))
 
