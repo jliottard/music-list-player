@@ -1,0 +1,7 @@
+# PIP requirements for development
+
+# test related packages (required only for development)
+pytest>=7.1.3
+
+# application distribution related package (only for development)
+pyinstaller>=6.5.0

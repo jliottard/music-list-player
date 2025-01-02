@@ -1,0 +1,5 @@
+# PIP requirements for making the project demonstration
+
+# Terminal recording
+setuptools>=75.6.0
+asciinema>=2.4.0
