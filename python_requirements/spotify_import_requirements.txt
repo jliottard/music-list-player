@@ -1,0 +1,4 @@
+# PIP requirements to migrate Spotify playlist into text file
+
+# Spotify client
+spotipy>=-2.24.0
