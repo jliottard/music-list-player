@@ -19,7 +19,9 @@ UNIX_FORBIDDEN_CHAR = ['/', '\0']
 MS_FORBIDDEN_CHAR = ['/', '\\', '*', ':', '?', '"', '<', '>', '|', '\0']
 ESCAPING_CHAR = '_'
 IO_ERROR_NO_SPACE_LEFT_NUMBER = 28
+SUPPORTED_AUDIO_FILE_EXTENSION = FileExtension.M4A
 
+# -- Private functions --
 def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetadata], user_interface: Interface) -> YouTubeVideoMetadata|None:
     """Ask the terminal's user by a command line interaction to select a YouTube video from the list
     @param video_metadatas: List[YouTubeVideoMetadata] the list of YouTube videos to choose from
@@ -87,6 +89,7 @@ def _rename_filename(source_filepath: str, new_filename_with_extension: str) -> 
     os.rename(source_filepath, playlist_name_like_audio_absolute_path)
     return operating_system_proof_path(playlist_name_like_audio_absolute_path)
 
+# -- Public functions --
 def load(audio_name: str, file_extension: FileExtension, configuration: Configuration,
          user_interface: Interface, only_local: bool, maybe_source: str | None) -> Audio | None:
     """Load the audio from the cache or from the Internet
@@ -131,7 +134,8 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
         try:
             audio_download_absolute_path = youtube_download.download_audio_from_youtube(
                 youtube_url=chosen_youtube_video.url,
-                output_directory_relative_path=configuration.get_audios_directory_path()
+                output_directory_relative_path=configuration.get_audios_directory_path(),
+                file_extension=file_extension
             )
         except CannotDownloadError as video_cannot_be_downloaded:
             user_interface.request_output_to_user(
@@ -188,7 +192,7 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
         try:
             maybe_audio: Audio = load(
                 audio_name=name,
-                file_extension=FileExtension.MP3,
+                file_extension=SUPPORTED_AUDIO_FILE_EXTENSION,
                 configuration=configuration,
                 user_interface=user_interface,
                 only_local=load_only_local_audio,

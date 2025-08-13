@@ -1,5 +1,5 @@
 from audio import audio_player, playlist, play_mode, audio, file_extension
-from test.conftest import setup_and_teardown_playlist_and_configuration_files
+from test.conftest import setup_and_teardown_playlist_and_configuration_files, AUDIO_FILE_EXTENSION
 import pytest
 
 # Constants
@@ -13,7 +13,7 @@ def test_audio_player_audios_order():
         audio_name = "audio" + str(i)
         audio_path = "path/to/" + audio_name
         audios.append(
-            audio.Audio(audio_name, audio_path, file_extension.FileExtension.MP3)
+            audio.Audio(audio_name, audio_path, AUDIO_FILE_EXTENSION)
         )
     tested_playlist = playlist.Playlist()
     tested_playlist.audios = audios
@@ -59,6 +59,7 @@ def test_set_play_mode_loop(setup_and_teardown_playlist_and_configuration_files)
     player.next()
     assert player.get_playing_audio_index() == FIRST_AUDIO_INDEX
     player.stop()
+    player.set_volume(100) # set the audio volume back to 100% for other VLC instance running aside of the test session 
 
 def test_play_audio_at_index(setup_and_teardown_playlist_and_configuration_files):
     config: dict = setup_and_teardown_playlist_and_configuration_files

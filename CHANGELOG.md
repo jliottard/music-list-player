@@ -4,11 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## Version 1.3 - 2025-08-13
 
 ### Added
 
 - Migrate from Spotify playlists to plaintext files with a script.
+
+### Changed
+
+- Set `.m4a` as the audio file format instead of `.mp3` for downloaded audio (pytubefix).
+
+### Fixed
+
+- Replace the unmaintained youtube-search 3rd party library for pytubefix search.
 
 ## [Version 1.2](https://github.com/jliottard/music-list-player/releases/tag/v1.2.0) - 2024-11-17
 

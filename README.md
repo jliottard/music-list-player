@@ -10,7 +10,7 @@ The idea is to write your musics line by line in a simple plaintext file, so you
 
 The project uses `Python 3.10` and it is not developped nor tested for earlier Python version.
 
-Python libraries are listed in the `requirements.txt` files. To import the dependencies in a virtual environment, run:
+Python libraries are listed in the `python_requirements/requirements.txt` files. To import the dependencies in a virtual environment you will need `pip` and `venv`, run:
 
 - On Linux:
 
@@ -18,7 +18,7 @@ Python libraries are listed in the `requirements.txt` files. To import the depen
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r python_requirements/requirements.txt
 ```
 
 - On Windows:
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 py -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r python_requirements/requirements.txt
 ```
 
 The `python-vlc` dependency requires the [VLC](https://www.videolan.org/vlc/) software to be installed on your computer. Please use the latest version of VLC:
@@ -54,12 +54,13 @@ For the playlist, the playlist file must be a list of the songs to play, with on
 
 An example is for one line, the music name "etude op 10 number 4", the author "Frédéric Chopin", the tagged playlists "chopin" and "piano" that can be used as `import #chopin` or `import #piano` and the YouTube video source `(https://www.youtube.com/watch?v=oy0IgI_qewg)` that will be directly downloaded from:
 
-```
+```txt
 etude op 10 no 4 by frédéric chopin #chopin #piano (https://www.youtube.com/watch?v=oy0IgI_qewg)
 ```
 
 ### How to run the application
-In the virtual environment with the dependencies in `requirements.txt` installed, run in the project root directory:
+
+In the virtual environment with the dependencies in `python_requirements/requirements.txt` installed, run in the project root directory:
 
 - On Linux:
 
@@ -83,7 +84,7 @@ deactivate
 
 ### How to test
 
-To run the tests, in the virtual environment with the dependencies in `dev_requirements.txt` installed, use in the project root directory:
+To run the tests, in the virtual environment with the dependencies from `python_requirements/requirements.txt` and `python_requirements/dev_requirements.txt` installed, use in the project root directory:
 
 ```bash
 pytest
@@ -99,13 +100,16 @@ pylint *
 
 ### On Windows
 
-To build the application executable, assuming that you have the `dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment is activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller from the repository directory with:
+To build the application executable, assuming that you have the `python_requirements/dev_requirements.txt` packages installed in your Python virtual environment, that you have that virtual environment is activated and that VLC is installed on your Windows OS at the `C:\Program Files\VideoLAN\VLC` location, run the PyInstaller from the repository directory with:
+
 ```powershell
 .\scripts\build.ps1
 ```
+
 The executable's result is located in the `dist\music-list-player` directory.
 
 To clean the reposity of the build artefacts, remove the builds from the repository directory with:
+
 ```powershell
 .\scripts\clean.ps1
 ```
@@ -115,4 +119,5 @@ To clean the reposity of the build artefacts, remove the builds from the reposit
 You can refer to the [change log](/CHANGELOG.md).
 
 ### Backlog
+
 - [ ] Add a music recommendation feature

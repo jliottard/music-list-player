@@ -1,6 +1,7 @@
 from typing import List
 import requests
-from youtubesearchpython import VideosSearch
+# from youtubesearchpython import VideosSearch
+from pytubefix import Search
 
 from audio_import.youtube_video_metadata import YouTubeVideoMetadata
 
@@ -9,21 +10,24 @@ def search_videos_on_youtube(term_search: str) -> List[YouTubeVideoMetadata]:
         @param term_search: str the YouTube search
         @return List[YouTubeVideoMetadata] a list of the video metadata got by the search
     """
-    videos_search = VideosSearch(term_search, limit=5)
-    results: dict = videos_search.result()['result']
+    results = Search(term_search)
+    VIDEO_LIMIT = 5
     metadatas: list = []
-    for result in results:
-        metadatas.append(
-            YouTubeVideoMetadata(
-                video_id=result['id'],
-                url=result['link'],
-                title=result['title'],
-                author=result['channel']['name'],
-                duration=result['duration'],
-                views=result['viewCount']['text'],
-                publication_date=result['publishedTime']
-            )
+    video_result_count = 0
+    for video in results.videos:
+        metadata = YouTubeVideoMetadata(
+            video_id=video.video_id,
+            url=video.watch_url,
+            title=video._title,
+            author=video._author,
+            duration=None,
+            views=None,
+            publication_date=video._publish_date
         )
+        metadatas.append(metadata)
+        video_result_count += 1
+        if video_result_count >= VIDEO_LIMIT:
+            break
     return metadatas
 
 def get_youtube_video_url(music_name: str) -> str:

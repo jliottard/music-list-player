@@ -2,6 +2,8 @@ from audio import playlist
 from audio import audio
 from audio import file_extension
 
+from test.conftest import AUDIO_FILE_EXTENSION
+
 def test_playlist_names_order():
     tested_playlist = playlist.Playlist()
     audios = []
@@ -10,7 +12,7 @@ def test_playlist_names_order():
         audio_name = "audio" + str(i)
         audio_path = "path/to/" + audio_name
         audios.append(
-            audio.Audio(audio_name, audio_path, file_extension.FileExtension.MP3)
+            audio.Audio(audio_name, audio_path, AUDIO_FILE_EXTENSION)
         )
         expected_names.append(audio_name)
     tested_playlist.audios = audios

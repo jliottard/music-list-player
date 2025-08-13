@@ -9,7 +9,8 @@ from audio.file_extension import FileExtension
 from audio.playlist import Playlist
 from audio_import import audio_loader
 from audio_import.audio_loader import sanitize_filename, UNIX_FORBIDDEN_CHAR, MS_FORBIDDEN_CHAR, ESCAPING_CHAR
-from test.conftest import setup_and_teardown_playlist_and_configuration_files, TEST_PROFILE_NAME
+
+from test.conftest import setup_and_teardown_playlist_and_configuration_files, TEST_PROFILE_NAME, AUDIO_FILE_EXTENSION
 from test.interface_mock import InterfaceMock
 
 def test_sanitize_filename():
@@ -38,7 +39,7 @@ def test_load_with_cached_audio(setup_and_teardown_playlist_and_configuration_fi
     for cached_audio in playlist.audios:
         tested_audio: Audio = audio_loader.load(
             audio_name=cached_audio.name_without_extension,
-            file_extension=FileExtension.MP3,
+            file_extension=AUDIO_FILE_EXTENSION,
             configuration=configuration,
             user_interface=interface_mock,
             only_local=False,
@@ -55,18 +56,18 @@ def test_load_only_local_audio(setup_and_teardown_playlist_and_configuration_fil
         Audio(
             name_without_extension="this file does not exist",
             filepath="this filepath does not exist either",
-            file_extension=FileExtension.MP3
+            file_extension=AUDIO_FILE_EXTENSION
         ),
         Audio(
             name_without_extension="this second file does not exist too",
             filepath="this filepath does not exist either too",
-            file_extension=FileExtension.MP3
+            file_extension=AUDIO_FILE_EXTENSION
         )
     ]
     for not_in_cache_audio in not_downloaded_audios:
         tested_maybe_audio: Audio | None = audio_loader.load(
             audio_name=not_in_cache_audio.name_without_extension,
-            file_extension=FileExtension.MP3,
+            file_extension=AUDIO_FILE_EXTENSION,
             configuration=configuration,
             user_interface=interface_mock,
             only_local=True,
@@ -86,7 +87,7 @@ def test_load_from_internet(setup_and_teardown_playlist_and_configuration_files)
     for cached_audio in playlist.audios:
         tested_audio: Audio = audio_loader.load(
             audio_name=cached_audio.name_without_extension,
-            file_extension=FileExtension.MP3,
+            file_extension=AUDIO_FILE_EXTENSION,
             configuration=configuration,
             user_interface=interface_mock,
             only_local=False,
@@ -103,7 +104,7 @@ def test_load_with_source(setup_and_teardown_playlist_and_configuration_files):
     etude_op_ten_no_four_index = 2
     tested_audio: Audio = audio_loader.load(
         audio_name=playlist.audios[etude_op_ten_no_four_index].name_without_extension + " test", #change the name to not conflict with the setup
-        file_extension=FileExtension.MP3,
+        file_extension=AUDIO_FILE_EXTENSION,
         configuration=configuration,
         user_interface=interface_mock,
         only_local=False,

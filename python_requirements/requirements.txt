@@ -13,7 +13,6 @@ requests-oauthlib>=1.3.1
 
 # youtube related packages
 pytubefix>=8.2.0
-youtube-search-python>=1.6.6
 
 # lyrics related packages
 syncedlyrics==0.9.0 # version 0.10.0 logs error using logging thus pollute the terminal's output
