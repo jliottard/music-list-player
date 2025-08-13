@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## Version 1.3 - 2025-08-13
+## [Version 1.3](https://github.com/jliottard/music-list-player/releases/tag/v1.3.0) - 2025-08-13
 
 ### Added
 
-- Migrate from Spotify playlists to plaintext files with a script.
+- Migrate from Spotify playlists to plaintext files with a script (spotipy).
 
 ### Changed
 
