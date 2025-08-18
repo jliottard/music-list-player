@@ -1,11 +1,11 @@
-# Import Spotify playlists and liked songs into "output_playlists.txt" and "output_liked_songs.txt" in a "imported_playlist" directory.
+# Import Spotify playlists and liked songs into "output_playlists.txt" and "output_liked_songs.txt"
 # Using the format by line : <artist name> - <song name> (<spotify url>) #<playlist name> #spotify
 
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-RELATIVE_OUTPUT_DIRECTORY_PATH = "imported_playlist"
+RELATIVE_OUTPUT_DIRECTORY_PATH = "."
 
 OUTPUT_PLAYLISTS_FILE = "output_playlist.txt"
 OUTPUT_LIKED_SONGS_FILE = "output_liked_songs.txt"
