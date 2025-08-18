@@ -1,16 +1,14 @@
-# Import Spotify playlists and liked songs into a plaintext file "output.txt"
-# Using the format by line : <artists names> - <song name> (<spotify url>) #<playlist name>
-# 
-# Go to [https://developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) to setup the [Spotify crendentials](spotify_credentials.json)
+# Import Spotify playlists and liked songs into "output_playlists.txt" and "output_liked_songs.txt"
+# Using the format by line : <artist name> - <song name> (<spotify url>) #<playlist name> #spotify
 
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-RELATIVE_OUTPUT_DIRECTORY_PATH = "imported_playlist"
+RELATIVE_OUTPUT_DIRECTORY_PATH = "."
 
 OUTPUT_PLAYLISTS_FILE = "output_playlist.txt"
-OUTPUT_LIKED_SONGS_FILE = "output_liked_song.txt"
+OUTPUT_LIKED_SONGS_FILE = "output_liked_songs.txt"
 
 def get_spotify_crendentials():
     with open("spotify_credentials.json", "rt", encoding="utf-8") as credentials_file:
@@ -67,7 +65,7 @@ if __name__ == "__main__":
                 for artist in track['artists'][1:]:
                     track_artist += f" and {artist['name']}"
             track_url = track['external_urls']['spotify']
-            track_tag = "#general #spotify"
+            track_tag = "#spotify"
             # Do not import songs that are already in a playlist 
             with open(os.path.join(RELATIVE_OUTPUT_DIRECTORY_PATH, OUTPUT_PLAYLISTS_FILE), "rt", encoding="utf-8") as playlists_file:
                 contents = playlists_file.read()

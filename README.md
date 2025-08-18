@@ -11,6 +11,7 @@ Contents:
 - [Run the portable .exe app on Windows](#run-the-portable-exe-app-on-windows)
 - [App settings](#app-settings)
 - [Playlists](#playlists)
+- [Importing your Spotify playlists](#importing-your-spotify-playlists)
 - [For developers](#for-developers)
 - [Project's history and features](#projects-history-and-features)
 
@@ -58,6 +59,13 @@ An example is for one line, the music name "etude op 10 number 4", the author "F
 ```txt
 etude op 10 no 4 by frédéric chopin #chopin #piano (https://www.youtube.com/watch?v=oy0IgI_qewg)
 ```
+
+## Importing your Spotify playlists
+
+- Install the `pip` dependencies listed in `python_requirements/spotify_import_requirements.txt`;
+- Get your credentials from [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) to setup the [spotify_credentials.json](./playlist_migration/from_spotify/spotify_credentials.json) file;
+- Fill the "CHANGE ME" data of the [spotify_playlists.json](./playlist_migration/from_spotify/spotify_playlists.json) file;
+- Run `playlist_from_spotify.py` from its directory path.
 
 ## For developers
 
