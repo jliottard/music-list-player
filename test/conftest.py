@@ -39,7 +39,7 @@ TEST_SESSION_CACHE_DIR_RELATIVE_PATH = 'test/test_session_cache'
 if platform.system() == "Linux":
     TEST_WORK_DIR_RELATIVE_PATH = operating_system_proof_path(TEST_WORK_DIR_RELATIVE_PATH)
     TEST_SESSION_CACHE_DIR_RELATIVE_PATH = operating_system_proof_path(TEST_SESSION_CACHE_DIR_RELATIVE_PATH)
-
+print("TEST_SESSION_CACHE_DIR_RELATIVE_PATH", TEST_SESSION_CACHE_DIR_RELATIVE_PATH)
 TEST_PLAYLIST_RELATIVE_PATH = '/'.join([TEST_WORK_DIR_RELATIVE_PATH, 'playlist_for_test.txt'])
 TEST_CACHED_AUDIO_DIR_PATH = '/'.join([TEST_WORK_DIR_RELATIVE_PATH, '.cache_for_test'])
 TEST_PROFILE_CONFIG_RELATIVE_PATH = '/'.join([TEST_WORK_DIR_RELATIVE_PATH,'configuration_for_test.toml'])
@@ -98,7 +98,6 @@ def _init_session_test_cache():
                 new_filename_with_extension=audio_name + AUDIO_FILE_EXTENSION.value
             )
     except Exception as e:
-        shutil.rmtree(TEST_SESSION_CACHE_DIR_RELATIVE_PATH, ignore_errors=False)
         raise e
     return True
 
