@@ -26,7 +26,7 @@ You must have [VLC](https://www.videolan.org/vlc/) installed on your machine (ve
 
 ## Run the portable .exe app on Windows
 
-- Download and extract the project from the lastest `.zip` archive from this project's Githab Releases page.
+- Download and extract the project from the lastest `.zip` archive from this project's Github Releases page.
 - Run the `.exe` file.
 
 ## App settings
