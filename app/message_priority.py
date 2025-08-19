@@ -1,4 +1,4 @@
-''' Message levels to dispaly to the user '''
+''' Priorities for the message displayed to the user '''
 
 import enum
 

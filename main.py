@@ -32,7 +32,7 @@ def check_configuration(configuration: Configuration, user_interface: Interface)
     if missing_filepaths:
         user_interface.request_output_to_user(
             f"Error: The following filepath(s) defined in the {CONFIGURATION_FILE_PATH} file do not exist:",
-            MessagePriority.Error
+            MessagePriority.ERROR
         )
         for missing_filepath in missing_filepaths:
             user_interface.request_output_to_user(
