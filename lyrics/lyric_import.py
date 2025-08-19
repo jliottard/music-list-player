@@ -4,6 +4,7 @@ import syncedlyrics
 from app.config.configuration import Configuration, TEXT_ENCODING
 from app.interface import Interface
 from app.file_management import is_file_in_cache
+from app.message_priority import MessagePriority
 from audio.audio import Audio
 
 COEF_SEC_TO_MS = 10 ** 3
@@ -18,25 +19,27 @@ def prepare_lyrics(audio: Audio, configuration: Configuration, user_interface: I
     @raise TypeError: if the local lyric file is not in a LRC format
     """
     lyric_filename = f"{audio.name_without_extension}.lrc"
-    error_lyrics_not_loaded_message = f"Warning: the lyrics of \"{audio.name_without_extension}\" could not be loaded."
+    warning_lyrics_not_loaded_message = f"Warning: the lyrics of \"{audio.name_without_extension}\" could not be loaded."
     lyric_filepath = configuration.get_audio_file_path(lyric_filename)
     if is_file_in_cache(lyric_filepath):
         audio.lyrics_filepath = lyric_filepath
         user_interface.request_output_to_user(
-            f"Info: the lyrics of \"{audio.name_without_extension}\" is found in cache, thus loaded."
+            f"Info: the lyrics of \"{audio.name_without_extension}\" is found in cache, thus loaded.",
+            MessagePriority.INFO
         )
         return False
     else:
         audio.lyrics_filepath = None
         if configuration.is_music_lyrics_searched_on_import():
             user_interface.request_output_to_user(
-                f"Info: searching the lyrics of \"{audio.name_without_extension}\" on Internet."
+                f"Info: searching the lyrics of \"{audio.name_without_extension}\" on Internet.",
+                MessagePriority.INFO
             )
             maybe_lyric_text = None
             try:
                 maybe_lyric_text: str | None = syncedlyrics.search(audio.name_without_extension, save_path=lyric_filepath)
             except Exception:
-                user_interface.request_output_to_user(error_lyrics_not_loaded_message)
+                user_interface.request_output_to_user(warning_lyrics_not_loaded_message, MessagePriority.WARNING)
                 return False
             if maybe_lyric_text is not None:
                 lyric_text: str = maybe_lyric_text
@@ -44,6 +47,6 @@ def prepare_lyrics(audio: Audio, configuration: Configuration, user_interface: I
                     lyric_file.write(lyric_text)
                 audio.lyrics_filepath = lyric_filepath
                 return True
-            user_interface.request_output_to_user(error_lyrics_not_loaded_message)
+            user_interface.request_output_to_user(warning_lyrics_not_loaded_message, MessagePriority.WARNING)
             return False
         return False

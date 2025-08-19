@@ -1,6 +1,7 @@
 from typing import List
 import re
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from audio_import.audio_metadata import AudioMetadata
 
 SPACE = ' '
@@ -90,7 +91,7 @@ def parse_plain_text_playlist_file(playlist_file_absolute_path: str, user_interf
         @param text_encoding:
         @return List[AudioMetadata]: the audios' informations
     """
-    user_interface.request_output_to_user("Info: parsing playlist file.")
+    user_interface.request_output_to_user("Info: parsing playlist file.", MessagePriority.INFO)
     audio_data = []
     with open(playlist_file_absolute_path, "rt", encoding=text_encoding) as playlist_file:
         lines = playlist_file.readlines()

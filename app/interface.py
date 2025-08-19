@@ -2,6 +2,7 @@ import os
 import platform
 from threading import Lock
 
+from app.message_priority import MessagePriority
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
@@ -11,6 +12,9 @@ class Interface:
     def __init__(self):
         self.stdin_lock = Lock()
         self.stdout_lock = Lock()
+        self.messages_by_priority = [ [] for priority in MessagePriority ]
+        self.priority_locks = { priority:Lock() for priority in MessagePriority }
+        self.msg_prio_mutenesses = { priority:False for priority in MessagePriority }
 
     @staticmethod
     def _clean_terminal() -> None:
@@ -93,13 +97,25 @@ class Interface:
         self.free_user_input()
         return user_input
 
-    def request_output_to_user(self, output: str):
-        """Place to interface's next requested action to user_interface.request_output_to_user the
+    def request_output_to_user(self, output: str, priority: MessagePriority):
+        """Place to interface's next requested action to send the
          <output>
-        @param output: str the message to user_interface.request_output_to_user to the user
+        @param output: str the message to send to the user
+        @param priority: MessagePriority
         """
+        # Store message by priority
+        with self.priority_locks[priority]:
+            self.messages_by_priority[priority].append(output)
+        # Display message by priority and ignore messages with muted priority
         with self.stdout_lock:
-            print(output)
+            for priority in MessagePriority:
+                with self.priority_locks[priority]:
+                    if len(self.messages_by_priority[priority]) == 0:
+                        continue
+                    message = self.messages_by_priority[priority].pop(0)
+                    if self.msg_prio_mutenesses[priority]:
+                        continue
+                    print(message)
 
     def update_app_display(self, player: AudioPlayer):
         """Refresh the terminal to display current status information
@@ -107,4 +123,12 @@ class Interface:
         """
         with self.stdout_lock:
             self._clean_terminal()
-        self.request_output_to_user(Interface.status_information_str(player))
+        self.request_output_to_user(Interface.status_information_str(player), MessagePriority.INFO)
+
+    def mute_message(self, priority: MessagePriority):
+        ''' Mute the messages from the given priority '''
+        self.msg_prio_mutenesses[priority] = True
+
+    def unmute_message(self, priority: MessagePriority):
+        ''' Unmute the messages from the given priority '''
+        self.msg_prio_mutenesses[priority] = False
