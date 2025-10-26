@@ -4,7 +4,7 @@ An audio player that uses text file to define your music playlist. It downloads 
 
 The idea is to write your musics line by line in a simple plaintext file, so you can save your favorite songs anywhere.
 
-Contents:
+This file's contents:
 
 - [Installation](#installation)
 - [Run the app in your terminal](#run-the-app-in-your-terminal)
@@ -24,6 +24,14 @@ You must have [VLC](https://www.videolan.org/vlc/) installed on your machine (ve
 - Clone this project;
 - With `Python 3.10` (or later), install the `pip` dependencies listed in `python_requirements/requirements.txt`;
 - Run the `main.py`.
+<!-- For example :
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+pip install -r python_requirements/requirements.txt
+
+python3 main.py
+-->
 
 ## Run the portable .exe app on Windows
 
