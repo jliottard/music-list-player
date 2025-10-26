@@ -84,6 +84,16 @@ You must install the `pip` dependencies listed in `python_requirements/requireme
 - Run `pytest` in the project root directory for unit testing;
 - Run `pylint *` for the linter check.
 
+<!-- For example :
+python3 -m venv .venv-test
+source .venv-test/bin/activate
+python3 -m pip install --upgrade pip
+pip install -r python_requirements/requirements.txt
+pip install -r python_requirements/dev_requirements.txt
+
+pytest
+-->
+
 ### Build an .exe on Windows
 
 - Check that VLC is installed on your Windows machine at the `C:\Program Files\VideoLAN\VLC` location, or modify the build script;
