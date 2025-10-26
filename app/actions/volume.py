@@ -1,4 +1,5 @@
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from audio.audio_player import AudioPlayer
 
 def request_volume(args: list, player: AudioPlayer, user_interface: Interface):

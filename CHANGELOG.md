@@ -4,14 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## Version 1.4 - unreleased
+## Version [v1.4.0] - unreleased
 
 ### Added
 
-- Display messages by priority
-- Message mutability
+- Display messages by priority;
+- Message mutability.
 
-## [Version 1.3](https://github.com/jliottard/music-list-player/releases/tag/v1.3.0) - 2025-08-13
+### Fixed
+
+- Import missing MessagePriority class.
+
+## Version [v1.3.0](https://github.com/jliottard/music-list-player/commit/ba0e93286d431de4ca72b58baf74f8ebf3d17963) - 2025-08-13
 
 ### Added
 

@@ -1,5 +1,6 @@
 from app.config.configuration import Configuration
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from audio.audio_player import AudioPlayer
 from audio_import.audio_loader import flush_playlist_cache
 
