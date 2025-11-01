@@ -9,6 +9,7 @@ from app.actions.list import print_list
 from app.actions.lyric import request_lyrics
 from app.actions.mode import request_mode
 from app.actions.move_timeline import request_move
+from app.actions.mute import mute, unmute
 from app.actions.next import skip_music
 from app.actions.change_profile import request_profile
 from app.actions.play import play
@@ -79,7 +80,7 @@ def init() -> Tuple[Configuration, Interface, AudioPlayer, LyricsDisplayer]:
 def loop(configuration: Configuration, user_interface: Interface, player: AudioPlayer, lyrics_displayer: LyricsDisplayer):
     '''Loop over the commands of the user
     @param configuration: Configuration
-    @param user_inteface: Inteface
+    @param user_interface: Inteface
     @param player: AudioPlayer
     @param lyrics_displayer: LyricsDisplayer
     '''
@@ -130,6 +131,11 @@ def loop(configuration: Configuration, user_interface: Interface, player: AudioP
                 request_move(maybe_args, player)
             case Command.PROFILE:
                 configuration.profile: Profile | None = request_profile(maybe_args, configuration, user_interface)
+            case Command.MUTE:
+                print("command mute")
+                mute(maybe_args, user_interface)
+            case Command.UNMUTE:
+                unmute(maybe_args, user_interface)
             case _:
                 pass
 

@@ -114,6 +114,7 @@ class Interface:
                         continue
                     message = self.messages_by_priority[priority].pop(0)
                     if self.msg_prio_mutenesses[priority]:
+                        # we discard message in a muted priority/level to not display them later when they will not be relevant anymore.
                         continue
                     print(message)
 
@@ -127,8 +128,22 @@ class Interface:
 
     def mute_message(self, priority: MessagePriority):
         ''' Mute the messages from the given priority '''
-        self.msg_prio_mutenesses[priority] = True
+        with self.priority_locks[priority]:
+            self.msg_prio_mutenesses[priority] = True
 
     def unmute_message(self, priority: MessagePriority):
         ''' Unmute the messages from the given priority '''
-        self.msg_prio_mutenesses[priority] = False
+        with self.priority_locks[priority]:
+            self.msg_prio_mutenesses[priority] = False
+
+    def muteness_status(self):
+        ''' Display which priorities are muted or not '''
+        muteness_status: str = "Muteness status:"
+        for priority in MessagePriority:
+            status = "NOT muted."
+            if self.msg_prio_mutenesses[priority]:
+                status = "muted."
+            muteness_status += "\n"
+            muteness_status += f"\tThe {priority} priority is {status}"
+
+        return muteness_status

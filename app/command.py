@@ -1,6 +1,7 @@
 from enum import Enum
 
 from app.config.configuration_keyword import ConfigurationKeyword
+from app.message_priority import MessagePriority
 from audio.play_mode import PlayMode
 
 class Command(Enum):
@@ -19,12 +20,14 @@ class Command(Enum):
     LYRIC = "lyric"
     MOVE = "move"
     PROFILE = "profile"
+    MUTE = "mute"
+    UNMUTE = "unmute"
 
     def __str__(self) -> str:
         return self.value
 
     def help(self):
-        """ Provide a help description for the commande instance """
+        """ Provide a help description for the command instance """
         command_help = {
             Command.HELP: "show the details of the commands' usages",
             Command.QUIT: "exit the application",
@@ -42,7 +45,13 @@ class Command(Enum):
             Command.VOLUME: "show current volume. Alternatively, increase or decrease the volume by a percentage: \"volume up/down <percentage>\"",
             Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display.",
             Command.MOVE: "move the play moment of the current audio (in second): \"move 10.0\" : move the time of the audio to the 10th second.",
-            Command.PROFILE: "change the profile, or without arguments show the current profile : \"profile default\": change the profile to the \"default-profile\" from the configuration file"
+            Command.PROFILE: "change the profile, or without arguments show the current profile : \"profile default\": change the profile to the \"default-profile\" from the configuration file",
+            Command.MUTE : "mute the displayed message : mute <{}>".format(
+                [str(prio) for prio in MessagePriority]
+            ),
+            Command.UNMUTE : "unmute the displayed message : mute <{}>".format(
+                [str(prio) for prio in MessagePriority]
+            )
         }
         return command_help[self]
 

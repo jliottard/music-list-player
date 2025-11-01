@@ -8,11 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Add the mute and unmute commands based by the message priority;
+- Automatically mute INFO and WARNING message when displaying lyrics;
 - Display messages by priority;
 - Message mutability.
 
 ### Fixed
 
+- Reduce profile 'audio list' displayed;
 - Import missing MessagePriority class.
 
 ## Version [v1.3.0](https://github.com/jliottard/music-list-player/commit/ba0e93286d431de4ca72b58baf74f8ebf3d17963) - 2025-08-13
