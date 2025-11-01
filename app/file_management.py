@@ -1,3 +1,4 @@
+''' File management module '''
 import os
 
 from app.config.configuration import Configuration

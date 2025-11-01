@@ -1,3 +1,5 @@
+''' "move" command functionnality '''
+
 from audio.audio_player import AudioPlayer
 
 def request_move(args: list, player: AudioPlayer) -> None:

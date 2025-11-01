@@ -1,3 +1,4 @@
+''' "profile" command functionalities '''
 from app.config.configuration import Configuration
 from app.config.profile import Profile
 from app.interface import Interface

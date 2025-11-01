@@ -24,6 +24,7 @@ class MessagePriority(enum.IntEnum):
 
     @staticmethod
     def from_string(string: str):
+        ''' Get a Message priority enum from <string> '''
         for priority in MessagePriority:
             if string == str(priority):
                 return priority

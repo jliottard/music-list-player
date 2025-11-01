@@ -1,3 +1,5 @@
+''' App's interface module : getting user's inputs and displaying messages '''
+
 import os
 import platform
 from threading import Lock
@@ -108,13 +110,14 @@ class Interface:
             self.messages_by_priority[priority].append(output)
         # Display messages by priority and ignore messages with muted priority
         with self.stdout_lock:
-            for priority in MessagePriority:
-                with self.priority_locks[priority]:
-                    if len(self.messages_by_priority[priority]) == 0:
+            for msg_priority in MessagePriority:
+                with self.priority_locks[msg_priority]:
+                    if len(self.messages_by_priority[msg_priority]) == 0:
                         continue
-                    message = self.messages_by_priority[priority].pop(0)
-                    if self.msg_prio_mutenesses[priority]:
-                        # we discard messages in a muted priority/level to not display them later when they would not be relevant anymore.
+                    message = self.messages_by_priority[msg_priority].pop(0)
+                    if self.msg_prio_mutenesses[msg_priority]:
+                        # we discard messages in a muted priority/level to not display them later
+                        # when they would not be relevant anymore.
                         continue
                     print(message)
 

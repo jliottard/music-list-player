@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Increase pylint's score;
 - Reduce profile 'audio list' displayed;
 - Import missing MessagePriority class.
 
@@ -30,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
-- Replace the unmaintained youtube-search 3rd party library for pytubefix search.
+- Replace the unmaintained youtube-search third party library for pytubefix search.
 
 ## [Version 1.2](https://github.com/jliottard/music-list-player/releases/tag/v1.2.0) - 2024-11-17
 

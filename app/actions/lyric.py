@@ -1,3 +1,5 @@
+''' "lyric" command functionnality '''
+
 from typing import List
 
 from lyrics.lyrics_displayer import LyricsDisplayer

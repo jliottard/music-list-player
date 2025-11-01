@@ -1,3 +1,5 @@
+''' App's shutdown process '''
+
 from app.config.configuration import Configuration
 from app.interface import Interface
 from app.message_priority import MessagePriority
