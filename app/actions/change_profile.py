@@ -18,8 +18,12 @@ def _display_profile(profile: Profile, user_interface: Interface) -> None:
     tags_list = ", ".join(unique_tags)
     user_interface.request_output_to_user(f"\nTags found:\n {tags_list}", MessagePriority.INFO)
 
-    user_interface.request_output_to_user("\nAudio's list:", MessagePriority.INFO)
-    for audio_metadata in profile.audio_metadatas:
+    AUDIOS_TO_SHOW = 5
+    TOTAL_AUDIOS_NUMBER = len(profile.audio_metadatas)
+    user_interface.request_output_to_user(f"\nAudio list ({AUDIOS_TO_SHOW} first audios out of a total of {TOTAL_AUDIOS_NUMBER} audios):", MessagePriority.INFO)
+    for audio_i, audio_metadata in enumerate(profile.audio_metadatas):
+        if audio_i == AUDIOS_TO_SHOW:
+            break
         track_info = f"{audio_metadata.name}"
         track_info += f"by {audio_metadata.author}" if audio_metadata.author is not None else ''
         track_info += ', tags: '
