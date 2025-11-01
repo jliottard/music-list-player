@@ -27,7 +27,7 @@ def mute(args: list, user_interface: Interface) -> None:
 
 def unmute(args: list, user_interface: Interface) -> None:
     """Unmute the message of the <interface>
-    @param args: Tuple[Command, [str]] or None, expecting "mute <priority>
+    @param args: Tuple[Command, [str]] or None, expecting "unmute <priority>
     @param user_interface: Interface
     """
     if len(args) == 0:

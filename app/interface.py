@@ -103,10 +103,10 @@ class Interface:
         @param output: str the message to send to the user
         @param priority: MessagePriority
         """
-        # Store message by priority
+        # Store the message by priority
         with self.priority_locks[priority]:
             self.messages_by_priority[priority].append(output)
-        # Display message by priority and ignore messages with muted priority
+        # Display messages by priority and ignore messages with muted priority
         with self.stdout_lock:
             for priority in MessagePriority:
                 with self.priority_locks[priority]:
@@ -114,7 +114,7 @@ class Interface:
                         continue
                     message = self.messages_by_priority[priority].pop(0)
                     if self.msg_prio_mutenesses[priority]:
-                        # we discard message in a muted priority/level to not display them later when they will not be relevant anymore.
+                        # we discard messages in a muted priority/level to not display them later when they would not be relevant anymore.
                         continue
                     print(message)
 

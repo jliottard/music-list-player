@@ -46,10 +46,10 @@ class Command(Enum):
             Command.LYRIC: "show the lyrics of the played song, or if prefixed by 'on' or 'off' turn on or off accordingly the lyrics display.",
             Command.MOVE: "move the play moment of the current audio (in second): \"move 10.0\" : move the time of the audio to the 10th second.",
             Command.PROFILE: "change the profile, or without arguments show the current profile : \"profile default\": change the profile to the \"default-profile\" from the configuration file",
-            Command.MUTE : "mute the displayed message : mute <{}>".format(
+            Command.MUTE : "mute the messages of one priority : mute <{}>".format(
                 [str(prio) for prio in MessagePriority]
             ),
-            Command.UNMUTE : "unmute the displayed message : mute <{}>".format(
+            Command.UNMUTE : "unmute the messages of one priority : unmute <{}>".format(
                 [str(prio) for prio in MessagePriority]
             )
         }
