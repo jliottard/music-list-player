@@ -6,6 +6,7 @@ import pylrc
 from app import file_management
 from app.config.configuration import TEXT_ENCODING
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
@@ -68,12 +69,17 @@ class LyricsDisplayer:
         def _has_audio_with_lyrics_changed() -> bool:
             return self.player.get_playing_audio() is not None and self.displayed_lyric_audio != self.player.get_playing_audio()
 
+        user_interface.mute_message(MessagePriority.INFO)
+        user_interface.mute_message(MessagePriority.WARNING)
         while self.are_lyrics_on:
             maybe_base_audio = self.player.get_playing_audio()
             if self.are_audio_lyrics_available(maybe_base_audio):
                 base_audio: Audio = maybe_base_audio
                 if _has_audio_with_lyrics_changed():
-                    user_interface.request_output_to_user(f"Info: \"{base_audio.name_without_extension}\" audio's lyrics:")
+                    user_interface.request_output_to_user(
+                        f"Lyrics: \"{base_audio.name_without_extension}\" audio's lyrics:",
+                        MessagePriority.LYRICS
+                    )
                     self.displayed_lyric_audio = base_audio
                     lyrics: pylrc.classes.Lyrics = LyricsDisplayer.get_lyric_text(self.displayed_lyric_audio)
                     for lyric_line in lyrics:
@@ -83,8 +89,13 @@ class LyricsDisplayer:
                             if not self.are_lyrics_on or _has_audio_with_lyrics_changed():
                                 break
                             if self.player.is_playing():
-                                user_interface.request_output_to_user("\t" + lyric_line.text)
+                                user_interface.request_output_to_user(
+                                    "\t" + lyric_line.text,
+                                    MessagePriority.LYRICS
+                                )
                         else:
                             break
             else:
                 time.sleep(HALT_TIME_BEFORE_TRYING_TO_GET_PLAYING_AUDIO_IN_SEC)
+        user_interface.unmute_message(MessagePriority.INFO)
+        user_interface.unmute_message(MessagePriority.WARNING)

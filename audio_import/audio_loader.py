@@ -5,6 +5,7 @@ from app.cannot_find_a_match_error import CannotFindAMatchError
 from app.config.configuration import Configuration
 from app.file_management import is_file_in_cache, _is_file_loaded
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from app.path import operating_system_proof_path
 from app.search import match_some_strings_among_strings
 from audio.audio import Audio
@@ -34,7 +35,7 @@ def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetada
                 "Request: Which audio you like to download from the following YouTube videos ?",
                 "(type the number of one of the following proposed audios from YouTube):"
             ]
-        )
+        ), MessagePriority.INFO
     )
     starting_index = 1
     for choice_position, youtube_metadata in enumerate(video_metadatas):
@@ -45,7 +46,7 @@ def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetada
                     f"by \"{youtube_metadata.author}\"",
                     f"(duration: {youtube_metadata.duration})"
                 ]
-            )
+            ), MessagePriority.INFO
         )
     user_input: str = user_interface.receive_input_from_user()
     try:
@@ -56,7 +57,7 @@ def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetada
                         f"Warning: the requested audio's number (\"{user_input}\") is invalid.",
                         f"Please choose a number from {starting_index} to {number_of_choices}"
                     ]
-                )
+                ), MessagePriority.WARNING
             )
             user_input: str = user_interface.receive_input_from_user()
         return video_metadatas[int(user_input) - starting_index]
@@ -65,7 +66,7 @@ def _choose_youtube_video_interactively(video_metadatas: List[YouTubeVideoMetada
                 [
                     f"Warning: the requested audio's number's format (\"{user_input}\") is invalid."
                     f"More details: {value_error.args}"
-                ]
+                ], MessagePriority.WARNING
             )
         )
         return None
@@ -104,7 +105,10 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
     """
     returned_audio = None
     if _is_file_loaded(audio_name + file_extension.value, configuration):
-        user_interface.request_output_to_user(f"Info: the audio \"{audio_name}\" is found in cache memory.")
+        user_interface.request_output_to_user(
+            f"Info: the audio \"{audio_name}\" is found in cache memory.",
+            MessagePriority.INFO
+        )
         returned_audio = Audio(
             name_without_extension=audio_name,
             filepath=configuration.get_audio_file_path(audio_name + file_extension.value),
@@ -112,7 +116,8 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
         )
     elif not only_local:
         user_interface.request_output_to_user(
-            f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to download it from Internet."
+            f"Info: the audio \"{audio_name}\" is not found in cache memory. Trying to download it from Internet.",
+            MessagePriority.INFO
         )
         youtube_videos_metadatas: List[YouTubeVideoMetadata] = youtube_metadata_parser.search_videos_on_youtube(audio_name)
         if configuration.is_audio_source_selected_on_import():
@@ -127,7 +132,8 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
                 maybe_chosen_youtube_video: YouTubeVideoMetadata | None = _get_first_youtube_result(youtube_videos_metadatas)
         if maybe_chosen_youtube_video is None:
             user_interface.request_output_to_user(
-                "Warning: no audio could not be downloaded because no proposed audio was selected."
+                "Warning: no audio could not be downloaded because no proposed audio was selected.",
+                MessagePriority.WARNING
             )
             return None
         chosen_youtube_video: YouTubeVideoMetadata = maybe_chosen_youtube_video
@@ -139,12 +145,14 @@ def load(audio_name: str, file_extension: FileExtension, configuration: Configur
             )
         except CannotDownloadError as video_cannot_be_downloaded:
             user_interface.request_output_to_user(
-                f"Warning: the audio \"{audio_name}\" could not be downloaded because {video_cannot_be_downloaded}"
+                f"Warning: the audio \"{audio_name}\" could not be downloaded because {video_cannot_be_downloaded}",
+                MessagePriority.WARNING
             )
             return None
         except IOError as io_error:
             user_interface.request_output_to_user(
-                f"Warning: the audio \"{audio_name}\" cannot be downloaded because {io_error.strerror}"
+                f"Warning: the audio \"{audio_name}\" cannot be downloaded because {io_error.strerror}",
+                MessagePriority.WARNING
             )
             raise io_error
         # Rename the file having Youtube video title as name to the audio name
@@ -201,12 +209,14 @@ def iterate_over_loading_playlist(configuration: Configuration, meta_query: Audi
         except IOError as io_error:
             if io_error.errno == IO_ERROR_NO_SPACE_LEFT_NUMBER:
                 user_interface.request_output_to_user(
-                    'Warning: Since there is no more memory space left for downloading, only local audios will be loaded from now.'
+                    'Warning: Since there is no more memory space left for downloading, only local audios will be loaded from now.',
+                    MessagePriority.WARNING
                 )
                 load_only_local_audio = True
             else:
                 user_interface.request_output_to_user(
-                    f"Warning: IOError returned {str(io_error)}"
+                    f"Warning: IOError returned {str(io_error)}",
+                    MessagePriority.WARNING
                 )
         if maybe_audio is None:
             continue

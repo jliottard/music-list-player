@@ -1,4 +1,7 @@
+''' "Next" command functionality '''
+
 from app.interface import Interface
+from app.message_priority import MessagePriority
 from audio.audio import Audio
 from audio.audio_player import AudioPlayer
 
@@ -10,7 +13,9 @@ def skip_music(player: AudioPlayer, user_interface: Interface) -> None:
     """
     maybe_next_audio: Audio = player.get_next_audio()
     if maybe_next_audio is None:
-        user_interface.request_output_to_user("Warning: Cannot skip, end of playlist reached as one pass mode.")
+        user_interface.request_output_to_user("Warning: Cannot skip, end of playlist reached as \
+         one pass mode.", MessagePriority.WARNING)
     else:
         player.next()
-        user_interface.request_output_to_user(f"Info: Skipping to \"{maybe_next_audio.name_without_extension}\".")
+        user_interface.request_output_to_user(f"Info: Skipping to \
+         \"{maybe_next_audio.name_without_extension}\".", MessagePriority.INFO)
