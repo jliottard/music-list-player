@@ -12,7 +12,7 @@ from audio_import.audio_metadata import AudioMetadata
 from lyrics.lyric_import import prepare_lyrics
 
 def _produce_audio(queue: Queue, configuration: Configuration, meta_query: AudioMetadata, 
-    user_interface: Interface):
+    user_interface: Interface, local_load: bool):
     """Load the playlist's audios and put them into the queue.
     Assume the user's input is booked
     Free the booked user's input of the <user_interface>
@@ -20,11 +20,13 @@ def _produce_audio(queue: Queue, configuration: Configuration, meta_query: Audio
     @param configuration Configuration
     @param meta_query: AudioMetadata, list of keyword the audio metadata must match to be loaded
     @param user_interface: Interface, assume the user's input is booked
+    @param local_load: bool, force the load to only be offline
     """
     for audio in audio_loader.iterate_over_loading_playlist(
         configuration=configuration,
         meta_query=meta_query,
-        user_interface=user_interface
+        user_interface=user_interface,
+        local_load=local_load,
     ):
         prepare_lyrics(audio, configuration, user_interface)
         queue.put(audio)
@@ -44,11 +46,12 @@ def _consume_audio(queue: Queue, player_reference: AudioPlayer):
         player_reference.append_audio_to_player_playlist(audio)
 
 def _load_playlist_in_background(configuration: Configuration, meta_query: AudioMetadata, 
-    user_interface: Interface) -> AudioPlayer:
+    user_interface: Interface, local_load: bool) -> AudioPlayer:
     """Load the playlist's audios in background and early return the player
     @param profile: Profile: the name of a playlist's profile
     @param meta_query: AudioMetadata: optionnal metadata that the audios of the future playlist will match
     @param user_interface: Interface
+    @param local_load: bool, no Internet download if True
     @return: AudioPlayer, the reference of the player that the playlist is loaded into.
     """
     loaded_audio_queue = Queue()
@@ -57,7 +60,8 @@ def _load_playlist_in_background(configuration: Configuration, meta_query: Audio
         user_interface.book_user_input() # prevent main loop from getting user's input
     Thread(
         target=_produce_audio,
-        args=(loaded_audio_queue, configuration, meta_query, user_interface), daemon=True
+        args=(loaded_audio_queue, configuration, meta_query, user_interface, local_load),
+        daemon=True
     ).start()
     Thread(target=_consume_audio, args=(loaded_audio_queue, player), daemon=True).start()
     return player
@@ -77,14 +81,25 @@ def import_playlist(args: list, configuration: Configuration, current_player: Au
     """
     if len(args) < 1:
         return None
-    tags = []
+    # Parse command's arguments
+    tags: [str] = []
+    cmd_options: [str] = []
     if len(args) > 1:
-        # Add arguments as tags to the audios load's query
-        tags = args[1:]
+        for argument in args[1:]:
+            if argument.find('#') == 0:
+                # Add arguments as tags to the audios load's query
+                tags.append(argument)
+            elif argument.find("--") == 0:
+                cmd_options.append(argument)
+    # Handle options
+    local_load_only_option: bool = "--offline" in cmd_options
+    
+    # Set new playlist player
     new_player = _load_playlist_in_background(
         configuration=configuration,
         meta_query=AudioMetadata(None, None, None, tags=tags),
         user_interface=user_interface,
+        local_load=local_load_only_option,
     )
     if current_player is not None:
         new_player.set_volume(current_player.get_volume())

@@ -179,14 +179,16 @@ def sanitize_filename(filename: str) -> str:
             sanitized_name[i] = ESCAPING_CHAR
     return ''.join(sanitized_name)
 
-def iterate_over_loading_playlist(configuration: Configuration, meta_query: AudioMetadata, user_interface: Interface) -> List[Audio]:
+def iterate_over_loading_playlist(configuration: Configuration, meta_query: AudioMetadata,
+    user_interface: Interface, local_load: bool) -> List[Audio]:
     """Parse playlist file and load the music into cache
     @param configuration: Configuration
     @param meta_query: AudioMetada
     @param user_interface: Interface, assume the user's input is booked
+    @param local_load: bool, forbid the download from Internet
     @yield: Audio
     """
-    load_only_local_audio = False
+    load_only_local_audio: bool = local_load
     for audio_metadata in configuration.profile.audio_metadatas:
         name = sanitize_filename(audio_metadata.name)
         any_tags = audio_metadata.tags

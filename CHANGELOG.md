@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Add `--offline` option to the import command;
 - Add the mute and unmute commands based by the message priority;
 - Automatically mute INFO and WARNING message when displaying lyrics;
 - Display messages by priority;
