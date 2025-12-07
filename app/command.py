@@ -37,7 +37,7 @@ class Command(Enum):
                 tag-based-playlist from the playlist: \"import #<tag_name>\". While the audio are \
                 loading, you can use command as usual if the configuration's \
                 setting \"{ConfigurationKeyword.USER_CHOOSES_AUDIO_SOURCE_ON_IMPORT.value}\" is \
-                set to 'false'.",
+                set to 'false'.\n Add a \"--offline\" option to only load audios from your machine",
             Command.LIST: "show the playlist's musics",
             Command.PLAY: "play first audio by default . If prefixed by the playlist's audio index \
              (one argument), play the corresponding audio: \"play <i>\". If the command is  \
